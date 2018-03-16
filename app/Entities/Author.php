@@ -56,6 +56,24 @@ class Author extends Model
     }
 
     /**
+     * @param int $score
+     */
+    public function updateReports(int $score)
+    {
+        if (is_null($this->reports)) {
+            $this->reports = 0;
+        }
+
+        if ($score > 0) {
+            $this->reports += $score;
+        } else if ($this->reports > ($score * -1)) {
+            $this->reports -= ($score * -1);
+        }
+
+        $this->save();
+    }
+
+    /**
      * @param Builder $builder
      * @return $this
      */

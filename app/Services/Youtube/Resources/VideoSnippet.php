@@ -35,6 +35,14 @@ class VideoSnippet
     /**
      * @return string
      */
+    public function getThumb(): ?string
+    {
+        return $this->data->thumbnails->default->high ?? null;
+    }
+
+    /**
+     * @return string
+     */
     public function getDescription(): ?string
     {
         return $this->data->description ?? null;

@@ -41,9 +41,10 @@ class SyncVideos extends Command
 
 
             foreach ($videos as $video) {
-                $channel->videos()->firstOrCreate(['id' => $video->id->videoId], [
+                $channel->videos()->updateOrCreate(['id' => $video->id->videoId], [
                     'id' => $video->id->videoId,
                     'title' => $video->snippet->title,
+                    'thumb' => $video->snippet->thumbnails->high->url,
                     'description' => $video->snippet->description,
                     'created_at' => Carbon::parse($video->snippet->publishedAt)
                 ]);

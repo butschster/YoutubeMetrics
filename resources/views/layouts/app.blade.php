@@ -30,7 +30,7 @@
 
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
+                    {{--<!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
@@ -56,11 +56,12 @@
                             </li>
                         @endguest
                     </ul>
+                    --}}
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>

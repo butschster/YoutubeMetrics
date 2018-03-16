@@ -54,6 +54,7 @@ class UpdateVideoInformation implements ShouldQueue
         $video->update(
             array_merge($info->getStatistics()->toArray(), [
                 'title' => $info->getSnippet()->getTitle(),
+                'thumb' => $info->getSnippet()->getThumb(),
                 'description' => $info->getSnippet()->getDescription()
             ])
         );

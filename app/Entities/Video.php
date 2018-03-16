@@ -26,7 +26,7 @@ class Video extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id', 'title', 'description', 'views', 'likes', 'dislikes', 'comments', 'favorites', 'created_at'];
+    protected $guarded = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

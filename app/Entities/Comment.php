@@ -42,4 +42,12 @@ class Comment extends Model
     {
         return $this->hasMany(CommentLike::class, 'comment_id', 'comment_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
+    }
 }

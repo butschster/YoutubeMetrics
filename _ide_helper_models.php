@@ -10,27 +10,43 @@
 
 namespace App\Entities{
 /**
- * App\Entities\CommentLike
+ * App\Entities\Tag
  *
- * @property string $comment_id
- * @property int $likes
+ * @property int $id
+ * @property string $name
  * @property \Carbon\Carbon|null $created_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\CommentLike whereCommentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\CommentLike whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\CommentLike whereLikes($value)
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereUpdatedAt($value)
  */
-	class CommentLike extends \Eloquent {}
+	class Tag extends \Eloquent {}
 }
 
 namespace App\Entities{
 /**
  * App\Entities\Author
  *
- * @property int $id
+ * @property string $id
+ * @property int $total_comments
+ * @property int $bot
+ * @property int $deleted
+ * @property string|null $registered_at
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property int $reports
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author live()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author onlyBots()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereBot($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereRegisteredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereReports($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereTotalComments($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereUpdatedAt($value)
  */
 	class Author extends \Eloquent {}
@@ -38,32 +54,33 @@ namespace App\Entities{
 
 namespace App\Entities{
 /**
- * App\Entities\Comment
+ * App\Entities\Channel
  *
- * @property int $id
- * @property string $video_id
- * @property string $author_id
- * @property string|null $text
- * @property int $likes
+ * @property string $id
+ * @property string $title
  * @property \Carbon\Carbon|null $created_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereLikes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereVideoId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereTitle($value)
  */
-	class Comment extends \Eloquent {}
+	class Channel extends \Eloquent {}
 }
 
 namespace App\Entities{
 /**
  * App\Entities\Bot
  *
- * @property int $id
+ * @property string $id
  * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $deleted
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot live()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereUpdatedAt($value)
  */
 	class Bot extends \Eloquent {}
 }
@@ -72,16 +89,31 @@ namespace App\Entities{
 /**
  * App\Entities\Video
  *
- * @property int $id
+ * @property string $id
  * @property string $title
  * @property string|null $description
+ * @property int $views
+ * @property int $likes
+ * @property int $dislikes
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
+ * @property int $favorites
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property string $channel_id
+ * @property-read \App\Entities\Channel $channel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\VideoStat[] $statistics
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Tag[] $tags
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereChannelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereComments($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereDislikes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereFavorites($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereLikes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereViews($value)
  */
 	class Video extends \Eloquent {}
 }
