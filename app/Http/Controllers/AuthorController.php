@@ -44,7 +44,7 @@ class AuthorController extends Controller
             abort(404);
         }
 
-        $videos = $author->videos()->latest()->paginate(4);
+        $videos = $author->videos()->latest()->paginate(3);
 
         return view('author.show', compact('author', 'videos'));
     }
