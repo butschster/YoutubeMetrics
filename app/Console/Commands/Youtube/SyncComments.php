@@ -22,6 +22,13 @@ class SyncComments extends Command
      */
     protected $description = '';
 
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'comment';
+
     public function handle()
     {
         $videos = Video::where('created_at', '>', now()->subHours(6))->get();

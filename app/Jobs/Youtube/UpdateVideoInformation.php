@@ -20,6 +20,13 @@ class UpdateVideoInformation implements ShouldQueue
     public $videoId;
 
     /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'video';
+
+    /**
      * Create a new job instance.
      *
      * @param string $videoId

@@ -1,17 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container mt-5">
         <header id="video-header" class="card bg-dark text-white">
             <div class="video-cover" style="background-image: url({{ $video->thumb }});"></div>
             <div class="card-img-overlay d-flex justify-content-center">
                 <div class="align-self-center text-center">
                     <h1 class="card-title">{{ $video->title }}</h1>
                     <p class="card-text">{{ $video->channel->title }}</p>
+
+                    <div class="btn-group my-4" role="group">
+                        <a class="btn btn-outline-light" href="https://www.youtube.com/watch?v={{ $video->id }}" target="_blank">
+                            <i class="fab fa-youtube"></i> Посмотреть видео
+                        </a>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <video-chart id="{{ $video->id }}" class="mt-5 rounded"></video-chart>
+        <video-chart id="{{ $video->id }}" class="my-5 rounded"></video-chart>
+
+        <video-comments id="{{ $video->id }}" class="my-5"></video-comments>
     </div>
 @endsection

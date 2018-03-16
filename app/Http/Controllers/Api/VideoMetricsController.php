@@ -14,13 +14,11 @@ class VideoMetricsController extends Controller
      */
     public function index(string $videoId)
     {
-        $statistics = Cache::remember("video_stat:".$videoId, now()->addMinutes(5), function () use ($videoId) {
+        return Cache::remember("video_stat:".$videoId, now()->addMinutes(5), function () use ($videoId) {
             return $this->prepareData(
                 VideoStat::where('video_id', $videoId)->oldest()->get()
             );
         });
-
-        return $statistics;
     }
 
     /**

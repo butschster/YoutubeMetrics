@@ -16,6 +16,8 @@ window.Vue = require('vue');
  */
 
 Vue.component('video-chart', require('./components/VideoChart'));
+Vue.component('video-comments', require('./components/VideoComments'));
+Vue.component('author-comments', require('./components/AuthorComments'));
 
 const app = new Vue({
     el: '#app'

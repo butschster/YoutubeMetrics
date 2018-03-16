@@ -19,7 +19,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    opacity: .5;
+    opacity: .1;
   }
 
   .card-img-overlay {
@@ -37,13 +37,34 @@
   }
 }
 
-.vue-highcharts {
-  width: 100%;
-  display: inline-block;
-  margin: 2em auto;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  box-shadow: 0 0 45px rgba(0, 0, 0, 0.2);
-  padding: 1.5em 0em;
-  background: #fff;
+.comments {
+  .comment {
+    background: #fff;
+    padding: 20px;
+
+    &.comment-normal {}
+
+    &.comment-bot {
+      background: $red;
+      color: $white;
+    }
+
+    &.comment-reported {
+      background: $yellow;
+    }
+  }
+}
+
+#author-header {
+  &.author-type-normal {
+    background: $dark;
+  }
+
+  &.author-type-bot {
+    background: $danger;
+  }
+
+  &.author-type-reported {
+    background: $purple;
+  }
 }

@@ -20,6 +20,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "vue-spinner": "^1.0.3",
         "vue2-highcharts": "^1.1.8"
     }
 }

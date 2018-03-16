@@ -22,6 +22,9 @@
                     chart: {
                         type: 'spline'
                     },
+                    title: {
+                        text: "Статистика"
+                    },
                     xAxis: {
                         title: {
                             text: "Время"
@@ -44,21 +47,18 @@
             this.load();
         },
         methods: {
-            load() {
+            async load() {
                 let lineCharts = this.$refs.lineCharts;
                 lineCharts.delegateMethod('showLoading', 'Loading...');
 
-                axios.get(`/api/video/${this.id}/metrics`)
-                    .then(r => {
-                        r.data.forEach((series) => {
-                            lineCharts.addSeries(series);
-                        });
-
-                        lineCharts.hideLoading();
-                    })
-                    .catch((e) => {
-                        lineCharts.hideLoading();
+                try {
+                    let response = await axios.get(`/api/video/${this.id}/metrics`);
+                    response.data.forEach((series) => {
+                        lineCharts.addSeries(series);
                     });
+                } catch (e) {}
+
+                lineCharts.hideLoading();
             }
         }
     }

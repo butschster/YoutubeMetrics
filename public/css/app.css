@@ -10008,7 +10008,7 @@ a.text-dark:focus {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  opacity: .5;
+  opacity: .1;
 }
 
 #video-header div:first-child {
@@ -10021,15 +10021,29 @@ a.text-dark:focus {
   border-bottom-right-radius: 0.25rem;
 }
 
-.vue-highcharts {
-  width: 100%;
-  display: inline-block;
-  margin: 2em auto;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  -webkit-box-shadow: 0 0 45px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 0 45px rgba(0, 0, 0, 0.2);
-  padding: 1.5em 0em;
+.comments .comment {
   background: #fff;
+  padding: 20px;
+}
+
+.comments .comment.comment-bot {
+  background: #dc3545;
+  color: #fff;
+}
+
+.comments .comment.comment-reported {
+  background: #ffc107;
+}
+
+#author-header.author-type-normal {
+  background: #343a40;
+}
+
+#author-header.author-type-bot {
+  background: #dc3545;
+}
+
+#author-header.author-type-reported {
+  background: #6f42c1;
 }
 
