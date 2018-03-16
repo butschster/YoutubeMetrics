@@ -36,7 +36,7 @@ class AuthorController extends Controller
                 'name' => $authorData->snippet->title,
                 'created_at' => Carbon::parse($authorData->snippet->publishedAt),
                 'thumb' => $authorData->snippet->thumbnails->default->url,
-                'country' => $authorData->snippet->country
+                'country' => $authorData->snippet->country ?? 'RU'
             ]);
         }
 
