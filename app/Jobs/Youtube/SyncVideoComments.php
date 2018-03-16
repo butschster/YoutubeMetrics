@@ -26,6 +26,7 @@ class SyncVideoComments implements ShouldQueue
      */
     public function __construct(string $videoId)
     {
+        $this->onQueue('comment');
         $this->videoId = $videoId;
     }
 

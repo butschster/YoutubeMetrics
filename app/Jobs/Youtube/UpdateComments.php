@@ -30,6 +30,8 @@ class UpdateComments implements ShouldQueue
      */
     public function __construct(string $videoId, $comments)
     {
+        $this->onQueue('comment');
+
         $this->videoId = $videoId;
         $this->comments = $comments;
     }
