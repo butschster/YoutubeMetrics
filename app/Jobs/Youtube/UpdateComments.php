@@ -3,6 +3,7 @@
 namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
+use App\Entities\Author;
 use App\Entities\Video;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -48,13 +49,16 @@ class UpdateComments implements ShouldQueue
         }
 
         foreach ($this->comments as $comment) {
+            $channelId = $comment->snippet->topLevelComment->snippet->authorChannelId->value;
+
             $video->comments()->updateOrCreate([
                 'comment_id' => $comment->id
             ], [
                 'created_at' => Carbon::parse($comment->snippet->topLevelComment->snippet->publishedAt),
                 'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
-                'author_id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
-                'total_likes' => $comment->snippet->topLevelComment->snippet->likeCount
+                'author_id' => $channelId,
+                'total_likes' => $comment->snippet->topLevelComment->snippet->likeCount,
+                'spam' => Author::onlyBots()->live()->where('id', $channelId)->take(1)->count() > 0
             ]);
         }
     }

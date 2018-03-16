@@ -55,7 +55,7 @@ class SyncVideoComments implements ShouldQueue
                 $this->syncComments($client, $comments->getNextPageToken());
             }
         } catch (\Exception $e) {
-
+            logger()->error($e->getMessage());
         }
     }
 }

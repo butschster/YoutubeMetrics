@@ -34,6 +34,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('authors:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('authors:sync-with-bots')->dailyAt('05:00')->withoutOverlapping();
+
+        $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
     }
 
     /**

@@ -37,7 +37,7 @@ class Author extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id', 'total_comments', 'bot', 'deleted', 'created_at'];
+    protected $fillable = ['id', 'name', 'thumb', 'country', 'total_comments', 'bot', 'deleted', 'created_at'];
 
     /**
      * @return string
@@ -61,6 +61,7 @@ class Author extends Model
     public function updateReports(int $score)
     {
         if (is_null($this->reports)) {
+
             $this->reports = 0;
         }
 
@@ -97,5 +98,13 @@ class Author extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'author_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'channel_id');
     }
 }

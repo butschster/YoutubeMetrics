@@ -5,7 +5,9 @@
 
     <div class="container">
         <div class="row">
-            @each('video._partials.row', $videos, 'video')
+            @foreach($videos as $video)
+                @include('video._partials.row', ['video' => $video, 'colSize' => 'col-md-4'])
+            @endforeach
         </div>
 
         {!! $videos->render() !!}
