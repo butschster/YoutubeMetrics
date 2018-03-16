@@ -37,7 +37,7 @@ class VideoSnippet
      */
     public function getThumb(): ?string
     {
-        return $this->data->thumbnails->default->high ?? null;
+        return $this->data->thumbnails->high->url ?? null;
     }
 
     /**
