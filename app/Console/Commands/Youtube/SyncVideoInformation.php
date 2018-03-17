@@ -23,10 +23,7 @@ class SyncVideoInformation extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * @param Client $client
-     */
-    public function handle(Client $client)
+    public function handle()
     {
         /** @var Video[] $videos */
         $videos = Video::where('created_at', '>', now()->subDay())->get();

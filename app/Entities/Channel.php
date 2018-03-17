@@ -22,6 +22,8 @@ class Channel extends Model
      */
     public $incrementing = false;
 
+    protected $guarded = [];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
