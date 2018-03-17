@@ -29,7 +29,7 @@ class SyncVideoInformation extends Command
     public function handle(Client $client)
     {
         /** @var Video[] $videos */
-        $videos = Video::where('created_at', '>', now()->subDays(2))->get();
+        $videos = Video::where('created_at', '>', now()->subDays(1))->get();
 
         foreach ($videos as $video) {
             dispatch(new UpdateVideoInformation($video->id));

@@ -10,15 +10,19 @@
                 <div class="comment-content">
                     <h6 class="small comment-meta">
                         <span class="badge badge-light">
-                            <i class="far fa-thumbs-up"></i> {{ comment.total_likes }}
+                            <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_id }}</a>
                         </span>
 
-                        <span class="text-muted">
-                            Автор: <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_id }}</a>
-                        </span>
+                        <small class="badge badge-light">
+                            <i class="fas fa-link"></i> <a :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">{{ comment.id }}</a>
+                        </small>
                     </h6>
                     <div class="comment-body">
                         <p>{{ comment.text }}</p>
+
+                        <span class="badge badge-light">
+                            <i class="far fa-thumbs-up"></i> {{ comment.total_likes }}
+                        </span>
                         <span class="badge badge-info">{{ comment.created_at }}</span>
                     </div>
                 </div>
