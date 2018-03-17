@@ -9,20 +9,26 @@
         </div>
 
         <div class="btn-group my-4" role="group">
+            <a class="btn btn-outline-light" href="https://www.youtube.com/channel/{{ $author->id }}" target="_blank">
+                <i class="fab fa-youtube fa-fw fa-lg"></i> Канал
+            </a>
+
             <a class="btn btn-outline-light" href="https://www.t30p.ru/search.aspx?s={{ $author->id }}" target="_blank">
                 <i class="fab fa-lg fa-fw fa-searchengin"></i> Поиск комментариев
             </a>
         </div>
     </header>
 
-    <div class="container mt-5">
-        <div class="row">
+    <div class="container">
+        @if($videos->count() > 0)
+        <div class="row mt-5">
             @foreach($videos as $video)
                 @include('video._partials.row', ['video' => $video, 'colSize' => 'col-md-4'])
             @endforeach
         </div>
 
         {!! $videos->render() !!}
+        @endif
 
         <author-comments id="{{ $author->id }}" class="my-5"></author-comments>
     </div>

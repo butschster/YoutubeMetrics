@@ -1,29 +1,26 @@
 <template>
     <div>
         <div class="comments" v-if="hasComments">
-            <h3 class="mb-4">Комментарии ({{ total }})</h3>
+            <h3 class="mb-4">Комментарии <small class="text-muted">({{ total }})</small></h3>
 
             <div class="comment mb-3 rounded" :class="classes(comment)" v-for="comment in comments">
-                <button class="btn btn-sm btn-danger float-right" @click="report(comment)"
-                        v-if="comment.author_type == 'normal'">Report
-                </button>
-                <div class="comment-content">
-                    <h6 class="small comment-meta">
-                        <span class="badge badge-light">
-                            <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_id }}</a>
-                        </span>
+                <a class="float-right text-danger" :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">
+                    <i class="fab fa-youtube fa-lg"></i>
+                </a>
 
-                        <small class="badge badge-light">
-                            <i class="fas fa-link"></i> <a :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">{{ comment.id }}</a>
-                        </small>
-                    </h6>
+                <div class="comment-content">
+                   <span class="badge badge-light" v-if="!hideAuthor">
+                        <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_id }}</a>
+                    </span>
                     <div class="comment-body">
                         <p>{{ comment.text }}</p>
+                    </div>
 
+                    <div class="comment-meta">
                         <span class="badge badge-light">
-                            <i class="far fa-thumbs-up"></i> {{ comment.total_likes }}
+                            <i class="far fa-thumbs-up fa-fw fa-lg"></i> {{ comment.total_likes }}
                         </span>
-                        <span class="badge badge-info">{{ comment.created_at }}</span>
+                        <span class="badge badge-light">{{ comment.created_at }}</span>
                     </div>
                 </div>
             </div>
@@ -43,6 +40,10 @@
                 default() {
                     return [];
                 }
+            },
+            hideAuthor: {
+                type: Boolean,
+                default: false
             },
             total: {
                 required: true,

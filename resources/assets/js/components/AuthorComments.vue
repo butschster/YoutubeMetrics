@@ -2,7 +2,7 @@
     <div>
         <loader :loading="loading" class="text-center"></loader>
 
-        <comments :comments="comments" :total="totalComments"></comments>
+        <comments :comments="comments" :total="totalComments" :hideAuthor="true"></comments>
     </div>
 </template>
 
