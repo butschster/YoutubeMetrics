@@ -75,9 +75,9 @@ class CommentsController extends Controller
             'text' => $comment->text,
             'total_likes' => $comment->total_likes,
             'video_id' => $comment->video_id,
-            'author_id' => $comment->author_id,
+            'author_id' => $comment->channel_id,
             'author_type' => $author->type(),
-            'author_name' => $author->name ?: $comment->author_id,
+            'author_name' => $author->name ?? $comment->channel_id,
             'created_at' => $comment->formatted_date,
         ];
     }

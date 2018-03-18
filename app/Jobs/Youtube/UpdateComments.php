@@ -57,7 +57,7 @@ class UpdateComments implements ShouldQueue
             ], [
                 'created_at' => Carbon::parse($comment->snippet->topLevelComment->snippet->publishedAt),
                 'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
-                'author_id' => $channelId,
+                'channel_id' => $channelId,
                 'total_likes' => $comment->snippet->topLevelComment->snippet->likeCount,
             ]);
         }
