@@ -61,7 +61,6 @@ class Author extends Model
     public function updateReports(int $score)
     {
         if (is_null($this->reports)) {
-
             $this->reports = 0;
         }
 
@@ -72,6 +71,14 @@ class Author extends Model
         }
 
         $this->save();
+    }
+
+    public function markAsBot()
+    {
+        $this->bot = true;
+        $this->save();
+
+        $this->comments()->update(['spam' => true]);
     }
 
     /**

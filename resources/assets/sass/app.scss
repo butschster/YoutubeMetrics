@@ -38,6 +38,14 @@
 }
 
 #author-header {
+  .author-cover {
+    height: 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: .3;
+  }
+
   &.author-type-normal {
     background: $gray-900;
   }

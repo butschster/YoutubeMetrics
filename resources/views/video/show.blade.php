@@ -8,8 +8,9 @@
                 <h1 class="card-title">{{ $video->title }}</h1>
 
                 <div class="btn-group my-4" role="group">
+
                     <a class="btn btn-outline-light" href="{{ route('author.show', $video->channel_id) }}" target="_blank">
-                        <i class="far fa-user-circle"></i> {{ $video->channel->title }}
+                        <i class="far fa-user-circle"></i> {{ $video->channel->name ?? $video->channel_id }}
                     </a>
 
                     <a class="btn btn-outline-light" href="https://www.youtube.com/watch?v={{ $video->id }}" target="_blank">
