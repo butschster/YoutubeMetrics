@@ -58,7 +58,6 @@ class UpdateComments implements ShouldQueue
                 'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
                 'author_id' => $channelId,
                 'total_likes' => $comment->snippet->topLevelComment->snippet->likeCount,
-                'spam' => Author::onlyBots()->live()->where('id', $channelId)->take(1)->count() > 0
             ]);
         }
     }

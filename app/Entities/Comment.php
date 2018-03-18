@@ -15,6 +15,10 @@ class Comment extends Model
                 'count' => $comment->total_likes
             ]);
         });
+
+        static::creating(function (Comment $comment) {
+            $comment->spam = Author::onlyBots()->live()->where('id', $comment->author_id)->take(1)->exists();
+        });
     }
 
     /**
