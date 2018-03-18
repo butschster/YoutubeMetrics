@@ -3,7 +3,9 @@
 @section('content')
     <header id="author-header" class="card text-center text-white author-type-{{ $author->type() }}">
         @if($author->thumb)
-        <div class="author-cover" style="background-image: url({{ $author->thumb }});"></div>
+            <div class="author-cover" style="background-image: url({{ $author->thumb }});"></div>
+        @else
+            <div class="author-cover bg-dark"></div>
         @endif
 
         <div class="card-img-overlay d-flex justify-content-center">
