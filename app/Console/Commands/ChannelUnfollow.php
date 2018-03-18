@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Youtube\Resources\Channel;
+use App\Entities\Channel;
 use Illuminate\Console\Command;
 
 class ChannelUnfollow extends Command
@@ -22,9 +22,7 @@ class ChannelUnfollow extends Command
     protected $description = 'Убрать канал из слежения';
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @throws \Exception
      */
     public function handle()
     {
