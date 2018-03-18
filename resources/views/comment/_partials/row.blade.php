@@ -4,15 +4,15 @@
         <i class="fab fa-youtube fa-lg"></i>
     </a>
 
-    <a class="float-right btn btn-sm btn-link" href="{{ route('comment.show', $comment) }}" target="_blank">
+    <a class="float-right btn btn-sm btn-link" href="{{ route('comment.show', $comment->id) }}" target="_blank">
         <i class="fas fa-link fa-lg"></i>
     </a>
 
     <div class="comment-content">
         <span class="badge badge-light">
             <i class="far fa-user-circle"></i>
-            <a href="{{ route('author.show', $comment->author_id) }}" target="_blank">
-                {{ $comment->author->name ?? $comment->author_id }}
+            <a href="{{ route('author.show', $comment->channel_id }}" target="_blank">
+                {{ $comment->author->name ?? $comment->channel_id }}
             </a>
         </span>
         <div class="comment-body">
