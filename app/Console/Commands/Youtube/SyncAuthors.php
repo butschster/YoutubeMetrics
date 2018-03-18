@@ -31,7 +31,7 @@ class SyncAuthors extends Command
      */
     public function handle(Client $client)
     {
-        $authors = Comment::select('author_id')->whereDoesntHave('author')->groupBy('author_id')->pluck('author_id');
+        $authors = Comment::select('channel_id')->whereDoesntHave('author')->groupBy('channel_id')->pluck('channel_id');
 
         foreach ($authors as $id) {
             dispatch(new UpdateChannelInformation($id));
