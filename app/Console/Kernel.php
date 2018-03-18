@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
         $schedule->command('youtube:authors-sync')->dailyAt('03:00')->withoutOverlapping();
+        $schedule->command('youtube:channels-sync')->daily()->withoutOverlapping();
     }
 
     /**

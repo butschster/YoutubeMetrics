@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Channel;
+use App\Jobs\Youtube\UpdateChannelInformation;
 use Illuminate\Console\Command;
 
 class ChannelFollow extends Command
@@ -45,6 +46,8 @@ class ChannelFollow extends Command
             'id' => $info->id,
             'title' => $info->snippet->title
         ]);
+
+        dispatch(new UpdateChannelInformation($info->id));
 
         $this->info(sprintf('Добавлено слежение за каналом [%s]', $channel->title));
     }
