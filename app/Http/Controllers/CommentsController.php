@@ -12,7 +12,8 @@ class CommentsController extends Controller
      */
     public function spamToday()
     {
-        $comments = Comment::onlySpam()->with('author')->where('created_at', '>', now()->subDay())->latest()->paginate(100);
+        $comments = Comment::onlySpam()
+            ->with('author')->where('created_at', '>', now()->subDay())->latest()->paginate(100);
 
         return view('comment.index', compact('comments'));
     }
