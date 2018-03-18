@@ -6,7 +6,7 @@ use App\Contracts\Services\Youtube\Client;
 use App\Entities\Channel;
 use Illuminate\Console\Command;
 
-class FollowChannel extends Command
+class ChannelFollow extends Command
 {
     /**
      * The name and signature of the console command.
@@ -22,7 +22,6 @@ class FollowChannel extends Command
      */
     protected $description = 'Слежение за видео канала.';
 
-
     /**
      * @param Client $client
      */
@@ -31,7 +30,7 @@ class FollowChannel extends Command
         $channel = Channel::find($this->argument('channel'));
 
         if ($channel) {
-            $this->error('вы уже следите за этим каналом.');
+            $this->error('Вы уже следите за этим каналом.');
             return;
         }
 
@@ -42,9 +41,11 @@ class FollowChannel extends Command
             return;
         }
 
-        Channel::create([
+        $channel = Channel::create([
             'id' => $info->id,
             'title' => $info->snippet->title
         ]);
+
+        $this->info(sprintf('Добавлено слежение за каналом [%s]', $channel->title));
     }
 }
