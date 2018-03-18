@@ -2,10 +2,14 @@
 
 namespace App\Entities;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Comment extends Model
 {
+    use HybridRelations;
+
     protected static function boot()
     {
         parent::boot();
@@ -17,19 +21,73 @@ class Comment extends Model
         });
 
         static::creating(function (Comment $comment) {
-            $comment->spam = Author::onlyBots()->live()->where('id', $comment->author_id)->take(1)->exists();
+            $comment->is_spam = Author::onlyBots()->live()->where('id', $comment->channel_id)->exists();
         });
     }
 
     /**
+     * The "type" of the auto-incrementing ID.
+     *
      * @var string
      */
-    protected $connection = 'mongodb';
+    protected $keyType = 'string';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['comment_id', 'author_id', 'text', 'created_at', 'total_likes'];
+    protected $guarded = [];
+
+    /**
+     * @return string
+     */
+    public function getFormattedDateAttribute(): string
+    {
+        return $this->created_at->format('d.m.Y H:i:s');
+    }
+
+    /**
+     * @param Builder $builder
+     * @param string|Author $author
+     * @return $this
+     */
+    public function scopeFilterByChannel(Builder $builder, $author)
+    {
+        if ($author instanceof Author) {
+            $author = $author->getKey();
+        }
+
+        return $this->where('channel_id', $author);
+    }
+
+    /**
+     * @param Builder $builder
+     * @param string|Video $video
+     * @return $this
+     */
+    public function scopeFilterByVideo(Builder $builder, $video)
+    {
+        if ($video instanceof Video) {
+            $video = $video->getKey();
+        }
+
+        return $this->where('video_id', $video);
+    }
+
+    /**
+     * @param Builder $builder
+     * @return $this
+     */
+    public function scopeOnlySpam(Builder $builder)
+    {
+        return $this->where('is_spam', true);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -44,7 +102,7 @@ class Comment extends Model
      */
     public function likes()
     {
-        return $this->hasMany(CommentLike::class, 'comment_id', 'comment_id');
+        return $this->hasMany(CommentLike::class);
     }
 
     /**

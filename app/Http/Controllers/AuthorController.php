@@ -23,27 +23,11 @@ class AuthorController extends Controller
     }
 
     /**
-     * @param string $id
+     * @param Author $author
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(string $id)
+    public function show(Author $author)
     {
-        $author = Author::find($id);
-
-        if (!$author && $authorData = $this->client->getChannelById($id)) {
-            $author = Author::create([
-                'id' => $authorData->id,
-                'name' => $authorData->snippet->title,
-                'created_at' => Carbon::parse($authorData->snippet->publishedAt),
-                'thumb' => $authorData->snippet->thumbnails->default->url,
-                'country' => $authorData->snippet->country ?? 'RU'
-            ]);
-        }
-
-        if (!$author) {
-            abort(404);
-        }
-
         $videos = $author->videos()->latest()->paginate(3);
 
         return view('author.show', compact('author', 'videos'));

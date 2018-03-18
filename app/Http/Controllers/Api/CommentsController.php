@@ -12,23 +12,22 @@ use Illuminate\Support\Facades\Cache;
 class CommentsController extends Controller
 {
     /**
-     * @param string $videoId
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @param Video $video
+     * @return array
      */
-    public function index(string $videoId)
+    public function index(Video $video)
     {
-        $video = Video::findOrFail($videoId);
-
-        $authors = $this->getAuthors();
-
-        $comments = Cache::remember("comments:".$videoId, now()->addHour(), function () use ($videoId, $authors) {
-            return Comment::where('video_id', $videoId)->where('total_likes', '>', 0)->orderBy('total_likes', 'desc')->latest()
+        $comments = Cache::remember("comments:".$video->id, now()->addHour(), function () use ($video) {
+            return Comment::with('author')
+                ->filterByVideo($video)
+                ->where('total_likes', '>', 0)
+                ->orderBy('total_likes', 'desc')
+                ->latest()
                 ->get()
-                ->map(function ($comment) use ($authors) {
-
+                ->map(function ($comment) {
                     return $this->mapComment(
                         $comment,
-                        $authors->get($comment->author_id, new Author)
+                        $comment->author ?? new Author
                     );
                 })
                 ->toArray();
@@ -46,10 +45,13 @@ class CommentsController extends Controller
      */
     public function author(Author $author)
     {
-        $comments = Cache::remember("author_comments:".$author->id, now()->addHour(), function () use ($author) {
-            return Comment::where('author_id', $author->id)->orderBy('total_likes', 'desc')->latest()
+        $cacheKey = md5('author_comments'.$author->id);
+
+        $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($author) {
+
+            return Comment::filterByChannel($author)->orderBy('total_likes', 'desc')->latest()
                 ->get()
-                ->map(function ($comment) use($author) {
+                ->map(function ($comment) use ($author) {
                     return $this->mapComment($comment, $author);
                 })
                 ->toArray();
@@ -69,23 +71,14 @@ class CommentsController extends Controller
     protected function mapComment(Comment $comment, Author $author): array
     {
         return [
-            'id' => $comment->comment_id,
+            'id' => $comment->id,
             'text' => $comment->text,
             'total_likes' => $comment->total_likes,
             'video_id' => $comment->video_id,
             'author_id' => $comment->author_id,
             'author_type' => $author->type(),
-            'created_at' => $comment->created_at->format('d.m.Y H:i:s'),
+            'author_name' => $author->name ?: $comment->author_id,
+            'created_at' => $comment->formatted_date,
         ];
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function getAuthors(): Collection
-    {
-        return Cache::remember("authors", now()->addHour(), function () {
-            return Author::live()->get(['id', 'reports', 'bot'])->pluck(null, 'id');
-        });
     }
 }

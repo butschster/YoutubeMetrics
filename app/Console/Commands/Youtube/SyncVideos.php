@@ -39,7 +39,6 @@ class SyncVideos extends Command
                 continue;
             }
 
-
             foreach ($videos as $video) {
                 $channel->videos()->updateOrCreate(['id' => $video->id->videoId], [
                     'id' => $video->id->videoId,

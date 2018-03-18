@@ -25,12 +25,4 @@ class CommentLike extends Model
      * @var array
      */
     protected $fillable = ['count'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function comment()
-    {
-        return $this->belongsTo(Comment::class);
-    }
 }

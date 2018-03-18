@@ -8,7 +8,7 @@
             <h3 class="mb-4">Комментарии ({{ $comments->count() }})</h3>
 
             @foreach($comments as $comment)
-                @include('comments._partials.row', ['comment' => $comment])
+                @include('comment._partials.row', ['comment' => $comment])
             @endforeach
         </div>
 

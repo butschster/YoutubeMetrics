@@ -37,10 +37,7 @@ class UpdateComments implements ShouldQueue
         $this->comments = $comments;
     }
 
-    /**
-     * @param Client $client
-     */
-    public function handle(Client $client)
+    public function handle()
     {
         $video = Video::find($this->videoId);
 
@@ -51,8 +48,12 @@ class UpdateComments implements ShouldQueue
         foreach ($this->comments as $comment) {
             $channelId = $comment->snippet->topLevelComment->snippet->authorChannelId->value;
 
+            if (!Author::where('id', $channelId)->exists()) {
+                dispatch(new UpdateChannelInformation($channelId));
+            }
+
             $video->comments()->updateOrCreate([
-                'comment_id' => $comment->id
+                'id' => $comment->id
             ], [
                 'created_at' => Carbon::parse($comment->snippet->topLevelComment->snippet->publishedAt),
                 'text' => $comment->snippet->topLevelComment->snippet->textOriginal,

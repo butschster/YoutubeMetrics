@@ -5,12 +5,9 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Author extends Model
 {
-    use HybridRelations;
-
     protected static function boot()
     {
         parent::boot();
@@ -37,7 +34,7 @@ class Author extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id', 'name', 'thumb', 'country', 'total_comments', 'bot', 'deleted', 'created_at'];
+    protected $guarded = [];
 
     /**
      * @return string
@@ -104,7 +101,7 @@ class Author extends Model
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'author_id');
+        return $this->hasMany(Comment::class, 'channel_id');
     }
 
     /**

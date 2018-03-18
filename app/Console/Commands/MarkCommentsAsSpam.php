@@ -20,8 +20,7 @@ class MarkCommentsAsSpam extends Command
      *
      * @var string
      */
-    protected $description = 'mark comments from bots as spam';
-
+    protected $description = 'Пометка комментариев ботов как спам.';
 
     /**
      * Execute the console command.
@@ -30,12 +29,10 @@ class MarkCommentsAsSpam extends Command
      */
     public function handle()
     {
-        $bots = Author::onlyBots()->live()->pluck('id');
+        $authors = Author::onlyBots()->live()->pluck('id');
 
-        foreach ($bots as $bot) {
-            Comment::where('author_id', $bot)->update([
-                'spam' => true
-            ]);
+        foreach ($authors as $author) {
+            $author->comments()->update(['is_spam' => true]);
         }
     }
 }

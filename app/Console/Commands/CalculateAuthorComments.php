@@ -20,7 +20,7 @@ class CalculateAuthorComments extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Подсчет кол-ва комментариев для авторов';
 
     /**
      * Execute the console command.
@@ -29,13 +29,7 @@ class CalculateAuthorComments extends Command
      */
     public function handle()
     {
-        $authors = Comment::raw(function($collection) {
-            return $collection->aggregate([
-                ['$group' => [
-                    '_id' => '$author_id', 'count' => ['$sum' => 1]
-                ]]
-            ]);
-        })->pluck('count', 'id');
+        $authors = Comment::selectRaw('id, count(id) as count')->groupBy('channel_id')->pluck('count', 'id');
 
         foreach ($authors as $author => $count) {
             Author::updateOrCreate(['id' => $author], [

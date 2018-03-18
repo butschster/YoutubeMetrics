@@ -27,6 +27,8 @@ class UpdateChannelInformation implements ShouldQueue
      */
     public function __construct(string $channelId)
     {
+        $this->onQueue('common');
+
         $this->channelId = $channelId;
     }
 
@@ -50,7 +52,7 @@ class UpdateChannelInformation implements ShouldQueue
             'name' => $info->snippet->title,
             'created_at' => Carbon::parse($info->snippet->publishedAt),
             'thumb' => $info->snippet->thumbnails->default->url,
-            'country' => $info->snippet->country
+            'country' => $info->snippet->country ?? 'RU'
         ]);
     }
 }

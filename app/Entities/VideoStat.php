@@ -16,5 +16,5 @@ class VideoStat extends Model
     /**
      * @var array
      */
-    protected $fillable = ['views', 'likes', 'dislikes', 'comments', 'favorites'];
+    protected $guarded = [];
 }

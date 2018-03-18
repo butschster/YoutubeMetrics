@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <header id="author-header" class="card text-center text-white author-type-{{ $author->type() }}">
+    <header id="author-header" class="card rounded-0 text-white author-type-{{ $author->type() }}">
         @if($author->thumb)
             <div class="author-cover" style="background-image: url({{ $author->thumb }});"></div>
         @else

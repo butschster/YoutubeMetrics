@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\Video;
 use App\Entities\VideoStat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -9,14 +10,14 @@ use Illuminate\Support\Facades\Cache;
 class VideoMetricsController extends Controller
 {
     /**
-     * @param string $videoId
+     * @param Video $video
      * @return mixed
      */
-    public function index(string $videoId)
+    public function index(Video $video)
     {
-        return Cache::remember("video_stat:".$videoId, now()->addMinutes(5), function () use ($videoId) {
+        return Cache::remember("video_stat:".$video->id, now()->addMinutes(5), function () use ($video) {
             return $this->prepareData(
-                VideoStat::where('video_id', $videoId)->oldest()->get()
+                VideoStat::where('video_id', $video->id)->oldest()->get()
             );
         });
     }

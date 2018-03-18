@@ -4,13 +4,17 @@
             <h3 class="mb-4">Комментарии <small class="text-muted">({{ total }})</small></h3>
 
             <div class="comment mb-3 rounded" :class="classes(comment)" v-for="comment in comments">
-                <a class="float-right text-danger" :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">
+                <a class="float-right text-danger btn btn-sm btn-link" :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">
                     <i class="fab fa-youtube fa-lg"></i>
+                </a>
+
+                <a class="float-right btn btn-sm btn-link" :href="`/comment/${comment.id}`" target="_blank">
+                    <i class="fas fa-link fa-fw"></i>
                 </a>
 
                 <div class="comment-content">
                    <span class="badge badge-light" v-if="!hideAuthor">
-                        <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_id }}</a>
+                        <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_name }}</a>
                     </span>
                     <div class="comment-body">
                         <p>{{ comment.text }}</p>

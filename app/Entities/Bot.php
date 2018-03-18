@@ -40,6 +40,6 @@ class Bot extends Model
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'author_id');
+        return $this->hasMany(Comment::class, 'channel_id');
     }
 }
