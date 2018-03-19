@@ -2,13 +2,12 @@
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Channel extends Model
 {
-    use SoftDeletes;
-
     const UPDATED_AT = null;
 
     /**
@@ -26,6 +25,28 @@ class Channel extends Model
     public $incrementing = false;
 
     protected $guarded = [];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'follow' => 'bool',
+        'title' => 'string'
+    ];
+
+    public function isFollow(): bool
+    {
+        return $this->follow;
+    }
+
+    /**
+     * @param Builder $builder
+     * @return $this
+     */
+    public function scopeOnlyFollow(Builder $builder)
+    {
+        return $builder->where('follow', true);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
