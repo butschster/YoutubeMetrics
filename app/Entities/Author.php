@@ -70,7 +70,7 @@ class Author extends Model
         $this->save();
     }
 
-    public function markAsBot()
+    public function markAsBot(): void
     {
         $this->bot = true;
         $this->save();
@@ -94,6 +94,15 @@ class Author extends Model
     public function scopeOnlyBots(Builder $builder)
     {
         return $builder->where('bot', true);
+    }
+
+    /**
+     * @param Builder $builder
+     * @return $this
+     */
+    public function scopeOnlyReported(Builder $builder)
+    {
+        return $builder->where('bot', false)->where('reported', '>', 0);
     }
 
     /**

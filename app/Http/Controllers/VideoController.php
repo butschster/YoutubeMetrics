@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Video;
 use Illuminate\Http\Request;
+use KodiCMS\Assets\Contracts\MetaInterface;
 
 class VideoController extends Controller
 {
@@ -26,6 +27,10 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        return view('video.show', compact('video', 'comments'));
+        $this->meta->setTitle($video->title);
+
+        $tags = $video->tags->pluck('name');
+
+        return view('video.show', compact('video', 'tags'));
     }
 }

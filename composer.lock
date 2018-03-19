@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2972a02a1e4dfa430b050f4fe2b50cfe",
+    "content-hash": "0df7a5a852293dda6af0e12e7a300dfa",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1530,6 +1530,46 @@
                 "mongodb"
             ],
             "time": "2018-03-01T10:28:19+00:00"
+        },
+        {
+            "name": "kodicms/laravel-assets",
+            "version": "v0.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KodiCMS/laravel-assets.git",
+                "reference": "664f33cd155a07c67671762a32edc68444b2e2d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KodiCMS/laravel-assets/zipball/664f33cd155a07c67671762a32edc68444b2e2d8",
+                "reference": "664f33cd155a07c67671762a32edc68444b2e2d8",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "5.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KodiCMS\\Assets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GNU GENERAL PUBLIC LICENSE"
+            ],
+            "authors": [
+                {
+                    "name": "Pavel Buchnev",
+                    "email": "butschster@gmail.com"
+                }
+            ],
+            "time": "2017-07-06T15:50:56+00:00"
         },
         {
             "name": "laravel/framework",

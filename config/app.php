@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\YoutubeServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        KodiCMS\Assets\AssetsServiceProvider::class,
 
     ],
 
@@ -210,7 +211,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Meta' => KodiCMS\Assets\Facades\Meta::class,
     ],
 
 ];

@@ -26,6 +26,10 @@ class CommentsController extends Controller
     {
         $author = $comment->author;
 
+        $this->meta->setTitle(
+            sprintf('Комментарий - %s от %s', $comment->id, $author->name ?? $comment->channel_id)
+        );
+
         return view('comment.show', compact('comment', 'author'));
     }
 }
