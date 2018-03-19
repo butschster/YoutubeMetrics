@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Entities\Comment;
+use App\Entities\Video;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -23,7 +27,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->addVideoBinding();
+        $this->addCommentBinding();
 
         parent::boot();
     }
@@ -52,8 +57,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -66,8 +71,42 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
+    }
+
+    protected function addVideoBinding(): void
+    {
+        Route::bind('video', function ($id) {
+            $cacheKey = md5('video'.$id);
+
+            $video = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
+                return Video::find($id);
+            });
+
+            if (!$video) {
+                abort(404, 'Видео не найдено');
+            }
+
+            return $video;
+        });
+    }
+
+    protected function addCommentBinding(): void
+    {
+        Route::bind('comment', function ($id) {
+            $cacheKey = md5('comment'.$id);
+
+            $comment = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
+                return Comment::find($id);
+            });
+
+            if (!$comment) {
+                abort(404, 'Комментарий не найден');
+            }
+
+            return $comment;
+        });
     }
 }
