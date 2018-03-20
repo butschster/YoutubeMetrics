@@ -12,7 +12,7 @@ class User extends Authenticatable
     /**
      * @var int
      */
-    public $rate_limit = 100;
+    public $rate_limit = 1000;
 
     /**
      * The attributes that are mass assignable.

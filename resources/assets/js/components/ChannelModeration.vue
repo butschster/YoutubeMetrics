@@ -15,11 +15,11 @@
                             <a :href="channel.link" target="_blank">{{ channel.name }}</a>
                         </h5>
                         <div>
-                            <button class="btn btn-sm btn-danger" @click="markAsBot(channel)">
-                                <i class="fas fa-ban"></i>
+                            <button class="btn btn-danger" @click="markAsBot(channel)">
+                                <i class="fas fa-ban"></i> Бот
                             </button>
                             <button class="btn btn-sm btn-success" @click="markAsNormal(channel)">
-                                <i class="fas fa-check"></i>
+                                <i class="fas fa-check"></i> Человек
                             </button>
                         </div>
                     </div>

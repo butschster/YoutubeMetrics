@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class ChannelReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * @param Request $request
