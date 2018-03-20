@@ -5,7 +5,7 @@
     </div>
     <div class="col-sm">
         <div class="font-size-30 font-weight-300">{{ format_number($video->likes) }}</div>
-        <small>{{ __('video.stat.views') }}</small>
+        <small>{{ __('video.stat.likes') }}</small>
     </div>
     <div class="col-sm">
         <div class="font-size-30 font-weight-300">{{ format_number($video->dislikes) }}</div>
