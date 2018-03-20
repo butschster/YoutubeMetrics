@@ -63,7 +63,7 @@ class Comment extends Model
             $author = $author->getKey();
         }
 
-        return $this->where('channel_id', $author);
+        return $builder->where('channel_id', $author);
     }
 
     /**
@@ -77,7 +77,7 @@ class Comment extends Model
             $video = $video->getKey();
         }
 
-        return $this->where('video_id', $video);
+        return $builder->where('video_id', $video);
     }
 
     /**
@@ -86,7 +86,7 @@ class Comment extends Model
      */
     public function scopeOnlySpam(Builder $builder)
     {
-        return $this->where('is_spam', true);
+        return $builder->where('is_spam', true);
     }
 
     /**
