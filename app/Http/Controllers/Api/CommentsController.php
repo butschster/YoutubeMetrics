@@ -15,12 +15,43 @@ class CommentsController extends Controller
      * @param Video $video
      * @return array
      */
-    public function index(Video $video)
+    public function video(Video $video)
     {
-        $comments = Cache::remember("comments:".$video->id, now()->addHour(), function () use ($video) {
+        $cacheKey = md5("comments:".$video->id);
+
+        $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($video) {
             return Comment::with('author')
                 ->filterByVideo($video)
                 ->where('total_likes', '>', 0)
+                ->orderBy('total_likes', 'desc')
+                ->latest()
+                ->get()
+                ->map(function ($comment) {
+                    return $this->mapComment(
+                        $comment,
+                        $comment->author ?? new Author
+                    );
+                })
+                ->toArray();
+        });
+
+        return [
+            'comments' => $comments,
+            'total_comments' => $video->comments
+        ];
+    }
+    /**
+     * @param Video $video
+     * @return array
+     */
+    public function videoSpam(Video $video)
+    {
+        $cacheKey = md5("comments:bots:".$video->id);
+
+        $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($video) {
+            return Comment::with('author')
+                ->filterByVideo($video)
+                ->onlySpam()
                 ->orderBy('total_likes', 'desc')
                 ->latest()
                 ->get()

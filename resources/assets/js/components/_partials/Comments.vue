@@ -1,8 +1,6 @@
 <template>
     <div>
         <div class="comments" v-if="hasComments">
-            <h3 class="mb-4">Комментарии</h3>
-
             <div class="comment mb-3 rounded" :class="classes(comment)" v-for="comment in comments">
                 <span class="float-right text-danger btn btn-sm btn-link" @click="report(comment)">
                     <i class="fas fa-ban"></i>
