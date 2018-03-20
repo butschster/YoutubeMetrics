@@ -19,7 +19,7 @@
 
                 <div class="comment-content">
                    <span class="badge badge-light" v-if="!hideAuthor">
-                        <i class="far fa-user-circle"></i> <a :href="`/author/${comment.author_id}`" target="_blank">{{ comment.author_name }}</a>
+                        <i class="far fa-user-circle"></i> <a :href="`/channel/${comment.author_id}`" target="_blank">{{ comment.author_name }}</a>
                     </span>
                     <div class="comment-body">
                         <p>{{ comment.text }}</p>
