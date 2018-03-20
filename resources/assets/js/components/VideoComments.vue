@@ -1,7 +1,7 @@
 <template>
     <div>
         <loader :loading="loading" class="text-center"></loader>
-        <comments :comments="comments" :total="totalComments"></comments>
+        <comments v-if="!loading" :comments="comments" :total="totalComments"></comments>
     </div>
 </template>
 

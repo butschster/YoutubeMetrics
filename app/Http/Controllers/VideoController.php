@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Video;
-use Illuminate\Http\Request;
-use KodiCMS\Assets\Contracts\MetaInterface;
+use Illuminate\Support\Facades\Cache;
 
 class VideoController extends Controller
 {
@@ -31,6 +30,11 @@ class VideoController extends Controller
 
         $tags = $video->tags->pluck('name');
 
-        return view('video.show', compact('video', 'tags'));
+        $cacheKey = md5("spamComment".$video->id);
+        $spamCommentsCount = Cache::remember($cacheKey, now()->addHour(), function () use ($video) {
+            return $video->comments()->where('is_spam', true)->count();
+        });
+
+        return view('video.show', compact('video', 'tags', 'spamCommentsCount'));
     }
 }

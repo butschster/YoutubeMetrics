@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-highcharts :options="options" classname="" ref="lineCharts"></vue-highcharts>
+        <vue-highcharts :options="options" classname="comment-chart" ref="lineCharts"></vue-highcharts>
     </div>
 </template>
 

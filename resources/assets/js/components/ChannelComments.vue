@@ -2,7 +2,7 @@
     <div>
         <loader :loading="loading" class="text-center"></loader>
 
-        <comments :comments="comments" :total="totalComments" :hideAuthor="true"></comments>
+        <comments v-if="!loading" :comments="comments" :total="totalComments" :hideAuthor="true"></comments>
     </div>
 </template>
 

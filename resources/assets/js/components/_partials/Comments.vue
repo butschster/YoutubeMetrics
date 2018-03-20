@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="comments" v-if="hasComments">
-            <h3 class="mb-4">Комментарии
-                <small class="text-muted">({{ total }})</small>
-            </h3>
+            <h3 class="mb-4">Комментарии</h3>
 
             <div class="comment mb-3 rounded" :class="classes(comment)" v-for="comment in comments">
                 <span class="float-right text-danger btn btn-sm btn-link" @click="report(comment)">
@@ -36,9 +34,18 @@
                 </div>
             </div>
         </div>
-        <div v-else class="alert alert-primary" role="alert">
-            Комментариев нет
+
+        <div v-else class="alert border bg-white" role="alert">
+            <div class="media">
+                <span class="d-flex mr-3">
+                    <i class="fas fa-2x fa-info-circle"></i>
+                </span>
+                <span class="media-body align-self-center">
+                     Комментариев пока нет.
+                </span>
+            </div>
         </div>
+
     </div>
 </template>
 

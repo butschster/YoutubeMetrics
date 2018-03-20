@@ -4,18 +4,27 @@
 @import "variables";
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import "mixins";
+@import "globals";
+
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-#video-header {
-  .video-cover {
-    height: 300px;
+#video-header,
+#channel-header,
+#comment-header {
+  .cover {
+    min-height: $header-height;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    opacity: .2;
+    opacity: .4;
+  }
+
+  .card-img-overlay {
+    padding: 40px;
   }
 }
 
@@ -24,7 +33,8 @@
     background: #fff;
     padding: 20px;
 
-    &.comment-normal {}
+    &.comment-normal {
+    }
 
     &.comment-bot {
       background: $red;
@@ -37,34 +47,21 @@
   }
 }
 
-#author-header {
-  .author-cover {
-    height: 300px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    opacity: .3;
-  }
-
-  &.author-type-normal {
+#channel-header {
+  &.channel-type-normal {
     background: $gray-900;
   }
 
-  &.author-type-bot {
+  &.channel-type-bot {
     background: $danger;
   }
 
-  &.author-type-reported {
+  &.channel-type-reported {
     background: $purple;
   }
 }
 
-#comment-header {
-  .author-cover {
-    height: 300px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    opacity: .3;
-  }
+.video-chart,
+.comment-chart {
+  height: $chart-height;
 }

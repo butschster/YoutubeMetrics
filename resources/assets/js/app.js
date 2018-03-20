@@ -23,6 +23,7 @@ Vue.component('comment-chart', require('./components/CommentChart'));
 Vue.component('video-comments', require('./components/VideoComments'));
 Vue.component('channel-comments', require('./components/ChannelComments'));
 Vue.component('channel-moderation', require('./components/ChannelModeration'));
+Vue.component('button-report', require('./components/ReportButton'));
 
 const app = new Vue({
     el: '#app'
