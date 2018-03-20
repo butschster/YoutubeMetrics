@@ -4,7 +4,8 @@ Auth::routes();
 
 Route::get('/', 'VideoController@index')->name('home');
 
-Route::get('/author/{author}', 'AuthorController@show')->name('author.show');
+Route::get('/channel/moderate', 'ChannelModerationController@index')->name('channel.moderate');
+Route::get('/channel/{author}', 'ChannelController@show')->name('channel.show');
 Route::get('/video/{video}', 'VideoController@show')->name('video.show');
 
 Route::get('/comments/spam', 'CommentsController@spamToday')->name('comments.spam');

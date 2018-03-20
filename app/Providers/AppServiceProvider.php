@@ -42,7 +42,8 @@ class AppServiceProvider extends ServiceProvider
 
             $view->meta = $meta
                 ->addMeta([
-                    'csrf-token' => csrf_token()
+                    'name' => 'csrf-token',
+                    'content' => csrf_token()
                 ])
                 ->setTitle($title)
                 ->setFavicon(asset('images/favicon.ico'))

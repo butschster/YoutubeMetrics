@@ -11,7 +11,7 @@
     <div class="comment-content">
         <span class="badge badge-light">
             <i class="far fa-user-circle"></i>
-            <a href="{{ route('author.show', $comment->channel_id) }}" target="_blank">
+            <a href="{{ route('channel.show', $comment->channel_id) }}" target="_blank">
                 {{ $comment->author->name ?? $comment->channel_id }}
             </a>
         </span>

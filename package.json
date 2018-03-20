@@ -22,6 +22,7 @@
     "dependencies": {
         "jquery-parallax.js": "^1.5.0",
         "vue-spinner": "^1.0.3",
+        "vue-sweetalert2": "^1.2.4",
         "vue2-highcharts": "^1.1.8"
     }
 }

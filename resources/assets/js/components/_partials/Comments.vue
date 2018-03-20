@@ -1,10 +1,17 @@
 <template>
     <div>
         <div class="comments" v-if="hasComments">
-            <h3 class="mb-4">Комментарии <small class="text-muted">({{ total }})</small></h3>
+            <h3 class="mb-4">Комментарии
+                <small class="text-muted">({{ total }})</small>
+            </h3>
 
             <div class="comment mb-3 rounded" :class="classes(comment)" v-for="comment in comments">
-                <a class="float-right text-danger btn btn-sm btn-link" :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">
+                <span class="float-right text-danger btn btn-sm btn-link" @click="report(comment)">
+                    <i class="fas fa-ban"></i>
+                </span>
+
+                <a class="float-right text-danger btn btn-sm btn-link"
+                   :href="`https://www.youtube.com/watch?v=${comment.video_id}&lc=${comment.id}`" target="_blank">
                     <i class="fab fa-youtube fa-lg"></i>
                 </a>
 
@@ -56,12 +63,30 @@
             }
         },
         methods: {
-            async report(comment) {
+            report(comment) {
+                this.$swal({
+                    title: 'Вы уверены, что это спам?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Да, это спам!',
+                    cancelButtonText: 'Отмена'
+                }).then((result) => {
+                    if (result.value) {
+                        this.sendReport(comment);
+                    }
+                })
+            },
+            async sendReport(comment) {
                 try {
                     let response = await axios.post(`/api/channel/abuse`, {channel_id: comment.author_id});
                     comment.author_type = response.data.type;
-                } catch (e) {
 
+                    this.comments.each((c) => {
+                        if (c.author_id == comment.author_id) {
+                            c.author_type = comment.author_type
+                        }
+                    })
+                } catch (e) {
                 }
             },
             classes(comment) {
@@ -71,6 +96,9 @@
         computed: {
             hasComments() {
                 return this.comments.length > 0;
+            },
+            canReport() {
+                return this.can('channel.report');
             }
         }
     }

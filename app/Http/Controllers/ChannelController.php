@@ -7,7 +7,7 @@ use App\Entities\Author;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class AuthorController extends Controller
+class ChannelController extends Controller
 {
     /**
      * @param Author $author
@@ -19,6 +19,6 @@ class AuthorController extends Controller
 
         $this->meta->setTitle($author->name);
 
-        return view('author.show', compact('author', 'videos'));
+        return view('channel.show', compact('author', 'videos'));
     }
 }

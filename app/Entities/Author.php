@@ -37,6 +37,23 @@ class Author extends Model
     protected $guarded = [];
 
     /**
+     * @param null|string $name
+     * @return string
+     */
+    public function getNameAttribute($name): ?string
+    {
+        return $name ?? $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkAttribute()
+    {
+        return route('channel.show', $this->id);
+    }
+
+    /**
      * @return string
      */
     public function type(): string
@@ -50,6 +67,11 @@ class Author extends Model
         }
 
         return 'normal';
+    }
+
+    public function sendReport()
+    {
+        return $this->updateReports(1);
     }
 
     /**
@@ -75,7 +97,7 @@ class Author extends Model
         $this->bot = true;
         $this->save();
 
-        $this->comments()->update(['spam' => true]);
+        $this->comments()->update(['is_spam' => true]);
     }
 
     /**
@@ -102,7 +124,7 @@ class Author extends Model
      */
     public function scopeOnlyReported(Builder $builder)
     {
-        return $builder->where('bot', false)->where('reported', '>', 0);
+        return $builder->where('bot', false)->where('reports', '>', 0);
     }
 
     /**

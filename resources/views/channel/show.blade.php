@@ -42,6 +42,6 @@
         {!! $videos->render() !!}
         @endif
 
-        <author-comments id="{{ $author->id }}" class="my-5"></author-comments>
+        <channel-comments id="{{ $author->id }}" class="my-5"></channel-comments>
     </div>
 @endsection

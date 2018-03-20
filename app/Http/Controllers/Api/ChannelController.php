@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Author;
+use App\Http\Resources\ChannelCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -28,5 +29,27 @@ class ChannelController extends Controller
                 ? $author->type()
                 : 'normal'
         ];
+    }
+
+    /**
+     * @return ChannelCollection
+     */
+    public function reported()
+    {
+        return new ChannelCollection(
+            Author::onlyReported()->live()->get()
+        );
+    }
+
+    /**
+     * @return ChannelCollection
+     */
+    public function bots()
+    {
+        return new ChannelCollection(
+            Cache::remember('bots:', now()->addHour(), function () {
+                return Author::onlyBots()->live()->orderBy('total_comments')->get();
+            })
+        );
     }
 }

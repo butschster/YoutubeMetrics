@@ -10,6 +10,11 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * @var int
+     */
+    public $rate_limit = 100;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

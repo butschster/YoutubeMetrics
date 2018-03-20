@@ -43,7 +43,7 @@ class CommentsController extends Controller
      * @param Author $author
      * @return array
      */
-    public function author(Author $author)
+    public function channel(Author $author)
     {
         $cacheKey = md5('author_comments'.$author->id);
 

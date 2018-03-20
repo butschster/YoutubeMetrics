@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 class ChannelReportController extends Controller
 {
+
     /**
      * @param Request $request
      * @return array
@@ -18,7 +19,7 @@ class ChannelReportController extends Controller
 
         $author = Author::firstOrNew(['id' => $request->channel_id]);
 
-        $author->updateReports(1);
+        $author->sendReport();
 
         return ['type' => $author->type()];
     }

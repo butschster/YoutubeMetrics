@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-center">
             <div class="align-self-center text-center">
                 <div class="btn-group my-4" role="group">
-                    <a class="btn btn-outline-light" href="{{ route('author.show', $comment->channel_id) }}" target="_blank">
+                    <a class="btn btn-outline-light" href="{{ route('channel.show', $comment->channel_id) }}" target="_blank">
                         <i class="far fa-user-circle"></i> {{ $author->name ?? $comment->channel_id }}
                     </a>
 
@@ -18,12 +18,17 @@
     </header>
 
     <div class="container mt-5">
-        <blockquote class="blockquote">
-            <p class="mb-0">{{ $comment->text }}</p>
-            <footer class="blockquote-footer">Написал {{ $comment->formatted_date }} {{ $author->name ?? $comment->channel_id }}</footer>
-        </blockquote>
 
-
+        <div class="card p-3">
+            <blockquote class="blockquote mb-0 card-body">
+                <p>{{ $comment->text }}</p>
+                <footer class="blockquote-footer">
+                    <small class="text-muted">
+                        Написал {{ $comment->formatted_date }} <cite>{{ $author->name ?? $comment->channel_id }}</cite>
+                    </small>
+                </footer>
+            </blockquote>
+        </div>
 
         <comment-chart id="{{ $comment->id }}" class="mt-5 rounded"></comment-chart>
     </div>
