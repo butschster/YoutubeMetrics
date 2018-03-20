@@ -14,4 +14,4 @@ Route::post('channel/{author}/moderate', 'Api\ChannelModerationController@markAs
 
 Route::get('comment/{comment}/metrics', 'Api\CommentMetricsController@index');
 Route::get('video/{video}/metrics', 'Api\VideoMetricsController@index');
-Route::get('video/{video}/comments', 'Apiart\CommentsController@index');
+Route::get('video/{video}/comments', 'Api\CommentsController@index');
