@@ -31,7 +31,7 @@
             async load() {
                 this.loading = true;
                 try {
-                    let response = await axios.get(`/api/author/${this.id}/comments/`);
+                    let response = await axios.get(`/api/channel/${this.id}/comments/`);
                     this.comments = response.data.comments;
                     this.totalComments = response.data.total_comments;
                 } catch (e) {
