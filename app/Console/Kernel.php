@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('youtube:videos-sync')->everyFiveMinutes()->withoutOverlapping();
         $schedule->command('youtube:video-statistics-sync')->everyMinute()->withoutOverlapping();
 
-        $schedule->command('youtube:comments-sync')->everyTenMinutes()->withoutOverlapping();
+        $schedule->command('youtube:comments-sync')->everyThirtyMinutes()->withoutOverlapping();
 
         $schedule->command('authors:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
 
