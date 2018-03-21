@@ -40,6 +40,12 @@ class SyncVideos extends Command
             }
 
             foreach ($videos as $video) {
+
+                // Если видео в статусе запланировано, то пропускаем его
+                if ($video->getSnippet()->isUpcoming()) {
+                    continue;
+                }
+
                 $channel->videos()->updateOrCreate(['id' => $video->id->videoId], [
                     'id' => $video->id->videoId,
                     'title' => $video->getSnippet()->getTitle(),
