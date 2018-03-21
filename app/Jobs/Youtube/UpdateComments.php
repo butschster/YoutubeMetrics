@@ -5,8 +5,10 @@ namespace App\Jobs\Youtube;
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Author;
 use App\Entities\Video;
+use App\Services\Youtube\Resources\Comment;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,7 +29,7 @@ class UpdateComments implements ShouldQueue
 
     /**
      * @param string $videoId
-     * @param $comments
+     * @param ResourceCollection|Comment[] $comments
      */
     public function __construct(string $videoId, $comments)
     {
@@ -46,7 +48,7 @@ class UpdateComments implements ShouldQueue
         }
 
         foreach ($this->comments as $comment) {
-            $channelId = $comment->snippet->topLevelComment->snippet->authorChannelId->value;
+            $channelId = $comment->getSnippet()->getAuthorChannelId();
 
             if (!Author::where('id', $channelId)->exists()) {
                 dispatch(new UpdateChannelInformation($channelId));
@@ -55,10 +57,10 @@ class UpdateComments implements ShouldQueue
             $video->comments()->updateOrCreate([
                 'id' => $comment->id
             ], [
-                'created_at' => Carbon::parse($comment->snippet->topLevelComment->snippet->publishedAt),
-                'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
+                'created_at' => $comment->getSnippet()->getPublishedAt(),
+                'text' => $comment->getSnippet()->getTextOriginal(),
                 'channel_id' => $channelId,
-                'total_likes' => $comment->snippet->topLevelComment->snippet->likeCount,
+                'total_likes' => $comment->getSnippet()->getLikesCount(),
             ]);
         }
     }

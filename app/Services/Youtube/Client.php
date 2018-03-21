@@ -3,8 +3,10 @@
 namespace App\Services\Youtube;
 
 use App\Contracts\Services\Youtube\Client as ClientContract;
+use App\Exceptions\Youtube\NotFoundException;
+use App\Services\Youtube\Resources\Channel;
+use App\Services\Youtube\Resources\Comment;
 use App\Services\Youtube\Resources\Video;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Madcoda\Youtube\Youtube;
 
 class Client extends Youtube implements ClientContract
@@ -43,7 +45,7 @@ class Client extends Youtube implements ClientContract
      * @param string $vId
      * @param int $maxResults
      * @param string|null $pageToken
-     * @return ResponseCollection
+     * @return ResponseCollection|Comment[]
      * @throws \Exception
      */
     public function getCommentThreads(string $vId, int $maxResults = 100, string $pageToken = null)
@@ -63,32 +65,53 @@ class Client extends Youtube implements ClientContract
 
         return $this->decodeList(
             $data
-        );
+        )->max(function($data) {
+            return new Comment($data);
+        });
     }
 
     /**
      * @param array $ids
-     * @return ResponseCollection
+     * @param array $optionalParams
+     * @return Channel[]|ResponseCollection
      * @throws \Exception
      */
-    public function getChannelsByIds(array $ids)
+    public function getChannelsById($ids = array(), $optionalParams = false)
     {
-        $API_URL = $this->getApi('channels.list');
+        return parent::getChannelsById($ids, $optionalParams)->map(function ($data) {
+            return new Channel($data);
+        });
+    }
 
-        $params = array(
-            'id' => implode(',', $ids),
-            'part' => 'id,snippet,contentDetails,statistics,invideoPromotion',
-            'maxResults' => 50
+    /**
+     * @param $username
+     * @param bool $optionalParams
+     * @return Channel
+     * @throws \Exception
+     */
+    public function getChannelByName($username, $optionalParams = false)
+    {
+        return new Channel(
+            parent::getChannelByName($username, $optionalParams)
         );
+    }
 
-        $apiData = $this->api_get($API_URL, $params);
-        return $this->decodeList($apiData);
+    /**
+     * @param $id
+     * @param bool $optionalParams
+     * @return Channel
+     * @throws \Exception
+     */
+    public function getChannelById($id, $optionalParams = false)
+    {
+        return new Channel(
+            parent::getChannelById($id, $optionalParams)
+        );
     }
 
     /**
      * @param string $id
      * @return Resources\Video
-     * @throws ResponseException
      * @throws \Exception
      */
     public function getVideoInfo($id)
@@ -102,9 +125,10 @@ class Client extends Youtube implements ClientContract
      * Decode the response from youtube, extract the single resource object.
      * (Don't use this to decode the response containing list of objects)
      *
-     * @param  string $apiData the api response from youtube
+     * @param string $apiData the api response from youtube
      * @throws ResponseException
-     * @return \StdClass  an Youtube resource object
+     * @return \StdClass an Youtube resource object
+     * @throws NotFoundException
      */
     public function decodeSingle(&$apiData)
     {
@@ -116,10 +140,41 @@ class Client extends Youtube implements ClientContract
 
         $itemsArray = $resObj->items;
         if (!is_array($itemsArray) || count($itemsArray) == 0) {
-            return false;
+            throw new NotFoundException();
         }
 
         return $itemsArray[0];
+    }
+
+    /**
+     * Search only videos in the channel
+     *
+     * @param  string $q
+     * @param  string $channelId
+     * @param  integer $maxResults
+     * @param  string $order
+     * @return ResponseCollection|Video[]
+     */
+    public function searchChannelVideos($q, $channelId, $maxResults = 10, $order = null)
+    {
+        return parent::searchChannelVideos($q, $channelId, $maxResults, $order)->map(function ($data) {
+            return new Video($data);
+        });
+    }
+
+    /**
+     * Search only videos
+     *
+     * @param  string $q Query
+     * @param  integer $maxResults number of results to return
+     * @param  string $order Order by
+     * @return ResponseCollection|Video[]
+     */
+    public function searchVideos($q, $maxResults = 10, $order = null)
+    {
+        return parent::searchChannelVideos($q, $maxResults, $order)->map(function ($data) {
+            return new Video($data);
+        });
     }
 
     /**

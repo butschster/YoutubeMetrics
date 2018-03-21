@@ -26,7 +26,11 @@ class YoutubeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(CleintContract::class, function ($app) {
-            return new Client($app['config']->get('services.youtube'));
+            $keys = $app['config']->get('services.youtube.keys', []);
+
+            return new Client([
+                'key' => $keys[array_rand($keys)]
+            ]);
         });
     }
 }

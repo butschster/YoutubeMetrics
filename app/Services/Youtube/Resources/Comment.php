@@ -2,19 +2,14 @@
 
 namespace App\Services\Youtube\Resources;
 
-class Channel
+class Comment
 {
     protected $data;
 
     /**
-     * @var ChannelSnippet
+     * @var CommentSnippet
      */
     private $snippet;
-
-    /**
-     * @var ChannelStatistics
-     */
-    private $statistics;
 
     /**
      * @param $data
@@ -22,10 +17,7 @@ class Channel
     public function __construct($data)
     {
         $this->data = $data;
-        $this->snippet = new ChannelSnippet($data->snippet);
-        if (isset($data->statistics)) {
-            $this->statistics = new ChannelStatistics($data->statistics);
-        }
+        $this->snippet = new CommentSnippet($data->snippet->topLevelComment->snippet);
     }
 
     /**
@@ -46,9 +38,9 @@ class Channel
     }
 
     /**
-     * @return ChannelSnippet
+     * @return CommentSnippet
      */
-    public function getSnippet(): ChannelSnippet
+    public function getSnippet(): CommentSnippet
     {
         return $this->snippet;
     }
@@ -59,21 +51,5 @@ class Channel
     public function getEtag(): string
     {
         return $this->data->etag ?? null;
-    }
-
-    /**
-     * @return ChannelStatistics
-     */
-    public function getStatistics(): ChannelStatistics
-    {
-        return $this->statistics;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasStatistics(): bool
-    {
-        return !empty($this->statistics);
     }
 }

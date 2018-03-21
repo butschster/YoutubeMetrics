@@ -37,6 +37,10 @@ return [
 
     'youtube' => [
         'key' => env('YOUTUBE_KEY'),
+        'keys' => [
+            'AIzaSyAL3arrCabjqZ6zrp4_aKrQAJR182T-rL0',
+            'AIzaSyCKbhASmyWUhd4CimMwk9aLlE3gqcT_yQI'
+        ]
     ]
 
 ];

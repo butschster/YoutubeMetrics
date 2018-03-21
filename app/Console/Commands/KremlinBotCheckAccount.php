@@ -35,10 +35,13 @@ class KremlinBotCheckAccount extends Command
             ->chunk(50);
 
         foreach ($bots as $chunk) {
-            $results = $client->getChannelsByIds($chunk->pluck('id')->toArray())->keyBy('id');
+            $results = $client->getChannelsById($chunk->pluck('id')->toArray(), [ 'maxResults' => 50])
+                ->keyBy(function ($channel) {
+                    return $channel->getId();
+                });
 
-            foreach ($chunk as $bot) {
-                $channel = $results->get($bot->id);
+            foreach ($chunk as $channel) {
+                $channel = $results->get($channel->getId());
 
                 if (!$channel) {
                     $bot->deleted = true;

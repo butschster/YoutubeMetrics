@@ -4,6 +4,7 @@ namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Author;
+use App\Exceptions\Youtube\NotFoundException;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -38,21 +39,25 @@ class UpdateChannelInformation implements ShouldQueue
     public function handle(Client $client)
     {
         $author = Author::find($this->channelId);
-        $info = $client->getChannelById($this->channelId);
 
-        if ($author && !$info) {
-            $author->deleted = true;
-            $author->save();
-            return;
-        } else if (!$author && !$info) {
+        try {
+            $info = $client->getChannelById($this->channelId);
+        } catch (NotFoundException $exception) {
+
+            if ($author) {
+                $author->deleted = true;
+                $author->save();
+                return;
+            }
+
             return;
         }
 
-        Author::updateOrCreate(['id' => $info->id], [
-            'name' => $info->snippet->title,
-            'created_at' => Carbon::parse($info->snippet->publishedAt),
-            'thumb' => $info->snippet->thumbnails->default->url,
-            'country' => $info->snippet->country ?? 'RU'
+        Author::updateOrCreate(['id' => $info->getId()], [
+            'name' => $info->getSnippet()->getTitle(),
+            'created_at' => $info->getSnippet()->getPublishedAt(),
+            'thumb' => $info->getSnippet()->getThumb(),
+            'country' => $info->getSnippet()->getCountry()
         ]);
     }
 }

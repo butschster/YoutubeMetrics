@@ -23,7 +23,19 @@ class Video
     {
         $this->data = $data;
         $this->snippet = new VideoSnippet($data->snippet);
-        $this->statistics = new VideoStatistics($data->statistics);
+
+        if (isset($data->statistics)) {
+            $this->statistics = new VideoStatistics($data->statistics);
+        }
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->data->{$key};
     }
 
     /**
@@ -53,8 +65,16 @@ class Video
     /**
      * @return VideoStatistics
      */
-    public function getStatistics(): VideoStatistics
+    public function getStatistics(): ?VideoStatistics
     {
         return $this->statistics;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasStatistics(): bool
+    {
+        return !empty($this->statistics);
     }
 }

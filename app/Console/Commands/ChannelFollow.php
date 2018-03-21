@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Channel;
+use App\Exceptions\Youtube\NotFoundException;
 use App\Jobs\Youtube\UpdateChannelInformation;
 use Illuminate\Console\Command;
 
@@ -35,9 +36,9 @@ class ChannelFollow extends Command
             return;
         }
 
-        $info = $client->getChannelById($this->argument('channel'));
-
-        if (!$info) {
+        try {
+            $info = $client->getChannelById($this->argument('channel'));
+        } catch (NotFoundException $exception) {
             $this->error('Канал с таким ID не существует.');
             return;
         }

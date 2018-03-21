@@ -3,7 +3,7 @@
 namespace App\Contracts\Services\Youtube;
 
 use App\Services\Youtube\Resources\{
-    Video
+    Channel, Comment, Video
 };
 use App\Services\Youtube\ResponseCollection;
 use App\Services\Youtube\ResponseException;
@@ -23,17 +23,33 @@ interface Client
      * Поиск канала по ID
      *
      * @param string $id
-     * @param bool $optionalParams
-     * @return mixed
+     * @param array $optionalParams
+     * @return Channel
      */
     public function getChannelById($id, $optionalParams = false);
 
     /**
-     * @param array $ids
-     * @return ResponseCollection
+     * @param $username
+     * @param array $optionalParams
+     * @return Channel
      * @throws \Exception
      */
-    public function getChannelsByIds(array $ids);
+    public function getChannelByName($username, $optionalParams = false);
+
+    /**
+     * @param array $ids
+     * @param array $optionalParams
+     * @return ResponseCollection|Channel[]
+     */
+    public function getChannelsById($ids = array(), $optionalParams = false);
+
+    /**
+     * @param string $vId
+     * @param int $maxResults
+     * @param string|null $pageToken
+     * @return ResponseCollection|Comment[]
+     */
+    public function getCommentThreads(string $vId, int $maxResults = 100, string $pageToken = null);
 
     /**
      * Search only videos in the channel
@@ -42,15 +58,17 @@ interface Client
      * @param  string $channelId
      * @param  integer $maxResults
      * @param  string $order
-     * @return ResponseCollection
+     * @return ResponseCollection|Video[]
      */
     public function searchChannelVideos($q, $channelId, $maxResults = 10, $order = null);
 
     /**
-     * @param string $vId
-     * @param int $maxResults
-     * @param string|null $pageToken
-     * @return ResponseCollection
+     * Search only videos
+     *
+     * @param  string $q Query
+     * @param  integer $maxResults number of results to return
+     * @param  string $order Order by
+     * @return ResponseCollection|Video[]
      */
-    public function getCommentThreads(string $vId, int $maxResults = 100, string $pageToken = null);
+    public function searchVideos($q, $maxResults = 10, $order = null);
 }

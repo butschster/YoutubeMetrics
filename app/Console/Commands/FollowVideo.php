@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Video;
+use App\Exceptions\Youtube\NotFoundException;
 use Illuminate\Console\Command;
 
 class FollowVideo extends Command
@@ -35,7 +36,12 @@ class FollowVideo extends Command
             return;
         }
 
-        $info = $client->getVideoInfo($this->argument('video'));
+        try {
+            $info = $client->getVideoInfo($this->argument('video'));
+        } catch (NotFoundException $exception) {
+            $this->error('Канал с таким ID не существует.');
+            return;
+        }
 
         if (!$info) {
             $this->error('Видео с таким ID не существует.');

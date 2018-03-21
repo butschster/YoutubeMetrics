@@ -28,8 +28,6 @@ class RegisterUser extends Command
      */
     public function handle()
     {
-
-
         do {
             $name = $this->ask('Имя');
             $email = $this->ask('Email адрес');

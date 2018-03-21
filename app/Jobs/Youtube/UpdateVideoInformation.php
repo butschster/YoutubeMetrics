@@ -4,6 +4,7 @@ namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Video;
+use App\Exceptions\Youtube\NotFoundException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -42,9 +43,9 @@ class UpdateVideoInformation implements ShouldQueue
             return;
         }
 
-        $info = $client->getVideoInfo($video->id);
-
-        if (!$info) {
+        try {
+            $info = $client->getVideoInfo($video->id);
+        } catch (NotFoundException $exception) {
             return;
         }
 

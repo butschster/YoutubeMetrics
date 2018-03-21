@@ -73,6 +73,14 @@ class VideoSnippet
     }
 
     /**
+     * @return bool
+     */
+    public function isUpcoming(): bool
+    {
+        return $this->data->liveBroadcastContent == 'upcoming';
+    }
+
+    /**
      * @param string $tag
      *
      * @return bool
