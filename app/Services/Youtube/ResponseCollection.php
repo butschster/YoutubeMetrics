@@ -36,7 +36,7 @@ class ResponseCollection extends Collection
     /**
      * @return string
      */
-    public function getNextPageToken(): string
+    public function getNextPageToken(): ?string
     {
         return $this->nextPageToken;
     }
@@ -44,7 +44,7 @@ class ResponseCollection extends Collection
     /**
      * @return string
      */
-    public function getPrevPageToken(): string
+    public function getPrevPageToken(): ?string
     {
         return $this->prevPageToken;
     }
