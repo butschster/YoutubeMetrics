@@ -52,7 +52,7 @@ class ResponseCollection extends Collection
     /**
      * @param string $nextPageToken
      */
-    public function setNextPageToken(string $nextPageToken): void
+    public function setNextPageToken(string $nextPageToken = null): void
     {
         $this->nextPageToken = $nextPageToken;
     }
@@ -60,7 +60,7 @@ class ResponseCollection extends Collection
     /**
      * @param string $prevPageToken
      */
-    public function setPrevPageToken(string $prevPageToken): void
+    public function setPrevPageToken(string $prevPageToken = null): void
     {
         $this->prevPageToken = $prevPageToken;
     }
