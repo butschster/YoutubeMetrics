@@ -18,19 +18,6 @@ class ResponseCollection extends Collection
     private $prevPageToken;
 
     /**
-     * @param array $items
-     * @param string|null $nextPageToken
-     * @param string|null $prevPageToken
-     */
-    public function __construct(array $items = [], string $nextPageToken = null, string $prevPageToken = null)
-    {
-        parent::__construct($items);
-
-        $this->nextPageToken = $nextPageToken;
-        $this->prevPageToken = $prevPageToken;
-    }
-
-    /**
      * @return bool
      */
     public function hasNextPage(): bool
@@ -60,5 +47,37 @@ class ResponseCollection extends Collection
     public function getPrevPageToken(): string
     {
         return $this->prevPageToken;
+    }
+
+    /**
+     * @param string $nextPageToken
+     */
+    public function setNextPageToken(string $nextPageToken): void
+    {
+        $this->nextPageToken = $nextPageToken;
+    }
+
+    /**
+     * @param string $prevPageToken
+     */
+    public function setPrevPageToken(string $prevPageToken): void
+    {
+        $this->prevPageToken = $prevPageToken;
+    }
+
+    /**
+     * Run a map over each of the items.
+     *
+     * @param  callable  $callback
+     * @return static
+     */
+    public function map(callable $callback)
+    {
+        $collection = parent::map($callback);
+
+        $collection->setNextPageToken($this->getNextPageToken());
+        $collection->setPrevPageToken($this->getPrevPageToken());
+
+        return $collection;
     }
 }

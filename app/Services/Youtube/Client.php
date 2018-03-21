@@ -192,11 +192,11 @@ class Client extends Youtube implements ClientContract
             $this->raiseResponseError($resObj->error);
         }
 
-        return new ResponseCollection(
-            $resObj->items ?? [],
-            $resObj->nextPageToken ?? null,
-            $resObj->prevPageToken ?? null
-        );
+        $collection = new ResponseCollection($resObj->items ?? []);
+        $collection->setNextPageToken($resObj->nextPageToken ?? null);
+        $collection->setPrevPageToken($resObj->prevPageToken ?? null);
+
+        return $collection;
     }
 
     /**
