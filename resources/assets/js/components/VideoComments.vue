@@ -1,26 +1,38 @@
 <template>
     <div>
+        <h3>Комментарии</h3>
+
         <loader :loading="loading" class="text-center"></loader>
 
-        <h3>Комментарии</h3>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white" v-if="canReport">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" :class="{active: this.tab == 'all'}" href="#" @click="loadAll()">Все</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" :class="{active: this.tab == 'spam'}" href="#" @click="loadSpam()">Только спам</a>
+                    <a class="nav-link" :class="{active: this.tab == 'spam'}" href="#" @click="loadSpam()">Только
+                        спам</a>
                 </li>
             </ul>
         </nav>
 
-        <comments v-if="!loading" :comments="comments" :total="totalComments"></comments>
+        <comments v-if="!loading" :comments="comments" :total="totalComments" v-on:reported="markAsReported"></comments>
+
+        <div v-if="!canReport" class="alert box-shadow bg-info text-white" role="alert">
+            <div class="media">
+                <span class="d-flex mr-3">
+                    <i class="fas fa-2x fa-info-circle"></i>
+                </span>
+                <span class="media-body align-self-center">
+                     Просмотр всех комментариев и модерация доступны только после регистрации.
+                </span>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import Comments from './_partials/Comments';
-    import Loader from 'vue-spinner/src/PacmanLoader';
+    import CommentsMixin from './_partials/CommentsMixin';
 
     export default {
         props: {
@@ -28,12 +40,9 @@
                 required: true
             }
         },
-        components: {Loader, Comments},
+        mixins: [CommentsMixin],
         data() {
             return {
-                comments: [],
-                totalComments: 0,
-                loading: false,
                 tab: 'spam'
             }
         },
@@ -66,11 +75,6 @@
 
                 this.tab = 'spam';
                 this.loading = false;
-            }
-        },
-        computed: {
-            canReport() {
-                return this.can('channel.report');
             }
         }
     }

@@ -1,14 +1,15 @@
 <template>
     <div>
+        <h3>Комментарии</h3>
+
         <loader :loading="loading" class="text-center"></loader>
 
-        <comments v-if="!loading" :comments="comments" :total="totalComments" :hideAuthor="true"></comments>
+        <comments v-if="!loading" :comments="comments" :total="totalComments" :hideAuthor="true" v-on:reported="markAsReported"></comments>
     </div>
 </template>
 
 <script>
-    import Comments from './_partials/Comments';
-    import Loader from 'vue-spinner/src/PacmanLoader';
+    import CommentsMixin from './_partials/CommentsMixin';
 
     export default {
         props: {
@@ -16,14 +17,7 @@
                 required: true
             }
         },
-        components: {Loader, Comments},
-        data() {
-            return {
-                comments: [],
-                totalComments: 0,
-                loading: false
-            }
-        },
+        mixins: [CommentsMixin],
         mounted() {
             this.load();
         },

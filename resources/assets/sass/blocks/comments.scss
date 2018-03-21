@@ -1,0 +1,17 @@
+.comments {
+  .comment {
+    background: #fff;
+    padding: 20px;
+
+    &.comment-normal {
+    }
+
+    &.comment-bot {
+      background: #f1c5cf;
+    }
+
+    &.comment-reported {
+      background: $yellow;
+    }
+  }
+}
