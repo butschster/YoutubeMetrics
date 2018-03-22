@@ -11,4 +11,8 @@
         <div class="font-size-30 font-weight-300">{{ format_number($author->comments) }}</div>
         <small>{{ __('channel.stat.comments') }}</small>
     </div>
+    <div class="col-sm">
+        <div class="font-size-30 font-weight-300">{{ format_number($author->bot_comments) }}</div>
+        <small>{{ __('channel.stat.bot_comments') }}</small>
+    </div>
 </div>
