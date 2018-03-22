@@ -22,7 +22,9 @@ class ChannelCollection extends ResourceCollection
                 'link' => $channel->link,
                 'thumb' => $channel->thumb,
                 'reports' => $channel->reports,
-                'total_comments' => $channel->total_comments,
+                'views' => format_number($channel->views),
+                'subscribers' => format_number($channel->subscribers),
+                'total_comments' => format_number($channel->total_comments),
             ];
         })->all();
     }

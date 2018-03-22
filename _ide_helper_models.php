@@ -21,7 +21,6 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Tag extends \Eloquent {}
 }
@@ -40,13 +39,18 @@ namespace App\Entities{
  * @property int $reports
  * @property string|null $thumb
  * @property string|null $country
- * @property string|null $name
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
+ * @property string $name
+ * @property int $views
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
+ * @property int $subscribers
+ * @property-read string $link
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\ChannelStat[] $statistics
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author live()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author onlyBots()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author onlyReported()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereBot($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereComments($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereCountry($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereDeleted($value)
@@ -54,10 +58,11 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereRegisteredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereReports($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereSubscribers($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereTotalComments($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Author whereViews($value)
  */
 	class Author extends \Eloquent {}
 }
@@ -89,7 +94,6 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereTotalLikes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Comment whereVideoId($value)
- * @mixin \Eloquent
  */
 	class Comment extends \Eloquent {}
 }
@@ -103,6 +107,7 @@ namespace App\Entities{
  * @property \Carbon\Carbon|null $created_at
  * @property string|null $deleted_at
  * @property bool $follow
+ * @property-read \App\Entities\Author $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel onlyFollow()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereCreatedAt($value)
@@ -110,7 +115,6 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereFollow($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereTitle($value)
- * @mixin \Eloquent
  */
 	class Channel extends \Eloquent {}
 }
@@ -129,7 +133,6 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Bot extends \Eloquent {}
 }
@@ -165,7 +168,6 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Video whereViews($value)
- * @mixin \Eloquent
  */
 	class Video extends \Eloquent {}
 }

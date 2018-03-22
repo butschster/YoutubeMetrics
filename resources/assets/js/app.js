@@ -18,13 +18,17 @@ Vue.mixin({
 });
 
 Vue.use(VueSweetalert2);
-Vue.component('video-chart', require('./components/VideoChart'));
-Vue.component('channel-chart', require('./components/ChannelChart'));
-Vue.component('comment-chart', require('./components/CommentChart'));
-Vue.component('video-comments', require('./components/VideoComments'));
-Vue.component('channel-comments', require('./components/ChannelComments'));
-Vue.component('channel-moderation', require('./components/ChannelModeration'));
-Vue.component('button-report', require('./components/ReportButton'));
+
+Vue.component('video-chart', require('./components/Videos/Chart'));
+Vue.component('video-comments', require('./components/Videos/Comments'));
+
+Vue.component('comment-chart', require('./components/Comments/CommentChart'));
+
+Vue.component('channels-followed', require('./components/Channels/Followed'));
+Vue.component('channel-chart', require('./components/Channels/ChannelChart'));
+Vue.component('channel-comments', require('./components/Channels/Comments'));
+Vue.component('channel-moderation', require('./components/Channels/Moderation'));
+Vue.component('button-report', require('./components/Channels/ReportButton'));
 
 const app = new Vue({
     el: '#app'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Author;
+use App\Entities\Channel;
 use App\Http\Resources\ChannelCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,10 +12,26 @@ use Illuminate\Support\Facades\Cache;
 class ChannelController extends Controller
 {
     /**
+     * @return ChannelCollection
+     */
+    public function followed(): ChannelCollection
+    {
+        return new ChannelCollection(
+            Cache::remember('following-channels', now()->addHour(), function () {
+                return Channel::with('author')->whereHas('author')->get()
+                    ->map(function (Channel $channel) {
+                        return $channel->author;
+                    })
+                    ->sortByDesc('subscribers');
+            })
+        );
+    }
+
+    /**
      * @param Request $request
      * @return array
      */
-    public function check(Request $request)
+    public function check(Request $request): array
     {
         $request->validate(['channel_id' => 'required']);
 
@@ -34,7 +51,7 @@ class ChannelController extends Controller
     /**
      * @return ChannelCollection
      */
-    public function reported()
+    public function reported(): ChannelCollection
     {
         return new ChannelCollection(
             Author::onlyReported()->live()->get()
@@ -44,10 +61,10 @@ class ChannelController extends Controller
     /**
      * @return ChannelCollection
      */
-    public function bots()
+    public function bots(): ChannelCollection
     {
         return new ChannelCollection(
-            Cache::remember('bots:', now()->addHour(), function () {
+            Cache::remember('bots', now()->addHour(), function () {
                 return Author::onlyBots()->live()->orderBy('total_comments')->get();
             })
         );

@@ -1,5 +1,6 @@
 <?php
 
+Route::get('channels/followed', 'Api\ChannelController@followed');
 Route::post('channel/check', 'Api\ChannelController@check');
 Route::get('channel/reported', 'Api\ChannelController@reported')->middleware('auth');
 Route::get('channel/bots', 'Api\ChannelController@bots');

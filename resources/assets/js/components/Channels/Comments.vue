@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import CommentsMixin from './_partials/CommentsMixin';
+    import CommentsMixin from '../_partials/CommentsMixin';
 
     export default {
         props: {

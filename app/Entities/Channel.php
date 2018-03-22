@@ -55,4 +55,12 @@ class Channel extends Model
     {
         return $this->hasMany(Video::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function author()
+    {
+        return $this->hasOne(Author::class, 'id');
+    }
 }
