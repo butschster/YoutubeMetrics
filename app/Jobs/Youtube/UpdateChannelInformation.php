@@ -43,7 +43,6 @@ class UpdateChannelInformation implements ShouldQueue
         try {
             $info = $client->getChannelById($this->channelId);
         } catch (NotFoundException $exception) {
-
             if ($author) {
                 $author->deleted = true;
                 $author->save();
@@ -61,7 +60,10 @@ class UpdateChannelInformation implements ShouldQueue
         ], $info->getStatistics()->toArray()));
 
         $author->statistics()->create(
-            $info->getStatistics()->toArray()
+            array_merge(
+                $info->getStatistics()->toArray(),
+                ['bot_comments' => $author->bot_comments]
+            )
         );
     }
 }

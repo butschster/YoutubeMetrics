@@ -29,7 +29,7 @@ class CalculateAuthorComments extends Command
      */
     public function handle()
     {
-        $authors = Comment::selectRaw('id, count(id) as count')->groupBy('id', 'channel_id')->pluck('count', 'id');
+        $authors = Comment::selectRaw('channel_id, count(id) as count')->groupBy('channel_id')->pluck('count', 'channel_id');
 
         foreach ($authors as $author => $count) {
             Author::updateOrCreate(['id' => $author], [

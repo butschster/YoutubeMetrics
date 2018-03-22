@@ -24,6 +24,7 @@ class ChannelCollection extends ResourceCollection
                 'reports' => $channel->reports,
                 'views' => format_number($channel->views),
                 'subscribers' => format_number($channel->subscribers),
+                'bot_comments' => format_number($channel->bot_comments),
                 'total_comments' => format_number($channel->total_comments),
             ];
         })->all();

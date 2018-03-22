@@ -26,13 +26,14 @@ class SyncAuthors extends Command
      */
     protected $description = 'Синхронизация профилей каналов';
 
-    /**
-     * @param Client $client
-     */
-    public function handle(Client $client)
+    public function handle()
     {
-        $authors = Comment::select('channel_id')->whereDoesntHave('author')->groupBy('channel_id')->pluck('channel_id');
+        $authors = Comment::select('channel_id')
+            ->whereDoesntHave('author')
+            ->groupBy('channel_id')
+            ->pluck('channel_id');
 
+        $this->info("Found channels [".$authors->count()."]");
         foreach ($authors as $id) {
             dispatch(new UpdateChannelInformation($id));
         }

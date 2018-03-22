@@ -38,6 +38,10 @@ class ChannelMetricsController extends Controller
             'subscribers' => [
                 'name' => __('channel.stat.subscribers'),
                 'data' => []
+            ],
+            'bot_comments' => [
+                'name' => __('channel.stat.bot_comments'),
+                'data' => []
             ]
         ];
 
@@ -46,6 +50,7 @@ class ChannelMetricsController extends Controller
 
             $data['views']['data'][] = [$time, $row->views];
             $data['subscribers']['data'][] = [$time, $row->subscribers];
+            $data['bot_comments']['data'][] = [$time, $row->bot_comments ?? 0];
         }
 
         return array_values($data);
