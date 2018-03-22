@@ -29,11 +29,19 @@ class Video extends Model
     protected $guarded = [];
 
     /**
+     * @return string
+     */
+    public function getDiffDateAttribute(): string
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function channel()
     {
-        return $this->belongsTo(Author::class, 'channel_id');
+        return $this->belongsTo(Channel::class);
     }
 
     /**

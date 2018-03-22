@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Entities\Author;
+use App\Entities\Channel;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ChannelCollection extends ResourceCollection
@@ -15,7 +15,7 @@ class ChannelCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function(Author $channel) {
+        return $this->collection->map(function(Channel $channel) {
             return [
                 'id' => $channel->id,
                 'name' => $channel->name,

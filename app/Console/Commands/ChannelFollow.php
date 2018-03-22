@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Entities\Channel;
+use App\Entities\FollowedChannel;
 use App\Exceptions\Youtube\NotFoundException;
 use App\Jobs\Youtube\UpdateChannelInformation;
 use Illuminate\Console\Command;
@@ -29,7 +29,7 @@ class ChannelFollow extends Command
      */
     public function handle(Client $client)
     {
-        $channel = Channel::find($this->argument('channel'));
+        $channel = FollowedChannel::find($this->argument('channel'));
 
         if ($channel) {
             $this->error('Вы уже следите за этим каналом.');
@@ -43,12 +43,12 @@ class ChannelFollow extends Command
             return;
         }
 
-        $channel = Channel::create([
-            'id' => $info->id,
-            'title' => $info->snippet->title
+        $channel = FollowedChannel::create([
+            'id' => $info->getId(),
+            'title' => $info->getSnippet()->getTitle()
         ]);
 
-        dispatch(new UpdateChannelInformation($info->id));
+        dispatch(new UpdateChannelInformation($channel->id));
 
         $this->info(sprintf('Добавлено слежение за каналом [%s]', $channel->title));
     }

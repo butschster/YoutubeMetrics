@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Author;
 use App\Entities\Channel;
+use App\Entities\FollowedChannel;
 use App\Http\Resources\ChannelCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,9 +18,9 @@ class ChannelController extends Controller
     {
         return new ChannelCollection(
             Cache::remember('following-channels', now()->addHour(), function () {
-                return Channel::with('author')->whereHas('author')->get()
-                    ->map(function (Channel $channel) {
-                        return $channel->author;
+                return FollowedChannel::with('channel')->whereHas('channel')->get()
+                    ->map(function (FollowedChannel $channel) {
+                        return $channel->channel;
                     })
                     ->sortByDesc('subscribers');
             })
@@ -37,14 +37,14 @@ class ChannelController extends Controller
 
         $id = $request->channel_id;
 
-        $author = Cache::remember('author:'.$id, now()->addHour(), function () use ($id) {
-            return Author::live()->find($id);
+        $cacheKey = md5('channel'.$id);
+
+        $channel = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
+            return Channel::live()->find($id);
         });
 
         return [
-            'type' => !is_null($author)
-                ? $author->type()
-                : 'normal'
+            'type' => !is_null($channel) ? $channel->type() : 'normal'
         ];
     }
 
@@ -54,7 +54,7 @@ class ChannelController extends Controller
     public function reported(): ChannelCollection
     {
         return new ChannelCollection(
-            Author::onlyReported()->live()->get()
+            Channel::onlyReported()->live()->get()
         );
     }
 
@@ -65,7 +65,7 @@ class ChannelController extends Controller
     {
         return new ChannelCollection(
             Cache::remember('bots', now()->addHour(), function () {
-                return Author::onlyBots()->live()->orderBy('total_comments')->get();
+                return Channel::onlyBots()->live()->orderBy('total_comments')->get();
             })
         );
     }

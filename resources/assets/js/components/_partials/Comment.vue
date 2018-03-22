@@ -15,7 +15,7 @@
         <div class="comment-content">
            <span class="badge badge-light" v-if="!hideAuthor">
                 <i class="far fa-user-circle"></i>
-               <a :href="linkToChannel" target="_blank">{{ comment.author_name }}</a>
+               <a :href="linkToChannel" target="_blank">{{ comment.channel_name }}</a>
             </span>
             <div class="comment-body">
                 <p>{{ comment.text }}</p>
@@ -61,9 +61,9 @@
             },
             async sendReport() {
                 try {
-                    let response = await axios.post(`/api/channel/abuse`, {channel_id: this.comment.author_id});
+                    let response = await axios.post(`/api/channel/abuse`, {channel_id: this.comment.channel_id});
 
-                    this.comment.author_type = response.data.type;
+                    this.comment.channel_type = response.data.type;
 
                     this.$emit('reported', this.comment);
                 } catch (e) {
@@ -78,13 +78,13 @@
                 return `/comment/${this.comment.id}`;
             },
             linkToChannel() {
-                return `/channel/${this.comment.author_id}`;
+                return `/channel/${this.comment.channel_id}`;
             },
             classes() {
-                return `comment-${this.comment.author_type}`;
+                return `comment-${this.comment.channel_type}`;
             },
             isReported() {
-                return this.comment.author_type != 'normal';
+                return this.comment.channel_type != 'normal';
             }
         }
     }

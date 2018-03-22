@@ -3,8 +3,7 @@
 namespace App\Console\Commands\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Entities\Channel;
-use Carbon\Carbon;
+use App\Entities\FollowedChannel;
 use Illuminate\Console\Command;
 
 class SyncVideos extends Command
@@ -28,8 +27,8 @@ class SyncVideos extends Command
      */
     public function handle(Client $client)
     {
-        /** @var Channel[] $channels */
-        $channels = Channel::get();
+        /** @var FollowedChannel[] $channels */
+        $channels = FollowedChannel::get();
 
         foreach ($channels as $channel) {
             try {

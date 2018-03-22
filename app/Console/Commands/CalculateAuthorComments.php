@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Entities\Author;
+use App\Entities\Channel;
 use App\Entities\Comment;
 use Illuminate\Console\Command;
 
@@ -13,7 +14,7 @@ class CalculateAuthorComments extends Command
      *
      * @var string
      */
-    protected $signature = 'authors:calculate-comments';
+    protected $signature = 'channel:calculate-comments';
 
     /**
      * The console command description.
@@ -29,11 +30,11 @@ class CalculateAuthorComments extends Command
      */
     public function handle()
     {
-        $authors = Comment::selectRaw('channel_id, count(id) as count')->groupBy('channel_id')->pluck('count', 'channel_id');
+        $channels = Comment::selectRaw('channel_id, count(id) as count')->groupBy('channel_id')->pluck('count', 'channel_id');
 
-        foreach ($authors as $author => $count) {
-            Author::updateOrCreate(['id' => $author], [
-                'id' => $author,
+        foreach ($channels as $channelId => $count) {
+            Channel::updateOrCreate(['id' => $channelId], [
+                'id' => $channelId,
                 'total_comments' => $count
             ]);
         }

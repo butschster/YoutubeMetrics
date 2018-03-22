@@ -6,10 +6,10 @@
             <div class="align-self-center text-center">
                 <div class="btn-group my-4" role="group">
                     <a class="btn btn-outline-light" href="{{ route('channel.show', $comment->channel_id) }}" target="_blank">
-                        <i class="far fa-user-circle"></i> {{ $author->name ?? $comment->channel_id }}
+                        <i class="far fa-user-circle"></i> {{ $channel->name ?? $comment->channel_id }}
                     </a>
 
-                    <a class="btn btn-outline-light" href="https://www.youtube.com/watch?v={{ $comment->video_id }}&lc={{ $comment->id }}" target="_blank">
+                    <a class="btn btn-outline-light" href="{{ $comment->youtube_link }}" target="_blank">
                         <i class="fab fa-youtube fa-lg"></i> Посмотреть на youtube
                     </a>
                 </div>

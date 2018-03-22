@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Entities\Author;
+use App\Entities\Channel;
 use App\Entities\Comment;
 use Illuminate\Console\Command;
 
@@ -29,10 +30,10 @@ class MarkCommentsAsSpam extends Command
      */
     public function handle()
     {
-        $authors = Author::onlyBots()->live()->get();
+        $channels = Channel::onlyBots()->live()->get();
 
-        foreach ($authors as $author) {
-            $author->comments()->update(['is_spam' => true]);
+        foreach ($channels as $channel) {
+            $channel->comments()->update(['is_spam' => true]);
         }
     }
 }

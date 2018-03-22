@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Author;
-use App\Entities\ChannelStat;
+use App\Entities\Channel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
 class ChannelMetricsController extends Controller
 {
     /**
-     * @param Author $author
+     * @param Channel $channel
      * @return array
      */
-    public function index(Author $author): array
+    public function index(Channel $channel): array
     {
-        $cacheKey = md5("channel_stat".$author->id);
+        $cacheKey = md5("channel_stat".$channel->id);
 
-        return Cache::remember($cacheKey, now()->addDay(), function () use ($author) {
+        return Cache::remember($cacheKey, now()->addDay(), function () use ($channel) {
             return $this->prepareData(
-                ChannelStat::where('channel_id', $author->id)->oldest()->get()
+                $channel->statistics()->oldest()->get()
             );
         });
     }

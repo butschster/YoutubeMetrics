@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Author;
+use App\Entities\Channel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,12 +22,12 @@ class ChannelReportController extends Controller
     {
         $request->validate(['channel_id' => 'required']);
 
-        $author = Author::firstOrNew(['id' => $request->channel_id]);
-        $this->authorize('report', $author);
+        $channel = Channel::firstOrNew(['id' => $request->channel_id]);
+        $this->authorize('report', $channel);
 
-        $author->sendReport();
+        $channel->sendReport();
 
-        return ['type' => $author->type()];
+        return ['type' => $channel->type()];
     }
 
     /**
@@ -39,11 +39,11 @@ class ChannelReportController extends Controller
     {
         $request->validate(['channel_id' => 'required']);
 
-        $author = Author::firstOrNew(['id' => $request->channel_id]);
-        $this->authorize('report', $author);
+        $channel = Channel::firstOrNew(['id' => $request->channel_id]);
+        $this->authorize('report', $channel);
 
-        $author->updateReports(-1);
+        $channel->updateReports(-1);
 
-        return ['type' => $author->type()];
+        return ['type' => $channel->type()];
     }
 }

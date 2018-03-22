@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Author;
-use Illuminate\Http\Request;
+use App\Entities\Channel;
 
 class ChannelModerationController extends Controller
 {
@@ -18,7 +17,7 @@ class ChannelModerationController extends Controller
      */
     public function index()
     {
-        $this->authorize('moderate', new Author);
+        $this->authorize('moderate', new Channel);
 
         return view('channel.moderation');
     }

@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\Services\Youtube\Client;
-use App\Entities\Author;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Entities\Channel;
 
 class ChannelController extends Controller
 {
     /**
-     * @param Author $author
+     * @param Channel $channel
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Author $author)
+    public function show(Channel $channel)
     {
-        $videos = $author->videos()->latest()->paginate(3);
+        $videos = $channel->videos()->latest()->paginate(3);
 
-        $this->meta->setTitle($author->name);
+        $this->meta->setTitle($channel->name);
 
-        return view('channel.show', compact('author', 'videos'));
+        return view('channel.show', compact('channel', 'videos'));
     }
 }

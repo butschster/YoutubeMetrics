@@ -21,7 +21,7 @@ class Comment extends Model
         });
 
         static::creating(function (Comment $comment) {
-            $comment->is_spam = Author::onlyBots()->live()->where('id', $comment->channel_id)->exists();
+            $comment->is_spam = Channel::onlyBots()->live()->where('id', $comment->channel_id)->exists();
         });
     }
 
@@ -49,21 +49,31 @@ class Comment extends Model
      */
     public function getFormattedDateAttribute(): string
     {
-        return $this->created_at->format('d.m.Y H:i:s');
+        return format_date($this->created_at);
+    }
+
+    /**
+     * Ссылка на канал на Youtube
+     *
+     * @return string
+     */
+    public function getYoutubeLinkAttribute(): string
+    {
+        return "https://www.youtube.com/watch?v={$this->video_id}&lc={$this->id}";
     }
 
     /**
      * @param Builder $builder
-     * @param string|Author $author
+     * @param string|Channel $channel
      * @return $this
      */
-    public function scopeFilterByChannel(Builder $builder, $author)
+    public function scopeFilterByChannel(Builder $builder, $channel)
     {
-        if ($author instanceof Author) {
-            $author = $author->getKey();
+        if ($channel instanceof Channel) {
+            $channel = $channel->getKey();
         }
 
-        return $builder->where('channel_id', $author);
+        return $builder->where('channel_id', $channel);
     }
 
     /**
@@ -108,8 +118,8 @@ class Comment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function author()
+    public function channel()
     {
-        return $this->belongsTo(Author::class, 'channel_id');
+        return $this->belongsTo(Channel::class);
     }
 }

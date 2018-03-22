@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Entities\Channel;
 use App\Entities\Comment;
 use App\Entities\Video;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->addVideoBinding();
+        $this->addChannelBinding();
         $this->addCommentBinding();
 
         parent::boot();
@@ -76,12 +78,29 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/api.php'));
     }
 
+    protected function addChannelBinding(): void
+    {
+        Route::bind('channel', function ($id) {
+            $cacheKey = md5('channel'.$id);
+
+            $channel = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($id) {
+                return Channel::find($id);
+            });
+
+            if (!$channel) {
+                abort(404, 'Канал не найден');
+            }
+
+            return $channel;
+        });
+    }
+
     protected function addVideoBinding(): void
     {
         Route::bind('video', function ($id) {
             $cacheKey = md5('video'.$id);
 
-            $video = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
+            $video = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($id) {
                 return Video::find($id);
             });
 

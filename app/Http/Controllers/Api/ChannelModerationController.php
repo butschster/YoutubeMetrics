@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Author;
-use Illuminate\Http\Request;
+use App\Entities\Channel;
 use App\Http\Controllers\Controller;
 
 class ChannelModerationController extends Controller
@@ -14,24 +13,24 @@ class ChannelModerationController extends Controller
     }
 
     /**
-     * @param Author $author
+     * @param Channel $channel
      * @return array
      */
-    public function markAsBot(Author $author)
+    public function markAsBot(Channel $channel)
     {
-        $author->markAsBot();
+        $channel->markAsBot();
 
         return ['status' => true];
     }
 
     /**
-     * @param Author $author
+     * @param Channel $channel
      * @return array
      */
-    public function markAsNormal(Author $author)
+    public function markAsNormal(Channel $channel)
     {
-        $author->reports = 0;
-        $author->save();
+        $channel->reports = 0;
+        $channel->save();
 
         return ['status' => true];
     }

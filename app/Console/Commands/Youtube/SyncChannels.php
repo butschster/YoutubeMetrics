@@ -3,9 +3,12 @@
 namespace App\Console\Commands\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Entities\Channel;
+use App\Entities\Author;
+use App\Entities\Comment;
 use App\Jobs\Youtube\UpdateChannelInformation;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 
 class SyncChannels extends Command
 {
@@ -23,13 +26,16 @@ class SyncChannels extends Command
      */
     protected $description = 'Синхронизация профилей каналов';
 
-    /**
-     * @param Client $client
-     */
-    public function handle(Client $client)
+    public function handle()
     {
-        Channel::get()->each(function (Channel $channel) {
-            dispatch(new UpdateChannelInformation($channel->id));
-        });
+        $channels = Comment::select('channel_id')
+            ->whereDoesntHave('channel')
+            ->groupBy('channel_id')
+            ->pluck('channel_id');
+
+        $this->info("Found channels [".$channels->count()."]");
+        foreach ($channels as $id) {
+            dispatch(new UpdateChannelInformation($id));
+        }
     }
 }

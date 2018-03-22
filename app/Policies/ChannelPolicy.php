@@ -2,30 +2,30 @@
 
 namespace App\Policies;
 
-use App\Entities\Author;
+use App\Entities\Channel;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AuthorPolicy
+class ChannelPolicy
 {
     use HandlesAuthorization;
 
     /**
      * @param User $user
-     * @param Author $author
+     * @param Channel $channel
      * @return bool
      */
-    public function report(User $user, Author $author): bool
+    public function report(User $user, Channel $channel): bool
     {
         return true;
     }
 
     /**
      * @param User $user
-     * @param Author $author
+     * @param Channel $channel
      * @return bool
      */
-    public function moderate(User $user, Author $author): bool
+    public function moderate(User $user, Channel $channel): bool
     {
         return true;
     }

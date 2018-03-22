@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Author;
+use App\Entities\Channel;
 use App\Entities\Comment;
 use App\Entities\Video;
 use Illuminate\Console\Command;
@@ -52,7 +52,7 @@ class StatChannelsBotComments extends Command
         });
 
         foreach ($channels as $channelId => $count) {
-            $channel = Author::find($channelId);
+            $channel = Channel::find($channelId);
             $channel->bot_comments = $count;
             $channel->save();
         }

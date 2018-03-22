@@ -14,8 +14,8 @@
         methods: {
             markAsReported(comment) {
                 this.comments = _.map(this.comments, (c) => {
-                    if (c.author_id == comment.author_id) {
-                        c.author_type = comment.author_type;
+                    if (c.channel_id == comment.channel_id) {
+                        c.channel_type = comment.channel_type;
                     }
 
                     return c;

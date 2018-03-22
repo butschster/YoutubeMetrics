@@ -3,36 +3,34 @@
 @section('content')
 
     <div class="container mt-5">
-        <header id="channel-header" class="card rounded-0 text-white channel-type-{{ $author->type() }}">
-            @if($author->thumb)
-                <div class="cover" style="background-image: url({{ $author->thumb }});"></div>
+        <header id="channel-header" class="card rounded-0 text-white channel-type-{{ $channel->type() }}">
+            @if($channel->thumb)
+                <div class="cover" style="background-image: url({{ $channel->thumb }});"></div>
             @else
                 <div class="cover bg-dark"></div>
             @endif
 
             <div class="card-img-overlay d-flex justify-content-center">
                 <div class="align-self-center text-center">
-                    <h1 class="card-title">{{ $author->name }}</h1>
-                    <h3>{{ trans('author.type.'.$author->type()) }}</h3>
+                    <h1 class="card-title">{{ $channel->name }}</h1>
+                    <h3>{{ trans('channel.type.'.$channel->type()) }}</h3>
 
                     <div>
-                        <span class="badge badge-light">ID: <strong>{{ $author->id }}</strong></span>
+                        <span class="badge badge-light">ID: <strong>{{ $channel->id }}</strong></span>
                     </div>
 
                     <div class="btn-group my-4" role="group">
 
-                        <a class="btn btn-outline-light" href="https://www.youtube.com/channel/{{ $author->id }}"
-                           target="_blank">
+                        <a class="btn btn-outline-light" href={{ $channel->youtube_link }}" target="_blank">
                             <i class="fab fa-youtube fa-fw fa-lg"></i> Канал
                         </a>
 
-                        <a class="btn btn-outline-light" href="https://www.t30p.ru/search.aspx?s={{ $author->id }}"
-                           target="_blank">
+                        <a class="btn btn-outline-light" href="{{ $channel->top_comments_link }}" target="_blank">
                             <i class="fab fa-lg fa-fw fa-searchengin"></i> Поиск комментариев
                         </a>
 
-                        @can('report', $author)
-                            <button-report id="{{ $author->id }}"></button-report>
+                        @can('report', $channel)
+                            <button-report id="{{ $channel->id }}"></button-report>
                         @endcan
                     </div>
                 </div>
@@ -43,7 +41,7 @@
             @include('channel._partials.counters')
         </div>
 
-        <channel-chart id="{{ $author->id }}"></channel-chart>
+        <channel-chart id="{{ $channel->id }}"></channel-chart>
 
         @if($videos->count() > 0)
             <div class="row mt-5">
@@ -55,6 +53,6 @@
             {!! $videos->render() !!}
         @endif
 
-        <channel-comments id="{{ $author->id }}" class="my-5"></channel-comments>
+        <channel-comments id="{{ $channel->id }}" class="my-5"></channel-comments>
     </div>
 @endsection

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Channel;
+use App\Entities\FollowedChannel;
 use Illuminate\Console\Command;
 
 class ChannelUnfollow extends Command
@@ -26,7 +26,7 @@ class ChannelUnfollow extends Command
      */
     public function handle()
     {
-        $channel = Channel::find($this->argument('channel'));
+        $channel = FollowedChannel::find($this->argument('channel'));
 
         if (!$channel) {
             $this->error('Канал не найден.');

@@ -27,18 +27,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('kremlin-bots:sync')->hourly()->withoutOverlapping();
         $schedule->command('kremlin-bots:check')->twiceDaily()->withoutOverlapping();
 
+        $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
+
+        $schedule->command('youtube:channels-sync')->dailyAt('03:00')->withoutOverlapping();
+        $schedule->command('youtube:followed-channels-sync')->daily()->withoutOverlapping();
         $schedule->command('youtube:videos-sync')->everyFiveMinutes()->withoutOverlapping();
         $schedule->command('youtube:video-statistics-sync')->everyMinute()->withoutOverlapping();
-
         $schedule->command('youtube:comments-sync')->everyThirtyMinutes()->withoutOverlapping();
 
-        $schedule->command('authors:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
-
-        $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
-        $schedule->command('youtube:authors-sync')->dailyAt('03:00')->withoutOverlapping();
-
+        $schedule->command('channel:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('channel:stat-bot-comments')->dailyAt('02:00')->withoutOverlapping();
-        $schedule->command('youtube:channels-sync')->daily()->withoutOverlapping();
     }
 
     /**

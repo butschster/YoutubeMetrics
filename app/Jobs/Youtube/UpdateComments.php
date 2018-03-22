@@ -2,11 +2,9 @@
 
 namespace App\Jobs\Youtube;
 
-use App\Contracts\Services\Youtube\Client;
-use App\Entities\Author;
+use App\Entities\Channel;
 use App\Entities\Video;
 use App\Services\Youtube\Resources\Comment;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Queue\SerializesModels;
@@ -50,7 +48,7 @@ class UpdateComments implements ShouldQueue
         foreach ($this->comments as $comment) {
             $channelId = $comment->getSnippet()->getAuthorChannelId();
 
-            if (!Author::where('id', $channelId)->exists()) {
+            if (!Channel::where('id', $channelId)->exists()) {
                 dispatch(new UpdateChannelInformation($channelId));
             }
 

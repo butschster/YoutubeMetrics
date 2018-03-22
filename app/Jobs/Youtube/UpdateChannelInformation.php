@@ -4,6 +4,7 @@ namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Author;
+use App\Entities\Channel;
 use App\Exceptions\Youtube\NotFoundException;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -38,31 +39,33 @@ class UpdateChannelInformation implements ShouldQueue
      */
     public function handle(Client $client)
     {
-        $author = Author::find($this->channelId);
+        $channel = Channel::find($this->channelId);
 
         try {
             $info = $client->getChannelById($this->channelId);
         } catch (NotFoundException $exception) {
-            if ($author) {
-                $author->deleted = true;
-                $author->save();
+            if ($channel) {
+                $channel->deleted = true;
+                $channel->save();
                 return;
             }
 
             return;
         }
 
-        $author = Author::updateOrCreate(['id' => $info->getId()], array_merge([
-            'name' => $info->getSnippet()->getTitle(),
-            'created_at' => $info->getSnippet()->getPublishedAt(),
-            'thumb' => $info->getSnippet()->getThumb(),
-            'country' => $info->getSnippet()->getCountry()
-        ], $info->getStatistics()->toArray()));
+        $channel = Channel::updateOrCreate(
+            ['id' => $info->getId()],
+            array_merge([
+                'name' => $info->getSnippet()->getTitle(),
+                'created_at' => $info->getSnippet()->getPublishedAt(),
+                'thumb' => $info->getSnippet()->getThumb(),
+                'country' => $info->getSnippet()->getCountry()
+            ], $info->getStatistics()->toArray()));
 
-        $author->statistics()->create(
+        $channel->statistics()->create(
             array_merge(
                 $info->getStatistics()->toArray(),
-                ['bot_comments' => $author->bot_comments]
+                ['bot_comments' => $channel->bot_comments]
             )
         );
     }

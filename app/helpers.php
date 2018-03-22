@@ -20,6 +20,16 @@ function generate_password(int $length = 8): string
     return $generator->generatePassword();
 }
 
-function format_number(int $number) {
+function format_number(int $number)
+{
     return number_format($number, 0, '.', ' ');
+}
+
+/**
+ * @param \Carbon\Carbon $date
+ * @return string
+ */
+function format_date(\Carbon\Carbon $date)
+{
+    return $date->format('d.m.Y H:i:s');
 }
