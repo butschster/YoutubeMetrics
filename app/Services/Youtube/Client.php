@@ -7,7 +7,9 @@ use App\Exceptions\Youtube\NotFoundException;
 use App\Services\Youtube\Resources\Channel;
 use App\Services\Youtube\Resources\Comment;
 use App\Services\Youtube\Resources\Video;
+use GuzzleHttp\Exception\ClientException;
 use Madcoda\Youtube\Youtube;
+use Throwable;
 
 class Client extends Youtube implements ClientContract
 {
@@ -23,23 +25,6 @@ class Client extends Youtube implements ClientContract
         'activities' => 'https://www.googleapis.com/youtube/v3/activities',
         'comment.threads' => 'https://www.googleapis.com/youtube/v3/commentThreads',
     );
-
-    /**
-     * Using CURL to issue a GET request
-     *
-     * @param string $url
-     * @param array $params
-     * @return string
-     */
-    public function api_get($url, $params)
-    {
-        //set the youtube key
-        $params['key'] = $this->youtube_key;
-
-        $response = (new \GuzzleHttp\Client)->get($url, ['query' => $params]);
-
-        return $response->getBody()->getContents();
-    }
 
     /**
      * @param string $vId
@@ -63,9 +48,7 @@ class Client extends Youtube implements ClientContract
 
         $data = $this->api_get($API_URL, $params);
 
-        return $this->decodeList(
-            $data
-        )->max(function($data) {
+        return $this->decodeList($data)->map(function ($data) {
             return new Comment($data);
         });
     }
@@ -201,17 +184,22 @@ class Client extends Youtube implements ClientContract
 
     /**
      * @param $error
+     * @param Throwable|null $previous
      * @throws ResponseException
      */
-    protected function raiseResponseError($error): void
+    protected function raiseResponseError($error, Throwable $previous = null): void
     {
         $msg = $error->message;
 
-        throw new ResponseException(
+        $exception = new ResponseException(
             $msg,
             $error->code,
-            $error->errors ?? []
+            $previous
         );
+
+        $exception->setErrors($error->errors ?? []);
+
+        throw $exception;
     }
 
     /**
@@ -221,5 +209,36 @@ class Client extends Youtube implements ClientContract
     protected function deserializeResponse(string $apiData)
     {
         return \GuzzleHttp\json_decode($apiData);
+    }
+
+    /**
+     * Using CURL to issue a GET request
+     *
+     * @param string $url
+     * @param array $params
+     * @return string
+     * @throws ResponseException
+     */
+    public function api_get($url, $params)
+    {
+        //set the youtube key
+        $params['key'] = $this->youtube_key;
+
+        try {
+            $response = (new \GuzzleHttp\Client)->get($url, ['query' => $params]);
+        } catch (ClientException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $response = $this->deserializeResponse($response->getBody()->getContents());
+
+                if (isset($response->error)) {
+                    $this->raiseResponseError($response->error, $e);
+                }
+            }
+
+            throw $e;
+        }
+
+        return $response->getBody()->getContents();
     }
 }
