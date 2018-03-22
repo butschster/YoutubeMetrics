@@ -29,7 +29,7 @@ class MarkCommentsAsSpam extends Command
      */
     public function handle()
     {
-        $authors = Author::onlyBots()->live()->pluck('id');
+        $authors = Author::onlyBots()->live()->get();
 
         foreach ($authors as $author) {
             $author->comments()->update(['is_spam' => true]);
