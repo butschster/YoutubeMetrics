@@ -50,7 +50,7 @@ class UpdateComments implements ShouldQueue
         foreach ($this->comments as $comment) {
             $channelId = $comment->getSnippet()->getAuthorChannelId();
 
-            if (!Author::where('id', $channelId)->exnan ists()) {
+            if (!Author::where('id', $channelId)->exists()) {
                 dispatch(new UpdateChannelInformation($channelId));
             }
 
