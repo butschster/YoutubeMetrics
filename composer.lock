@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1612990ffcb62a4f97b47b8b3020f6ad",
+    "content-hash": "d3f7e3ad5895e4ef97a111b808bbbf7f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2651,6 +2651,37 @@
                 "redis"
             ],
             "time": "2016-06-16T16:22:20+00:00"
+        },
+        {
+            "name": "priler/text2image",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Priler/Text2Image.git",
+                "reference": "1d08e859d6da0c855ebb67b73b481132777f3faa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Priler/Text2Image/zipball/1d08e859d6da0c855ebb67b73b481132777f3faa",
+                "reference": "1d08e859d6da0c855ebb67b73b481132777f3faa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Priler\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The most useful & easy for use PHP library for converting any text to image. Uses GD extension.",
+            "time": "2018-01-07T13:16:14+00:00"
         },
         {
             "name": "psr/container",
@@ -5884,7 +5915,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "priler/text2image": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
