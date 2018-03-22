@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Comment;
+use App\Services\TextToImage\Font;
+use App\Services\TextToImage\Text;
+use App\Services\TextToImage\TextToImage;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller
@@ -32,4 +35,15 @@ class CommentsController extends Controller
 
         return view('comment.show', compact('comment', 'channel'));
     }
+
+//    public function image(Comment $comment)
+//    {
+//        $channel = $comment->channel;
+//        $test = new TextToImage(600, 50);
+//
+//        $test->append(new Text($comment->text, new Font(20, resource_path('assets/fonts/RobotoCondensed-Regular.ttf'))));
+//        $test->append(new Text(' - '.$channel->name, new Font(12, resource_path('assets/fonts/RobotoCondensed-Regular.ttf'))));
+//
+//        $test->render();
+//    }
 }
