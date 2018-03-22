@@ -3,6 +3,7 @@
 namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
+use App\Exceptions\Youtube\NotFoundException;
 use App\Services\Youtube\Resources\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -47,15 +48,11 @@ class SyncVideoComments implements ShouldQueue
      */
     protected function syncComments(Client $client, string $pageToken = null): void
     {
-        try {
-            $comments = $client->getCommentThreads($this->videoId, 100, $pageToken);
-            dispatch(new UpdateComments($this->videoId, $comments));
+        $comments = $client->getCommentThreads($this->videoId, 100, $pageToken);
+        dispatch(new UpdateComments($this->videoId, $comments));
 
-            if ($comments->hasNextPage()) {
-                $this->syncComments($client, $comments->getNextPageToken());
-            }
-        } catch (\Exception $e) {
-            logger()->error($e->getMessage());
+        if ($comments->hasNextPage()) {
+            $this->syncComments($client, $comments->getNextPageToken());
         }
     }
 }

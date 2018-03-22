@@ -40,8 +40,8 @@ class KremlinBotCheckAccount extends Command
                     return $channel->getId();
                 });
 
-            foreach ($chunk as $channel) {
-                $channel = $results->get($channel->getId());
+            foreach ($chunk as $bot) {
+                $channel = $results->get($bot->id);
 
                 if (!$channel) {
                     $bot->deleted = true;
