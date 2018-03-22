@@ -43,7 +43,8 @@ class StatChannelsBotComments extends Command
             if (!$video) {
                 continue;
             }
-            $channels[$video->channel_id]['count'] = $count;
+
+            $channels[$video->channel_id][] = $count;
         }
 
         $channels = collect($channels)->map(function ($data) {
