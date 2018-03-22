@@ -142,4 +142,12 @@ class Author extends Model
     {
         return $this->hasMany(Video::class, 'channel_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function statistics()
+    {
+        return $this->hasMany(ChannelStat::class, 'channel_id');
+    }
 }

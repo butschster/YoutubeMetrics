@@ -16,12 +16,14 @@ class ChannelReportController extends Controller
     /**
      * @param Request $request
      * @return array
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
         $request->validate(['channel_id' => 'required']);
 
         $author = Author::firstOrNew(['id' => $request->channel_id]);
+        $this->authorize('report', $author);
 
         $author->sendReport();
 
@@ -31,12 +33,14 @@ class ChannelReportController extends Controller
     /**
      * @param Request $request
      * @return array
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Request $request)
     {
         $request->validate(['channel_id' => 'required']);
 
         $author = Author::firstOrNew(['id' => $request->channel_id]);
+        $this->authorize('report', $author);
 
         $author->updateReports(-1);
 

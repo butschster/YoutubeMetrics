@@ -1,0 +1,13 @@
+#channel-header {
+  &.channel-type-normal {
+    background: $gray-900;
+  }
+
+  &.channel-type-bot {
+    background: $danger;
+  }
+
+  &.channel-type-reported {
+    background: $purple;
+  }
+}

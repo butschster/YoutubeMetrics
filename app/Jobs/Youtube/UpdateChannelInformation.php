@@ -53,11 +53,15 @@ class UpdateChannelInformation implements ShouldQueue
             return;
         }
 
-        Author::updateOrCreate(['id' => $info->getId()], [
+        $author = Author::updateOrCreate(['id' => $info->getId()], array_merge([
             'name' => $info->getSnippet()->getTitle(),
             'created_at' => $info->getSnippet()->getPublishedAt(),
             'thumb' => $info->getSnippet()->getThumb(),
             'country' => $info->getSnippet()->getCountry()
-        ]);
+        ], $info->getStatistics()->toArray()));
+
+        $author->statistics()->create(
+            $info->getStatistics()->toArray()
+        );
     }
 }

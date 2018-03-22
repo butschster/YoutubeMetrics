@@ -32,12 +32,19 @@
                         </a>
 
                         @can('report', $author)
-                        <button-report id="{{ $author->id }}"></button-report>
+                            <button-report id="{{ $author->id }}"></button-report>
                         @endcan
                     </div>
                 </div>
             </div>
         </header>
+
+        <div class="bg-primary py-3 text-center text-white">
+            @include('channel._partials.counters')
+        </div>
+
+        <channel-chart id="{{ $author->id }}"></channel-chart>
+
         @if($videos->count() > 0)
             <div class="row mt-5">
                 @foreach($videos as $video)

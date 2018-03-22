@@ -1,0 +1,19 @@
+.bd-footer {
+  border-top: 2px solid $white;
+  background: #fff;
+  font-size: 90%;
+
+  .bd-footer-links {
+    padding-left: 0;
+    margin-bottom: 2rem;
+
+    li {
+      display: inline-block;
+      margin-right: 20px;
+
+      a {
+        font-weight: 700;
+      }
+    }
+  }
+}

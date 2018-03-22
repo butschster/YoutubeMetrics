@@ -19,6 +19,7 @@ Vue.mixin({
 
 Vue.use(VueSweetalert2);
 Vue.component('video-chart', require('./components/VideoChart'));
+Vue.component('channel-chart', require('./components/ChannelChart'));
 Vue.component('comment-chart', require('./components/CommentChart'));
 Vue.component('video-comments', require('./components/VideoComments'));
 Vue.component('channel-comments', require('./components/ChannelComments'));

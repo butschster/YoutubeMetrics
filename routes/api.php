@@ -3,6 +3,7 @@
 Route::post('channel/check', 'Api\ChannelController@check');
 Route::get('channel/reported', 'Api\ChannelController@reported')->middleware('auth');
 Route::get('channel/bots', 'Api\ChannelController@bots');
+Route::get('channel/{author}/metrics', 'Api\ChannelMetricsController@index');
 
 Route::post('channel/abuse', 'Api\ChannelReportController@store');
 Route::delete('channel/abuse', 'Api\ChannelReportController@destroy');

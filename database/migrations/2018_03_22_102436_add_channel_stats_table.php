@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoStatsTable extends Migration
+class AddChannelStatsTable extends Migration
 {
     protected $connection = 'mongodb';
 
@@ -15,8 +15,8 @@ class CreateVideoStatsTable extends Migration
      */
     public function up()
     {
-        Schema::connection($this->connection)->create('video_stats', function ($collection) {
-            $collection->index('video_id');
+        Schema::connection($this->connection)->create('channel_stats', function ($collection) {
+            $collection->index('channel_id');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateVideoStatsTable extends Migration
      */
     public function down()
     {
-        Schema::connection($this->connection)->drop('video_stats');
+        Schema::connection($this->connection)->drop('channel_stats');
     }
 }

@@ -11,11 +11,13 @@ class VideoMetricsController extends Controller
 {
     /**
      * @param Video $video
-     * @return mixed
+     * @return array
      */
-    public function index(Video $video)
+    public function index(Video $video): array
     {
-        return Cache::remember("video_stat:".$video->id, now()->addMinutes(5), function () use ($video) {
+        $cacheKey = md5("video_stat".$video->id);
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($video) {
             return $this->prepareData(
                 VideoStat::where('video_id', $video->id)->oldest()->get()
             );
@@ -30,23 +32,19 @@ class VideoMetricsController extends Controller
     {
         $data = [
             'views' => [
-                'name' => 'Просмотры',
+                'name' => __('video.stat.views'),
                 'data' => []
             ],
             'likes' => [
-                'name' => 'Лайки',
+                'name' => __('video.stat.likes'),
                 'data' => []
             ],
             'dislikes' => [
-                'name' => 'Дизлайки',
-                'data' => []
-            ],
-            'favorites' => [
-                'name' => 'Избранное',
+                'name' => __('video.stat.dislikes'),
                 'data' => []
             ],
             'comments' => [
-                'name' => 'Комментарии',
+                'name' => __('video.stat.comments'),
                 'data' => []
             ]
         ];
@@ -58,7 +56,6 @@ class VideoMetricsController extends Controller
             $data['views']['data'][] = [$time, $row->views];
             $data['likes']['data'][] = [$time, $row->likes];
             $data['dislikes']['data'][] = [$time, $row->dislikes];
-            $data['favorites']['data'][] = [$time, $row->favorites];
             $data['comments']['data'][] = [$time, $row->comments];
         }
 
