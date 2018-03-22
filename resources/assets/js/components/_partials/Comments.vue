@@ -16,7 +16,7 @@
                     <i class="fas fa-2x fa-info-circle"></i>
                 </span>
                 <span class="media-body align-self-center">
-                     Комментариев пока нет.
+                     Комментариев пока нет :(
                 </span>
             </div>
         </div>
@@ -40,11 +40,6 @@
             hideAuthor: {
                 type: Boolean,
                 default: false
-            },
-            total: {
-                required: true,
-                type: Number,
-                default: 0
             }
         },
         methods: {
@@ -57,7 +52,6 @@
                 return this.comments.length > 0;
             },
             canReport() {
-                console.log(this.can('channel.report'));
                 return this.can('channel.report');
             }
         }

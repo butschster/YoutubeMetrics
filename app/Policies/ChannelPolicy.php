@@ -29,4 +29,14 @@ class ChannelPolicy
     {
         return true;
     }
+
+    /**
+     * @param User $user
+     * @param Channel $channel
+     * @return bool
+     */
+    public function manage(User $user, Channel $channel): bool
+    {
+        return true;
+    }
 }

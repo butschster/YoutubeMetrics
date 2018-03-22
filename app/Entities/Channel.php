@@ -150,6 +150,14 @@ class Channel extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function videoComments()
+    {
+        return $this->hasManyThrough(Comment::class, Video::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function videos()
     {
         return $this->hasMany(Video::class);

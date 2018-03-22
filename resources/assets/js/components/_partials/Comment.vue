@@ -1,5 +1,5 @@
 <template>
-    <div class="comment mb-3 rounded" :class="classes">
+    <div class="comment mb-3" :class="classes">
         <span v-if="canReport && !isReported" class="float-right text-danger btn btn-sm btn-link" @click="report">
             <i class="fas fa-ban"></i>
         </span>
