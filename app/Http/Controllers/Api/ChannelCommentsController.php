@@ -39,14 +39,18 @@ class ChannelCommentsController extends Controller
      */
     public function fromBots(Channel $channel): CommentsCollection
     {
-        $comments = $channel
-            ->videoComments()
-            ->with('channel')
-            ->onlySpam()
-            ->get()
-            ->map(function($comment) {
-                return new CommentResource($comment);
-            });
+        $cacheKey = md5('channel_bots_comments'.$channel->id);
+
+        $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($channel) {
+            return $channel
+                ->videoComments()
+                ->with('channel')
+                ->onlySpam()
+                ->get()
+                ->map(function($comment) {
+                    return new CommentResource($comment);
+                });
+        });
 
         return new CommentsCollection($comments);
     }
