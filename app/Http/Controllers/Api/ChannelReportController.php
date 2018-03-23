@@ -27,7 +27,7 @@ class ChannelReportController extends Controller
 
         $channel->sendReport();
 
-        return ['type' => $channel->type()];
+        return ['type' => $channel->type];
     }
 
     /**
@@ -44,6 +44,6 @@ class ChannelReportController extends Controller
 
         $channel->updateReports(-1);
 
-        return ['type' => $channel->type()];
+        return ['type' => $channel->type];
     }
 }

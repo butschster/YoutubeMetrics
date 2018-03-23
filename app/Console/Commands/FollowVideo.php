@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Video;
-use App\Exceptions\Youtube\NotFoundException;
+use App\Services\Youtube\NotFoundException;
 use Illuminate\Console\Command;
 
 class FollowVideo extends Command

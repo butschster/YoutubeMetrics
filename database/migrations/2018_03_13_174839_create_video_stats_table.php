@@ -15,9 +15,13 @@ class CreateVideoStatsTable extends Migration
      */
     public function up()
     {
-        Schema::connection($this->connection)->create('video_stats', function ($collection) {
-            $collection->index('video_id');
-        });
+        $schema = Schema::connection($this->connection);
+
+        if (!$schema->hasTable('video_stats')) {
+            $schema->create('video_stats', function ($collection) {
+                $collection->index('video_id');
+            });
+        }
     }
 
     /**

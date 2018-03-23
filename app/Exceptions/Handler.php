@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Events\Youtube\DailyLimitExceeded;
+use App\Services\Youtube\DailyLimitExceededException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -13,7 +15,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+
     ];
 
     /**
@@ -31,17 +33,21 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception $exception
+     * @param  \Exception $e
      * @return void
      * @throws Exception
      */
-    public function report(Exception $exception)
+    public function report(Exception $e)
     {
-        if ($this->container->environment('production') && $this->container->bound('sentry') && $this->shouldReport($exception)) {
-            $this->container->make('sentry')->captureException($exception);
+        if (
+            $this->container->environment('production')
+            && $this->container->bound('sentry')
+            && $this->shouldReport($e)
+        ) {
+            $this->container->make('sentry')->captureException($e);
         }
 
-        parent::report($exception);
+        parent::report($e);
     }
 
     /**

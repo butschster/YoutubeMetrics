@@ -20,11 +20,13 @@ class ChannelCommentsController extends Controller
         $cacheKey = md5('channel_comments'.$channel->id);
 
         $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($channel) {
-            return $channel->comments()->with('channel')
+            return $channel->comments()
                 ->orderBy('total_likes', 'desc')
                 ->latest()
                 ->get()
-                ->map(function (Comment $comment) {
+                ->map(function (Comment $comment) use($channel) {
+                    $comment->setRelation('channel', $channel);
+
                     return new CommentResource($comment);
                 });
         });

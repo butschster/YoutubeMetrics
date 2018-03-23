@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Author;
 use App\Entities\Channel;
 use App\Entities\Comment;
 use Illuminate\Console\Command;
 
-class CalculateAuthorComments extends Command
+class CalculateChannelComments extends Command
 {
     /**
      * The name and signature of the console command.

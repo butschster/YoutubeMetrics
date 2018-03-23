@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Youtube;
+namespace App\Services\Youtube;
 
 use Exception;
 

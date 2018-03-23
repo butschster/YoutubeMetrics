@@ -3,8 +3,6 @@
 namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Exceptions\Youtube\NotFoundException;
-use App\Services\Youtube\Resources\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

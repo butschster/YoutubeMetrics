@@ -14,7 +14,7 @@ class AddChannelColumnToVideos extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->string('channel_id', 30)->index();
+            $table->string('channel_id', 30)->nullable()->index();
 
             $table->foreign('channel_id')
                 ->references('id')

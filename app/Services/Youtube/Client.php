@@ -3,10 +3,11 @@
 namespace App\Services\Youtube;
 
 use App\Contracts\Services\Youtube\Client as ClientContract;
-use App\Exceptions\Youtube\NotFoundException;
+use App\Contracts\Services\Youtube\KeyManager;
 use App\Services\Youtube\Resources\Channel;
 use App\Services\Youtube\Resources\Comment;
 use App\Services\Youtube\Resources\Video;
+use GuzzleHttp\ClientInterface as HTTPClient;
 use GuzzleHttp\Exception\ClientException;
 use Madcoda\Youtube\Youtube;
 use Throwable;
@@ -27,6 +28,28 @@ class Client extends Youtube implements ClientContract
     );
 
     /**
+     * @var HTTPClient
+     */
+    protected $httpClient;
+
+
+    /**
+     * @param KeyManager $manager
+     * @throws MissingApiKeyException
+     * @throws \Exception
+     */
+    public function __construct(KeyManager $manager)
+    {
+        $key = $manager->randomKey();
+
+        if (!$key) {
+            throw new MissingApiKeyException('Google API key is required, please visit http://code.google.com/apis/console');
+        }
+
+        parent::__construct(['key' => $key]);
+    }
+
+    /**
      * @param string $vId
      * @param int $maxResults
      * @param string|null $pageToken
@@ -35,7 +58,6 @@ class Client extends Youtube implements ClientContract
      */
     public function getCommentThreads(string $vId, int $maxResults = 100, string $pageToken = null)
     {
-        $API_URL = $this->getApi('comment.threads');
         $params = array(
             'videoId' => $vId,
             'part' => 'id, snippet',
@@ -46,7 +68,10 @@ class Client extends Youtube implements ClientContract
             $params['pageToken'] = $pageToken;
         }
 
-        $data = $this->api_get($API_URL, $params);
+        $data = $this->api_get(
+            $this->getApi('comment.threads'),
+            $params
+        );
 
         return $this->decodeList($data)->map(function ($data) {
             return new Comment($data);
@@ -56,7 +81,7 @@ class Client extends Youtube implements ClientContract
     /**
      * @param array $ids
      * @param array $optionalParams
-     * @return Channel[]|ResponseCollection
+     * @return Channel[]|ResponseCollection|\StdClass
      * @throws \Exception
      */
     public function getChannelsById($ids = array(), $optionalParams = false)
@@ -105,31 +130,6 @@ class Client extends Youtube implements ClientContract
     }
 
     /**
-     * Decode the response from youtube, extract the single resource object.
-     * (Don't use this to decode the response containing list of objects)
-     *
-     * @param string $apiData the api response from youtube
-     * @throws ResponseException
-     * @return \StdClass an Youtube resource object
-     * @throws NotFoundException
-     */
-    public function decodeSingle(&$apiData)
-    {
-        $resObj = $this->deserializeResponse($apiData);
-
-        if (isset($resObj->error)) {
-            $this->raiseResponseError($resObj->error);
-        }
-
-        $itemsArray = $resObj->items;
-        if (!is_array($itemsArray) || count($itemsArray) == 0) {
-            throw new NotFoundException();
-        }
-
-        return $itemsArray[0];
-    }
-
-    /**
      * Search only videos in the channel
      *
      * @param  string $q
@@ -161,6 +161,32 @@ class Client extends Youtube implements ClientContract
     }
 
     /**
+     * Decode the response from youtube, extract the single resource object.
+     * (Don't use this to decode the response containing list of objects)
+     *
+     * @param string $apiData the api response from youtube
+     * @throws ResponseException
+     * @return \StdClass an Youtube resource object
+     * @throws NotFoundException
+     * @throws DailyLimitExceededException
+     */
+    public function decodeSingle(&$apiData)
+    {
+        $resObj = $this->deserializeResponse($apiData);
+
+        if (isset($resObj->error)) {
+            $this->raiseResponseError($resObj->error);
+        }
+
+        $itemsArray = $resObj->items;
+        if (!is_array($itemsArray) || count($itemsArray) == 0) {
+            throw new NotFoundException();
+        }
+
+        return $itemsArray[0];
+    }
+
+    /**
      * Decode the response from youtube, extract the list of resource objects
      *
      * @param  string $apiData response string from youtube
@@ -185,11 +211,21 @@ class Client extends Youtube implements ClientContract
     /**
      * @param $error
      * @param Throwable|null $previous
+     * @throws DailyLimitExceededException
      * @throws ResponseException
      */
     protected function raiseResponseError($error, Throwable $previous = null): void
     {
         $msg = $error->message;
+
+        $errors = $error->errors ?? [];
+
+        foreach ($errors as $e) {
+            if ($e->reason == 'dailyLimitExceeded') {
+                throw (new DailyLimitExceededException($e->message, $error->code, $previous))
+                    ->setKey($this->youtube_key);
+            }
+        }
 
         $exception = new ResponseException(
             $msg,
@@ -218,6 +254,7 @@ class Client extends Youtube implements ClientContract
      * @param array $params
      * @return string
      * @throws ResponseException
+     * @throws DailyLimitExceededException
      */
     public function api_get($url, $params)
     {
@@ -225,10 +262,11 @@ class Client extends Youtube implements ClientContract
         $params['key'] = $this->youtube_key;
 
         try {
-            $response = (new \GuzzleHttp\Client)->get($url, ['query' => $params]);
+            $response = $this->httpClient->get($url, ['query' => $params]);
         } catch (ClientException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
+
                 $response = $this->deserializeResponse($response->getBody()->getContents());
 
                 if (isset($response->error)) {
@@ -240,5 +278,13 @@ class Client extends Youtube implements ClientContract
         }
 
         return $response->getBody()->getContents();
+    }
+
+    /**
+     * @param HTTPClient $client
+     */
+    public function setHttpClient(HTTPClient $client)
+    {
+        $this->httpClient = $client;
     }
 }

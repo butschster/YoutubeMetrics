@@ -2,20 +2,12 @@
 
 namespace App\Console;
 
+use App\Contracts\Services\Youtube\KeyManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
     /**
      * Define the application's command schedule.
      *
@@ -25,18 +17,32 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('kremlin-bots:sync')->hourly()->withoutOverlapping();
-        $schedule->command('kremlin-bots:check')->twiceDaily()->withoutOverlapping();
-
         $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
-
-        $schedule->command('youtube:channels-sync')->dailyAt('03:00')->withoutOverlapping();
-        $schedule->command('youtube:followed-channels-sync')->daily()->withoutOverlapping();
-        $schedule->command('youtube:videos-sync')->everyFiveMinutes()->withoutOverlapping();
-        $schedule->command('youtube:video-statistics-sync')->everyMinute()->withoutOverlapping();
-        $schedule->command('youtube:comments-sync')->everyThirtyMinutes()->withoutOverlapping();
-
         $schedule->command('channel:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('channel:stat-bot-comments')->dailyAt('02:00')->withoutOverlapping();
+
+
+        // YouTube tasks
+        $this->runYoutubeTask(
+            $schedule->command('kremlin-bots:check')->twiceDaily(),
+            $schedule->command('youtube:channels-sync')->dailyAt('03:00'),
+            $schedule->command('youtube:followed-channels-sync')->daily(),
+            $schedule->command('youtube:videos-sync')->everyFiveMinutes(),
+            $schedule->command('youtube:video-statistics-sync')->everyMinute(),
+            $schedule->command('youtube:comments-sync')->everyThirtyMinutes()
+        );
+    }
+
+    /**
+     * @param \Illuminate\Console\Scheduling\Event[] ...$schedules
+     */
+    protected function runYoutubeTask(\Illuminate\Console\Scheduling\Event ...$schedules)
+    {
+        foreach ($schedules as $schedule) {
+            $schedule->withoutOverlapping()->when(function (KeyManager $manager) {
+                return $manager->hasKeys();
+            });
+        }
     }
 
     /**

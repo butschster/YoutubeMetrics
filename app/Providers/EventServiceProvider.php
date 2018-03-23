@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Entities\Channel;
+use App\Entities\Comment;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -13,9 +15,19 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        \App\Events\Youtube\DailyLimitExceeded::class => [
+            \App\Listeners\Youtube\BanLimitedKey::class
         ],
+    ];
+
+    protected $observers = [
+        Channel::class => [
+            \App\Observers\Channel\ClearCacheObserver::class
+        ],
+        Comment::class => [
+            \App\Observers\Comment\UpdateStatistics::class,
+            \App\Observers\Comment\MarkBotCommentsAsSpam::class
+        ]
     ];
 
     /**
@@ -27,6 +39,11 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        foreach ($this->observers as $model => $observers) {
+
+            foreach ($observers as $observer) {
+                $model::observe($observer);
+            }
+        }
     }
 }

@@ -4,26 +4,13 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Comment extends Model
 {
     use HybridRelations;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::updated(function (Comment $comment) {
-            $comment->likes()->create([
-                'count' => $comment->total_likes
-            ]);
-        });
-
-        static::creating(function (Comment $comment) {
-            $comment->is_spam = Channel::onlyBots()->live()->where('id', $comment->channel_id)->exists();
-        });
-    }
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -43,6 +30,15 @@ class Comment extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'is_spam' => 'bool',
+        'text' => 'string',
+        'total_likes' => 'int',
+    ];
 
     /**
      * @return string
@@ -100,25 +96,25 @@ class Comment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function video()
+    public function video(): BelongsTo
     {
         return $this->belongsTo(Video::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(CommentLike::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function channel()
+    public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
     }

@@ -15,22 +15,13 @@ class CreateCommentLikesTable extends Migration
      */
     public function up()
     {
-        Schema::connection($this->connection)->create('comment_likes', function ($collection) {
-            $collection->index('comment_id');
-        });
+        $schema = Schema::connection($this->connection);
 
-//        Schema::create('comment_likes', function (Blueprint $table) {
-//            $table->increments('id');
-//            $table->string('comment_id')->index();
-//            $table->unsignedInteger('count')->default(0);
-//
-//            $table->foreign('comment_id')
-//                ->references('id')
-//                ->on('comments')
-//                ->onDelete('cascade');
-//
-//            $table->timestamp('created_at', 0)->nullable();
-//        });
+        if (!$schema->hasTable('comment_likes')) {
+            $schema->create('comment_likes', function ($collection) {
+                $collection->index('comment_id');
+            });
+        }
     }
 
     /**

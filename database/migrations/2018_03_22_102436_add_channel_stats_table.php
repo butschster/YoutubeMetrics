@@ -15,9 +15,13 @@ class AddChannelStatsTable extends Migration
      */
     public function up()
     {
-        Schema::connection($this->connection)->create('channel_stats', function ($collection) {
-            $collection->index('channel_id');
-        });
+        $schema = Schema::connection($this->connection);
+
+        if (!$schema->hasTable('channel_stats')) {
+            $schema->create('channel_stats', function ($collection) {
+                $collection->index('channel_id');
+            });
+        }
     }
 
     /**

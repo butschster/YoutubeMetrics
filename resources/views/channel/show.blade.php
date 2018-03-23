@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container mt-5">
-        <header id="channel-header" class="card rounded-0 text-white channel-type-{{ $channel->type() }}">
+        <header id="channel-header" class="card rounded-0 text-white channel-type-{{ $channel->type }}">
             @if($channel->thumb)
                 <div class="cover" style="background-image: url({{ $channel->thumb }});"></div>
             @else
@@ -13,7 +13,7 @@
             <div class="card-img-overlay d-flex justify-content-center">
                 <div class="align-self-center text-center">
                     <h1 class="card-title">{{ $channel->name }}</h1>
-                    <h3>{{ trans('channel.type.'.$channel->type()) }}</h3>
+                    <h3>{{ trans('channel.type.'.$channel->type) }}</h3>
 
                     <div>
                         <span class="badge badge-light">ID: <strong>{{ $channel->id }}</strong></span>

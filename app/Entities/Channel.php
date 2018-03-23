@@ -4,10 +4,18 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Cache;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Channel extends Model
 {
+    use HybridRelations;
+
+    const TYPE_NORMAL = 'normal';
+    const TYPE_BOT = 'bot';
+    const TYPE_REPORTED = 'reported';
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -29,6 +37,24 @@ class Channel extends Model
     protected $guarded = [];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'bot' => 'bool',
+        'deleted' => 'bool',
+        'thumb' => 'string',
+        'name' => 'string',
+        'reports' => 'int',
+        'views' => 'int',
+        'comments' => 'int',
+        'subscribers' => 'int',
+        'total_comments' => 'int',
+        'bot_comments' => 'int'
+    ];
+
+    /**
+     * Получение имени канала. Если имя не указано, то будет взят ID канала
+     *
      * @param null|string $name
      * @return string
      */
@@ -38,6 +64,8 @@ class Channel extends Model
     }
 
     /**
+     * Получение ссылки на канал
+     *
      * @return string
      */
     public function getLinkAttribute()
@@ -66,19 +94,21 @@ class Channel extends Model
     }
 
     /**
+     * Получение типа канала
+     *
      * @return string
      */
-    public function type(): string
+    public function getTypeAttribute(): string
     {
         if ($this->bot) {
-            return 'bot';
+            return static::TYPE_BOT;
         }
 
         if ($this->reports > 0) {
-            return 'reported';
+            return static::TYPE_REPORTED;
         }
 
-        return 'normal';
+        return static::TYPE_NORMAL;
     }
 
     public function sendReport()
@@ -99,11 +129,16 @@ class Channel extends Model
             $this->reports += $score;
         } else if ($this->reports > ($score * -1)) {
             $this->reports -= ($score * -1);
+        } else {
+            $this->reports = 0;
         }
 
         $this->save();
     }
 
+    /**
+     * Пометка канала как спам
+     */
     public function markAsBot(): void
     {
         $this->bot = true;
@@ -140,33 +175,33 @@ class Channel extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasManyThrough
      */
-    public function videoComments()
+    public function videoComments(): HasManyThrough
     {
         return $this->hasManyThrough(Comment::class, Video::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function videos()
+    public function videos(): HasMany
     {
         return $this->hasMany(Video::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function statistics()
+    public function statistics(): HasMany
     {
         return $this->hasMany(ChannelStat::class);
     }

@@ -44,7 +44,7 @@ class ChannelController extends Controller
         });
 
         return [
-            'type' => !is_null($channel) ? $channel->type() : 'normal'
+            'type' => !is_null($channel) ? $channel->type : 'normal'
         ];
     }
 

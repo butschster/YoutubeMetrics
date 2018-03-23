@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Contracts\Services\Youtube\Client as CleintContract;
+use App\Contracts\Services\Youtube\KeyManager as KeyManagerContract;
 use App\Services\Youtube\Client;
+use App\Services\Youtube\KeyManager;
 use Illuminate\Support\ServiceProvider;
 
 class YoutubeServiceProvider extends ServiceProvider
@@ -25,12 +27,23 @@ class YoutubeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(CleintContract::class, function ($app) {
-            $keys = $app['config']->get('services.youtube.keys', []);
+        $this->app->singleton(KeyManagerContract::class, function ($app) {
+            $manager = new KeyManager($this->app);
 
-            return new Client([
-                'key' => $keys[array_rand($keys)]
-            ]);
+            $manager->setKeys(
+                $this->app->make('config')->get('services.youtube.keys', [])
+            );
+
+            return $manager;
+        });
+
+        $this->app->singleton(CleintContract::class, function ($app) {
+            $keyManager = $app->make(KeyManagerContract::class);
+
+            $client = new Client($keyManager);
+            $client->setHttpClient(new \GuzzleHttp\Client());
+
+            return $client;
         });
     }
 }

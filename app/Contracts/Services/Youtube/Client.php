@@ -7,6 +7,7 @@ use App\Services\Youtube\Resources\{
 };
 use App\Services\Youtube\ResponseCollection;
 use App\Services\Youtube\ResponseException;
+use GuzzleHttp\ClientInterface;
 
 interface Client
 {
@@ -71,4 +72,9 @@ interface Client
      * @return ResponseCollection|Video[]
      */
     public function searchVideos($q, $maxResults = 10, $order = null);
+
+    /**
+     * @param ClientInterface $client
+     */
+    public function setHttpClient(ClientInterface $client);
 }

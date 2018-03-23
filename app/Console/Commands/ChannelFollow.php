@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\FollowedChannel;
-use App\Exceptions\Youtube\NotFoundException;
+use App\Services\Youtube\NotFoundException;
 use App\Jobs\Youtube\UpdateChannelInformation;
 use Illuminate\Console\Command;
 
