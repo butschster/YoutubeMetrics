@@ -6,7 +6,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
 
 class CommentLike extends Model
 {
-
     /**
      * @var string
      */

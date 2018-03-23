@@ -86,9 +86,10 @@ class Client extends Youtube implements ClientContract
      */
     public function getChannelsById($ids = array(), $optionalParams = false)
     {
-        return parent::getChannelsById($ids, $optionalParams)->map(function ($data) {
-            return new Channel($data);
-        });
+        return parent::getChannelsById($ids, $optionalParams)
+            ->map(function ($data) {
+                return new Channel($data);
+            });
     }
 
     /**

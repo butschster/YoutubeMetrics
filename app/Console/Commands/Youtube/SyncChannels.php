@@ -4,6 +4,7 @@ namespace App\Console\Commands\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Author;
+use App\Entities\Channel;
 use App\Entities\Comment;
 use App\Jobs\Youtube\UpdateChannelInformation;
 use Carbon\Carbon;
@@ -24,18 +25,31 @@ class SyncChannels extends Command
      *
      * @var string
      */
-    protected $description = 'Синхронизация профилей каналов';
+    protected $description = 'Синхронизация каналов без профилей';
+
+    /**
+     * @var int
+     */
+    protected $processed = 0;
+
+    /**
+     * @var int
+     */
+    protected $chunkSize = 40;
 
     public function handle()
     {
-        $channels = Comment::select('channel_id')
-            ->whereDoesntHave('channel')
-            ->groupBy('channel_id')
-            ->pluck('channel_id');
+        Channel::whereNull('name')->live()->select('id')
+            ->chunk($this->chunkSize, function ($ids) {
+                $ids = $ids->pluck('id')->all();
 
-        $this->info("Found channels [".$channels->count()."]");
-        foreach ($channels as $id) {
-            dispatch(new UpdateChannelInformation($id));
-        }
+                dispatch(new UpdateChannelInformation($ids));
+
+                $this->processed += $this->chunkSize;
+
+                if ($this->processed > 5000) {
+                    return false;
+                }
+            });
     }
 }

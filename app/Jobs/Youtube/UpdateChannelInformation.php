@@ -16,20 +16,20 @@ class UpdateChannelInformation implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var string
+     * @var array
      */
-    public $channelId;
+    public $channelIds;
 
     /**
      * Create a new job instance.
      *
-     * @param string $channelId
+     * @param string|array $channelIds
      */
-    public function __construct(string $channelId)
+    public function __construct($channelIds)
     {
         $this->onQueue('common');
 
-        $this->channelId = $channelId;
+        $this->channelIds = !is_array($channelIds) ? [$channelIds] : $channelIds;
     }
 
     /**
@@ -37,20 +37,27 @@ class UpdateChannelInformation implements ShouldQueue
      */
     public function handle(Client $client)
     {
-        $channel = Channel::find($this->channelId);
+        $result = $client->getChannelsById($this->channelIds)
+            ->keyBy(function ($channel) {
+                return $channel->getId();
+            });
 
-        try {
-            $info = $client->getChannelById($this->channelId);
-        } catch (NotFoundException $exception) {
-            if ($channel) {
-                $channel->deleted = true;
-                $channel->save();
-                return;
+        foreach ($this->channelIds as $id) {
+            $info = $result->get($id);
+            if ($info) {
+                $this->updateChannel($info);
+                continue;
             }
 
-            return;
+            $this->deleteChannel($id);
         }
+    }
 
+    /**
+     * @param \App\Services\Youtube\Resources\Channel $info
+     */
+    protected function updateChannel(\App\Services\Youtube\Resources\Channel $info)
+    {
         $channel = Channel::updateOrCreate(
             ['id' => $info->getId()],
             array_merge([
@@ -58,7 +65,9 @@ class UpdateChannelInformation implements ShouldQueue
                 'created_at' => $info->getSnippet()->getPublishedAt(),
                 'thumb' => $info->getSnippet()->getThumb(),
                 'country' => $info->getSnippet()->getCountry()
-            ], $info->getStatistics()->toArray()));
+            ], $info->getStatistics()->toArray()
+            )
+        );
 
         $channel->statistics()->create(
             array_merge(
@@ -66,6 +75,17 @@ class UpdateChannelInformation implements ShouldQueue
                 ['bot_comments' => $channel->bot_comments]
             )
         );
+    }
+
+    /**
+     * @param string $id
+     */
+    protected function deleteChannel(string $id)
+    {
+        if ($channel = Channel::find($id)) {
+            $channel->deleted = true;
+            $channel->save();
+        }
     }
 
     /**

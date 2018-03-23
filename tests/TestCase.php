@@ -8,10 +8,19 @@ use App\Entities\Comment;
 use App\Entities\Tag;
 use App\Entities\Video;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Tests\Unit\Youtube\FakeClient;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    /**
+     * @return FakeClient
+     */
+    public function createYoutubeFakeClient()
+    {
+        return new FakeClient();
+    }
 
     /**
      * Create a new channel
