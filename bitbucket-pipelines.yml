@@ -1,4 +1,4 @@
-image: php:7.2
+image: butschster/php7.2-mongo
 
 pipelines:
   default:
@@ -7,9 +7,6 @@ pipelines:
           - composer
         script:
           - apt-get update && apt-get install -y unzip
-          - docker-php-ext-install pcntl
-          - pecl install mongodb && docker-php-ext-enable mongodb
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
           - vendor/bin/phpunit
         services:
