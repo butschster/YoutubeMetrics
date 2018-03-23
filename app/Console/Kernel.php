@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('kremlin-bots:check')->twiceDaily(),
             $schedule->command('youtube:channels-sync')->dailyAt('03:00'),
             $schedule->command('youtube:followed-channels-sync')->daily(),
-            $schedule->command('youtube:videos-sync')->everyFiveMinutes(),
-            $schedule->command('youtube:video-statistics-sync')->everyMinute(),
+            $schedule->command('youtube:channels-follow')->everyFiveMinutes(),
+            $schedule->command('youtube:video-information-sync')->everyMinute(),
             $schedule->command('youtube:comments-sync')->everyThirtyMinutes()
         );
 

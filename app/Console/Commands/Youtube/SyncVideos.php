@@ -13,14 +13,14 @@ class SyncVideos extends Command
      *
      * @var string
      */
-    protected $signature = 'youtube:videos-sync';
+    protected $signature = 'youtube:channels-follow';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync youtube videos';
+    protected $description = 'Слежение за новыми видео на каналах';
 
     /**
      * @param Client $client

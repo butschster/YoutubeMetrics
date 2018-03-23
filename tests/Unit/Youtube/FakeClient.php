@@ -3,11 +3,12 @@
 namespace Tests\Unit\Youtube;
 
 use App\Services\Youtube\Client;
+use Closure;
 
 class FakeClient extends Client
 {
     /**
-     * @var string
+     * @var Closure
      */
     protected $return;
 
@@ -16,13 +17,15 @@ class FakeClient extends Client
     /**
      * @param string $return
      */
-    public function shouldReturn(string $return)
+    public function shouldReturn(Closure $return)
     {
         $this->return = $return;
     }
 
     public function api_get($url, $params)
     {
-        return $this->return;
+        $callback =  $this->return;
+
+        return $callback($params);
     }
 }

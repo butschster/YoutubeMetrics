@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Tag;
 use App\Entities\Video;
 use Illuminate\Support\Facades\Cache;
 
@@ -28,7 +29,7 @@ class VideoController extends Controller
     {
         $this->meta->setTitle($video->title);
 
-        $tags = $video->tags->pluck('name');
+        $tags = $video->tags->pluck('link', 'name');
 
         $cacheKey = md5("spamComment".$video->id);
         $spamCommentsCount = Cache::remember($cacheKey, now()->addHour(), function () use ($video) {
@@ -36,5 +37,13 @@ class VideoController extends Controller
         });
 
         return view('video.show', compact('video', 'tags', 'spamCommentsCount'));
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function byTag(Tag $tag)
+    {
+
     }
 }

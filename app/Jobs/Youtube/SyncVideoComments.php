@@ -3,6 +3,7 @@
 namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
+use App\Entities\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,17 +17,22 @@ class SyncVideoComments implements ShouldQueue
     /**
      * @var string
      */
-    public $videoId;
+    public $video;
 
     /**
      * Create a new job instance.
      *
-     * @param string $videoId
+     * @param Video|string $video
      */
-    public function __construct(string $videoId)
+    public function __construct($video)
     {
         $this->onQueue('comment');
-        $this->videoId = $videoId;
+
+        if ($video instanceof Video) {
+            $video = $video->getKey();
+        }
+
+        $this->video = $video;
     }
 
     /**
@@ -46,8 +52,8 @@ class SyncVideoComments implements ShouldQueue
      */
     protected function syncComments(Client $client, string $pageToken = null): void
     {
-        $comments = $client->getCommentThreads($this->videoId, 100, $pageToken);
-        dispatch(new UpdateComments($this->videoId, $comments));
+        $comments = $client->getCommentThreads($this->video, 100, $pageToken);
+        dispatch(new UpdateComments($this->video, $comments));
 
         if ($comments->hasNextPage()) {
             $this->syncComments($client, $comments->getNextPageToken());

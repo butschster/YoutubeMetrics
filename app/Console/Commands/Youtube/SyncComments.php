@@ -24,7 +24,9 @@ class SyncComments extends Command
 
     public function handle()
     {
-        $videos = Video::where('created_at', '>', now()->subHours(6))->get();
+        $lifetime = config('youtube.lifetime.comments');
+
+        $videos = Video::where('created_at', '>', now()->subHours($lifetime))->get();
 
         foreach ($videos as $video) {
             dispatch(new SyncVideoComments($video->id));

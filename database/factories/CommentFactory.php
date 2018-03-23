@@ -16,6 +16,7 @@ $factory->define(Comment::class, function (Faker $faker) {
         },
         'text' => $faker->paragraph,
         'total_likes' => $faker->randomNumber(),
-        'is_spam' => $faker->boolean
+        'is_spam' => $faker->boolean,
+        'created_at' => $faker->dateTime
     ];
 });

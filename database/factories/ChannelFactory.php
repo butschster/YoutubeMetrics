@@ -15,6 +15,7 @@ $factory->define(Channel::class, function (Faker $faker) {
         'comments' => $faker->randomNumber(),
         'subscribers' => $faker->randomNumber(),
         'total_comments' => $faker->randomNumber(),
-        'bot_comments' => $faker->randomNumber()
+        'bot_comments' => $faker->randomNumber(),
+        'created_at' => $faker->dateTime
     ];
 });

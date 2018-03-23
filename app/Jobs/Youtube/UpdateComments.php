@@ -5,12 +5,13 @@ namespace App\Jobs\Youtube;
 use App\Entities\Channel;
 use App\Entities\Video;
 use App\Services\Youtube\Resources\Comment;
+use App\Services\Youtube\ResponseCollection;
 use Illuminate\Bus\Queueable;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class UpdateComments implements ShouldQueue
 {
@@ -21,15 +22,15 @@ class UpdateComments implements ShouldQueue
     public $videoId;
 
     /**
-     * @var \stdClass
+     * @var ResponseCollection
      */
     public $comments;
 
     /**
      * @param string $videoId
-     * @param ResourceCollection|Comment[] $comments
+     * @param ResponseCollection|Comment[] $comments
      */
-    public function __construct(string $videoId, $comments)
+    public function __construct(string $videoId, ResponseCollection $comments)
     {
         $this->onQueue('comment');
 
@@ -42,6 +43,7 @@ class UpdateComments implements ShouldQueue
         $video = Video::find($this->videoId);
 
         if (!$video) {
+            Log::debug("Video with id [{$this->videoId}] not found.");
             return;
         }
 

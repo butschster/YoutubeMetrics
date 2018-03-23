@@ -14,22 +14,27 @@ class SyncVideoInformation extends Command
      *
      * @var string
      */
-    protected $signature = 'youtube:video-statistics-sync';
+    protected $signature = 'youtube:video-information-sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Сбор информации о видео';
 
     public function handle()
     {
-        /** @var Video[] $videos */
-        $videos = Video::where('created_at', '>', now()->subDay())->get();
+        $lifetime = config('youtube.lifetime.videos');
 
-        foreach ($videos as $video) {
-            dispatch(new UpdateVideoInformation($video->id));
-        }
+        Video::where('created_at', '>', now()->subHours($lifetime))->chunk(50, function ($videos) {
+
+            foreach ($videos as $video) {
+                dispatch(
+                    new UpdateVideoInformation($video)
+                );
+            }
+
+        });
     }
 }

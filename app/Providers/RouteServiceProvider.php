@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Entities\Channel;
 use App\Entities\Comment;
+use App\Entities\Tag;
 use App\Entities\Video;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
@@ -31,6 +32,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->addVideoBinding();
         $this->addChannelBinding();
         $this->addCommentBinding();
+        $this->addTagBinding();
 
         parent::boot();
     }
@@ -126,6 +128,23 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             return $comment;
+        });
+    }
+
+    protected function addTagBinding(): void
+    {
+        Route::bind('tag', function ($name) {
+            $cacheKey = md5('tag'.$name);
+
+            $tag = Cache::remember($cacheKey, now()->addHour(), function () use ($name) {
+                return Tag::where('name', $name)->first();
+            });
+
+            if (!$tag) {
+                abort(404, 'Тег не найден');
+            }
+
+            return $tag;
         });
     }
 }

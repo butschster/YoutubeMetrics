@@ -38,7 +38,9 @@ class UpdateChannelInformationTest extends TestCase
         $job = new UpdateChannelInformation([$channel->id, 'UC__srCovAWzwj4Ujg5GQJxQ', 'UC__R_ZSQ5SwasiqeJ5-nqZ1']);
 
         $client = new FakeClient();
-        $client->shouldReturn($this->youtubeResponse());
+        $client->shouldReturn(function(array $params) {
+            return $this->youtubeResponse($params);
+        });
 
         $job->handle($client);
         $channel = $channel->fresh();
@@ -70,7 +72,7 @@ class UpdateChannelInformationTest extends TestCase
         $this->assertTrue($channelForDelete->deleted);
     }
 
-    protected function youtubeResponse()
+    protected function youtubeResponse(array $params)
     {
         return <<<EOL
 {
