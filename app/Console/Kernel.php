@@ -31,6 +31,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('youtube:video-statistics-sync')->everyMinute(),
             $schedule->command('youtube:comments-sync')->everyThirtyMinutes()
         );
+
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use KodiCMS\Assets\Contracts\MetaInterface;
+use Laravel\Horizon\Horizon;
 use View;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(MetaInterface $meta)
     {
         $this->makeMetaAttributes($meta);
+
+        Horizon::auth(function ($request) {
+            return $request->user();
+        });
     }
 
     /**

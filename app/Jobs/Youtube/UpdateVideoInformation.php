@@ -65,4 +65,14 @@ class UpdateVideoInformation implements ShouldQueue
             $info->getStatistics()->toArray()
         );
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        return ['youtube', 'video'];
+    }
 }

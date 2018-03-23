@@ -19,7 +19,6 @@
         "jenssegers/mongodb": "^3.4",
         "kodicms/laravel-assets": "^0.4.5",
         "laravel/framework": "5.6.*",
-        "laravel/horizon": "^1.2",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "madcoda/php-youtube-api": "^1.2",
@@ -28,6 +27,7 @@
         "sentry/sentry-laravel": "^0.8.0"
     },
     "require-dev": {
+        "laravel/horizon": "^1.2",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
