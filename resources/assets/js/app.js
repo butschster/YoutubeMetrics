@@ -30,6 +30,7 @@ Vue.component('channel-comments', require('./components/Channels/Comments'));
 Vue.component('channel-moderation', require('./components/Channels/Moderation'));
 
 Vue.component('button-report', require('./components/Channels/ReportButton'));
+Vue.component('button-moderate', require('./components/Channels/ModerateButton'));
 
 Vue.component('video-clear-cache-button', require('./components/Videos/CacheClearButton'));
 

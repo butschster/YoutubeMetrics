@@ -17,7 +17,7 @@ class ChannelPolicy
      */
     public function report(User $user, Channel $channel): bool
     {
-        return true;
+        return ! $channel->bot;
     }
 
     /**

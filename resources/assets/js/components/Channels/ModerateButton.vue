@@ -1,7 +1,7 @@
 <template>
     <button class="btn btn-danger" @click="report()">
-        <i class="fas fa-bug"></i>
-        Пожаловаться
+        <i class="fas fa-fire-extinguisher"></i>
+        Не бот
     </button>
 </template>
 
@@ -16,10 +16,10 @@
         methods: {
             report() {
                 this.$swal({
-                    title: 'Вы уверены, что он бот?',
+                    title: 'Вы уверены, что он не бот?',
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Да, это бот!',
+                    confirmButtonText: 'Да, это не бот!',
                     cancelButtonText: 'Отмена'
                 }).then((result) => {
                     if (result.value) {
@@ -29,7 +29,7 @@
             },
             async sendReport() {
                 try {
-                    let response = await axios.post(`/api/channel/abuse`, {channel_id: this.id});
+                    await axios.post(`/api/channel/${this.id}/moderate`);
                 } catch (e) {
                 }
             },

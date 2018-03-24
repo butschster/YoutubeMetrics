@@ -32,6 +32,12 @@
                         @can('report', $channel)
                             <button-report id="{{ $channel->id }}"></button-report>
                         @endcan
+
+                        @can('moderate', $channel)
+                            @if($channel->bot)
+                            <button-moderate id="{{ $channel->id }}"></button-moderate>
+                            @endif
+                        @endcan
                     </div>
                 </div>
             </div>

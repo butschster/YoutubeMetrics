@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Entities\Channel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class ChannelReportController extends Controller
 {
@@ -27,6 +28,8 @@ class ChannelReportController extends Controller
 
         $channel->sendReport();
 
+        $this->clearCache($channel);
+
         return ['type' => $channel->type];
     }
 
@@ -44,6 +47,16 @@ class ChannelReportController extends Controller
 
         $channel->updateReports(-1);
 
+        $this->clearCache($channel);
+
         return ['type' => $channel->type];
+    }
+
+    /**
+     * @param Channel $channel
+     */
+    protected function clearCache(Channel $channel): void
+    {
+        Cache::forget(md5('channel'.$channel->id));
     }
 }
