@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-4 mb-2" v-for="channel in channels">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2" v-for="channel in channels">
                 <div class="box-shadow bg-white p-4">
                     <div class="media">
                         <img :src="channel.thumb" style="width: 40px" class="rounded-circle mr-3"/>

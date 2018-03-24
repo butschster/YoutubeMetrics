@@ -31,6 +31,9 @@ class VideoController extends Controller
 
         $tags = $video->tags->pluck('link', 'name');
 
+        $this->meta->setMetaKeywords($tags->keys()->all());
+        $this->meta->setMetaDescription(str_limit($video->description, 255));
+
         $cacheKey = md5("spamComment".$video->id);
         $spamCommentsCount = Cache::remember($cacheKey, now()->addHour(), function () use ($video) {
             return $video->comments()->where('is_spam', true)->count();

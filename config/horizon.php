@@ -73,7 +73,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'connection' => 'redis',
+                'connection' => env('QUEUE_DRIVER'),
                 'queue' => ['default'],
                 'balance' => 'auto',
                 'processes' => 12,
@@ -83,7 +83,7 @@ return [
 
         'local' => [
             'supervisor-1' => [
-                'connection' => 'redis',
+                'connection' => env('QUEUE_DRIVER'),
                 'queue' => ['default'],
                 'balance' => 'auto',
                 'processes' => 3,
