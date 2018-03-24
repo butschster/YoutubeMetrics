@@ -21,7 +21,7 @@
 
                     <div class="btn-group my-4" role="group">
 
-                        <a class="btn btn-outline-light" href={{ $channel->youtube_link }}" target="_blank">
+                        <a class="btn btn-outline-light" href="{{ $channel->youtube_link }}" target="_blank">
                             <i class="fab fa-youtube fa-fw fa-lg"></i> Канал
                         </a>
 
