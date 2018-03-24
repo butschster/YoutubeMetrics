@@ -222,7 +222,7 @@ class Client extends Youtube implements ClientContract
         $errors = $error->errors ?? [];
 
         foreach ($errors as $e) {
-            if ($e->reason == 'dailyLimitExceeded') {
+            if ($e->reason == 'dailyLimitExceeded' || $e->reason == 'quotaExceeded') {
                 throw (new DailyLimitExceededException($e->message, $error->code, $previous))
                     ->setKey($this->youtube_key);
             }

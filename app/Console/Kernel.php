@@ -29,7 +29,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('youtube:followed-channels-sync')->daily(),
             $schedule->command('youtube:channels-follow')->everyFiveMinutes(),
             $schedule->command('youtube:video-information-sync')->everyMinute(),
-            $schedule->command('youtube:comments-sync')->everyThirtyMinutes()
+            $schedule->command('youtube:hourly-comments-sync')->hourly(),
+            $schedule->command('youtube:daily-comments-sync')->dailyAt('22:00')
         );
 
         $schedule->command('horizon:snapshot')->everyFiveMinutes();

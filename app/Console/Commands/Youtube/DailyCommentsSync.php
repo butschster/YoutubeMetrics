@@ -6,27 +6,26 @@ use App\Entities\Video;
 use App\Jobs\Youtube\SyncVideoComments;
 use Illuminate\Console\Command;
 
-class SyncComments extends Command
+class DailyCommentsSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'youtube:comments-sync';
+    protected $signature = 'youtube:daily-comments-sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Контрольная синхронизация комментариев, через день';
 
     public function handle()
     {
-        $lifetime = config('youtube.lifetime.comments');
-
-        $videos = Video::where('created_at', '>', now()->subHours($lifetime))->get();
+        $date = now()->subDay()->toDateString();
+        $videos = Video::whereRaw("date(created_at) = '{$date}'")->get();
 
         foreach ($videos as $video) {
             dispatch(new SyncVideoComments($video->id));
