@@ -49,9 +49,7 @@ class ChannelModerationController extends Controller
     {
         $this->authorize('moderate', $channel);
 
-        $channel->reports = 0;
-        $channel->bot = false;
-        $channel->save();
+        $channel->markAsNormal();
 
         $this->clearCache($channel);
 

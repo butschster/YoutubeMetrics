@@ -148,6 +148,18 @@ class Channel extends Model
     }
 
     /**
+     * Пометка канала как нормального
+     */
+    public function markAsNormal(): void
+    {
+        $this->reports = 0;
+        $this->bot = false;
+        $this->save();
+
+        $this->comments()->update(['is_spam' => false]);
+    }
+
+    /**
      * @param Builder $builder
      * @return $this
      */
