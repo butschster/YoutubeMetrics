@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Entities\Channel;
+use App\Entities\Video;
 use App\Policies\ChannelPolicy;
+use App\Policies\VideoPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Channel::class => ChannelPolicy::class
+        Channel::class => ChannelPolicy::class,
+        Video::class => VideoPolicy::class
     ];
 
     /**

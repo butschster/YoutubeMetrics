@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Cache;
 
 class CommentsController extends Controller
 {
+    public function cacheClear(Video $video)
+    {
+        Cache::forget(md5("comments:".$video->id));
+        Cache::forget(md5("comments:bots:".$video->id));
+    }
+
     /**
      * @param Video $video
      * @return CommentsCollection

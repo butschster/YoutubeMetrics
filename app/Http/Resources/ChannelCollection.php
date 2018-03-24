@@ -26,6 +26,7 @@ class ChannelCollection extends ResourceCollection
                 'subscribers' => format_number($channel->subscribers),
                 'bot_comments' => format_number($channel->bot_comments),
                 'total_comments' => format_number($channel->total_comments),
+                'created_at' => format_date($channel->created_at),
             ];
         })->all();
     }

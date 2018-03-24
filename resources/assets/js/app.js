@@ -28,7 +28,10 @@ Vue.component('channels-followed', require('./components/Channels/Followed'));
 Vue.component('channel-chart', require('./components/Channels/ChannelChart'));
 Vue.component('channel-comments', require('./components/Channels/Comments'));
 Vue.component('channel-moderation', require('./components/Channels/Moderation'));
+
 Vue.component('button-report', require('./components/Channels/ReportButton'));
+
+Vue.component('video-clear-cache-button', require('./components/Videos/CacheClearButton'));
 
 const app = new Vue({
     el: '#app'

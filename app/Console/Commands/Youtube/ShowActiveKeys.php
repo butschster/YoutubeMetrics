@@ -22,9 +22,7 @@ class ShowActiveKeys extends Command
     protected $description = 'Список ключей, кторые используюся для получения данных';
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @param KeyManager $manager
      */
     public function handle(KeyManager $manager)
     {

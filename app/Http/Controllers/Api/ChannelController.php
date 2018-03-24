@@ -51,16 +51,6 @@ class ChannelController extends Controller
     /**
      * @return ChannelCollection
      */
-    public function reported(): ChannelCollection
-    {
-        return new ChannelCollection(
-            Channel::onlyReported()->live()->get()
-        );
-    }
-
-    /**
-     * @return ChannelCollection
-     */
     public function bots(): ChannelCollection
     {
         return new ChannelCollection(

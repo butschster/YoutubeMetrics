@@ -26,6 +26,10 @@
                target="_blank">
                 <i class="fab fa-youtube"></i> Посмотреть на youtube
             </a>
+
+            @can('clear_comments_cache', $video)
+            <video-clear-cache-button id="{{ $video->id }}" class="btn-outline-danger"></video-clear-cache-button>
+            @endcan
         </div>
 
         <video-comments id="{{ $video->id }}" class="my-5"></video-comments>

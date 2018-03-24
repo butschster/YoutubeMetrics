@@ -4,12 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Channel;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChannelCollection;
 
 class ChannelModerationController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    /**
+     * @return ChannelCollection
+     */
+    public function index(): ChannelCollection
+    {
+        return new ChannelCollection(
+            Channel::onlyReported()->live()->get()
+        );
     }
 
     /**
