@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Entities\Channel;
+use App\Entities\FollowedChannel;
 use App\Jobs\Youtube\UpdateChannelInformation;
 use Illuminate\Console\Command;
 
@@ -28,7 +28,7 @@ class SyncFollowedChannels extends Command
      */
     public function handle(Client $client)
     {
-        Channel::get()->each(function (Channel $channel) {
+        FollowedChannel::get()->each(function (FollowedChannel $channel) {
             dispatch(new UpdateChannelInformation($channel->id));
         });
     }
