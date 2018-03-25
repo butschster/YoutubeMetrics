@@ -3,38 +3,17 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Support\Facades\Cache;
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
-class Channel extends Model
+class Channel extends YoutubeModel
 {
     use HybridRelations;
 
     const TYPE_NORMAL = 'normal';
     const TYPE_BOT = 'bot';
     const TYPE_REPORTED = 'reported';
-
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * @var array
-     */
-    protected $guarded = [];
 
     /**
      * @var array

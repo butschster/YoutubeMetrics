@@ -4,6 +4,8 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class FollowedChannel extends Model
 {
@@ -29,13 +31,20 @@ class FollowedChannel extends Model
      * @var array
      */
     protected $casts = [
-        'follow' => 'bool',
+        'follow_to' => 'date',
         'title' => 'string'
     ];
 
+    /**
+     * @return bool
+     */
     public function isFollow(): bool
     {
-        return $this->follow;
+        if (!$this->follow_to) {
+            return true;
+        }
+
+        return $this->follow_to->endOfDay()->gte(now());
     }
 
     /**
@@ -44,21 +53,25 @@ class FollowedChannel extends Model
      */
     public function scopeOnlyFollow(Builder $builder)
     {
-        return $builder->where('follow', true);
+        return $builder->where(function ($query) {
+            return $query
+                ->orWhereNull('follow_to')
+                ->orWhere('follow_to', '>=', now()->toDateString());
+        });
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function videos()
+    public function videos(): HasMany
     {
         return $this->hasMany(Video::class, 'channel_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
-    public function channel()
+    public function channel(): HasOne
     {
         return $this->hasOne(Channel::class, 'id');
     }

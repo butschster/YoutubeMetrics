@@ -28,7 +28,7 @@ class SyncFollowedChannels extends Command
      */
     public function handle(Client $client)
     {
-        FollowedChannel::get()->each(function (FollowedChannel $channel) {
+        FollowedChannel::onlyFollow()->get()->each(function (FollowedChannel $channel) {
             dispatch(new UpdateChannelInformation($channel->id));
         });
     }
