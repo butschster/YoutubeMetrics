@@ -34,6 +34,12 @@ task('supervisor:queue:restart', function () {
     run('supervisorctl restart all');
 });
 
+desc('Clear opcache');
+task('opcache:clear', function () {
+    run('{{bin/php}} {{release_path}}/artisan opcache:clear');
+});
+
+
 desc('Execute php:reload');
 task('php:reload', function () {
     run('systemctl reload php7.2-fpm.service');
@@ -45,7 +51,12 @@ after('deploy:failed', 'deploy:unlock');
 // Migrate database before symlink new release.
 before('deploy:symlink', 'artisan:migrate');
 after('artisan:config:cache', 'artisan:route:cache');
+
 after('deploy:writable', 'php:reload');
+after('deploy:writable', 'opcache:clear');
+
 after('deploy:symlink', 'supervisor:queue:restart');
+after('deploy:symlink', 'opcache:clear');
+
 after('deploy:symlink', 'php:reload');
 
