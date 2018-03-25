@@ -83,7 +83,7 @@ return [
 
         'local' => [
             'supervisor-1' => [
-                'connection' => env('QUEUE_DRIVER'),
+                'connection' => 'queue-server',
                 'queue' => ['default'],
                 'balance' => 'auto',
                 'processes' => 3,
