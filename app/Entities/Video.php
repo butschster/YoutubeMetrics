@@ -2,6 +2,9 @@
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Relations\{
+    BelongsTo, BelongsToMany, HasMany
+};
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Video extends YoutubeModel
@@ -17,33 +20,33 @@ class Video extends YoutubeModel
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function channel()
+    public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function statistics()
+    public function statistics(): HasMany
     {
         return $this->hasMany(VideoStat::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

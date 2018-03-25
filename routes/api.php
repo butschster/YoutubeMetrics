@@ -1,16 +1,19 @@
 <?php
 
 Route::get('channels/followed', 'Api\ChannelController@followed');
-Route::get('channel/reported', 'Api\ChannelModerationController@index');
-Route::post('channel/check', 'Api\ChannelController@check');
-Route::get('channel/bots', 'Api\ChannelController@bots');
+
+Route::get('channel/reported', 'Api\ChannelReportController@index');
+Route::post('channel/check', 'Api\ChannelVerificationController@check');
+
+
+Route::get('channel/bots', 'Api\ChannelController@botList')->name('channels.bots');
+
 Route::get('channel/{channel}/metrics', 'Api\ChannelMetricsController@index');
 
 Route::get('channel/{channel}/comments/bots', 'Api\ChannelCommentsController@fromBots');
 Route::get('channel/{channel}/comments', 'Api\ChannelCommentsController@index');
 
-Route::post('channel/abuse', 'Api\ChannelReportController@store');
-Route::delete('channel/abuse', 'Api\ChannelReportController@destroy');
+Route::post('channel/abuse', 'Api\ChannelReportController@store')->name('channel.abuse');
 
 Route::delete('channel/{channel}/moderate', 'Api\ChannelModerationController@markAsBot');
 Route::post('channel/{channel}/moderate', 'Api\ChannelModerationController@markAsNormal');

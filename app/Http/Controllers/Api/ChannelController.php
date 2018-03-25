@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Cache;
 class ChannelController extends Controller
 {
     /**
+     * Получение списка каналов, за которыми производится слежение
+     *
      * @return ChannelCollection
      */
     public function followed(): ChannelCollection
@@ -28,33 +30,14 @@ class ChannelController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return array
-     */
-    public function check(Request $request): array
-    {
-        $request->validate(['channel_id' => 'required']);
-
-        $id = $request->channel_id;
-
-        $cacheKey = md5('channel'.$id);
-
-        $channel = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
-            return Channel::live()->find($id);
-        });
-
-        return [
-            'type' => !is_null($channel) ? $channel->type : 'normal'
-        ];
-    }
-
-    /**
+     * Получение полного списка каналов ботов.
+     *
      * @return ChannelCollection
      */
-    public function bots(): ChannelCollection
+    public function botList(): ChannelCollection
     {
         return new ChannelCollection(
-            Cache::remember('bots', now()->addHour(), function () {
+            Cache::remember(md5('channel.bot.list'), now()->addHour(), function () {
                 return Channel::onlyBots()->live()->orderBy('total_comments')->get();
             })
         );

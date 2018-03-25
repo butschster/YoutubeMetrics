@@ -19,6 +19,8 @@ class CommentsController extends Controller
     }
 
     /**
+     * Получение комментариев к видео
+     *
      * @param Video $video
      * @return CommentsCollection
      */
@@ -44,6 +46,8 @@ class CommentsController extends Controller
     }
 
     /**
+     * Получение комментариев от ботов к видео
+     *
      * @param Video $video
      * @return CommentsCollection
      */
@@ -69,10 +73,12 @@ class CommentsController extends Controller
     }
 
     /**
+     * Получение комментариев для канала
+     *
      * @param Channel $channel
      * @return array
      */
-    public function channel(Channel $channel)
+    public function channel(Channel $channel): CommentsCollection
     {
         $cacheKey = md5('channel_comments'.$channel->id);
 

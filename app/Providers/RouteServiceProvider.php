@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\ChannelRepository;
 use App\Entities\Channel;
 use App\Entities\Comment;
 use App\Entities\Tag;
@@ -83,17 +84,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function addChannelBinding(): void
     {
         Route::bind('channel', function ($id) {
-            $cacheKey = md5('channel'.$id);
-
-            $channel = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($id) {
-                return Channel::find($id);
-            });
-
-            if (!$channel) {
-                abort(404, 'Канал не найден');
-            }
-
-            return $channel;
+            return $this->app->make(ChannelRepository::class)->show($id);
         });
     }
 

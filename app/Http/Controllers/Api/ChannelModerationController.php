@@ -15,16 +15,8 @@ class ChannelModerationController extends Controller
     }
 
     /**
-     * @return ChannelCollection
-     */
-    public function index(): ChannelCollection
-    {
-        return new ChannelCollection(
-            Channel::onlyReported()->live()->get()
-        );
-    }
-
-    /**
+     * Пометка канала ботом
+     *
      * @param Channel $channel
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -41,6 +33,8 @@ class ChannelModerationController extends Controller
     }
 
     /**
+     * Пометка канала нормальным
+     *
      * @param Channel $channel
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -57,6 +51,8 @@ class ChannelModerationController extends Controller
     }
 
     /**
+     * todo: возможно лишний метод, т.к. сброк кеша канала происходит при изменении данных
+     *
      * @param Channel $channel
      */
     protected function clearCache(Channel $channel): void

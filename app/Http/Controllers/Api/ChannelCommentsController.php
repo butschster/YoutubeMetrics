@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Cache;
 class ChannelCommentsController extends Controller
 {
     /**
+     * Получение списка всех комментариев канала
+     *
      * @param Channel $channel
      * @return CommentsCollection
      */
@@ -36,6 +38,8 @@ class ChannelCommentsController extends Controller
     }
 
     /**
+     * Получение списка всех комментариев канала, написанных ботами
+     *
      * @param Channel $channel
      * @return CommentsCollection
      */

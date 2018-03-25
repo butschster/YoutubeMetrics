@@ -3,8 +3,9 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\{
+    HasMany, HasManyThrough
+};
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Channel extends YoutubeModel

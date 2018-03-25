@@ -3,8 +3,9 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\{
+    BelongsTo, HasMany
+};
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Comment extends YoutubeModel
