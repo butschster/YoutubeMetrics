@@ -19,7 +19,8 @@ add('shared_dirs', []);
 
 set('allow_anonymous_stats', false);
 
-host('youtube-collector')
+host('botsmeter')
+    ->port(60022)
     ->configFile('~/.ssh/config')
     ->set('deploy_path', '/var/www');
 
