@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Project name
-set('application', 'YouTubeMeter');
+set('application', 'BotsMeter');
 
 // Project repository
 set('repository', 'git@bitbucket.org:butsch/youtube.git');
@@ -19,13 +19,12 @@ add('shared_dirs', []);
 
 set('allow_anonymous_stats', false);
 
-host('botsmeter')
+host('botsmeter', 'botsmeter-db')
     ->port(60022)
     ->configFile('~/.ssh/config')
     ->set('deploy_path', '/var/www');
 
 // Tasks
-
 task('build', function () {
     run('cd {{release_path}} && build');
 });
@@ -38,7 +37,7 @@ task('supervisor:queue:restart', function () {
 desc('Execute php:reload');
 task('php:reload', function () {
     run('systemctl reload php7.2-fpm.service');
-});
+})->onHosts('botsmeter');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');

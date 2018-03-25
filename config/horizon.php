@@ -76,7 +76,7 @@ return [
                 'connection' => env('QUEUE_DRIVER'),
                 'queue' => ['default'],
                 'balance' => 'auto',
-                'processes' => 12,
+                'processes' => 24,
                 'tries' => 3,
             ],
         ],
