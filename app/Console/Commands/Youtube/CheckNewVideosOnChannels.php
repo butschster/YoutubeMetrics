@@ -6,7 +6,7 @@ use App\Contracts\Services\Youtube\Client;
 use App\Entities\FollowedChannel;
 use Illuminate\Console\Command;
 
-class SyncVideos extends Command
+class CheckNewVideosOnChannels extends Command
 {
     /**
      * The name and signature of the console command.
@@ -45,13 +45,14 @@ class SyncVideos extends Command
                     continue;
                 }
 
-                $channel->videos()->updateOrCreate(['id' => $video->id->videoId], [
+                $channel->videos()->firstOrCreate(['id' => $video->id->videoId], [
                     'id' => $video->id->videoId,
                     'title' => $video->getSnippet()->getTitle(),
                     'thumb' => $video->getSnippet()->getThumb(),
                     'description' => $video->getSnippet()->getDescription(),
                     'created_at' => $video->getSnippet()->getPublishedAt()
                 ]);
+
             }
         }
     }
