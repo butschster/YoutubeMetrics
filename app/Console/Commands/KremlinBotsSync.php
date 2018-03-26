@@ -31,13 +31,9 @@ class KremlinBotsSync extends Command
     {
         $botList = $client->list();
 
-        $existsIds = Channel::pluck('id', 'id');
-
-        $botList->filter(function ($data) use ($existsIds) {
-            return !$existsIds->contains($data['id']);
-        })->each(function ($data) {
+        $botList->each(function ($data) {
             Channel::updateOrCreate(['id' => $data['id'],], ['bot' => true]);
-            dispatch(new UpdateChannelInformation($data['id']));
+            //dispatch(new UpdateChannelInformation($data['id']));
         });
     }
 }
