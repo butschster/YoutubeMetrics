@@ -5,6 +5,8 @@ Route::get('channels/followed', 'Api\ChannelController@followed');
 Route::get('channel/reported', 'Api\ChannelReportController@index');
 Route::post('channel/check', 'Api\ChannelVerificationController@check');
 
+Route::get('channels/created/{date}', 'Api\ChannelController@filteredByDateCreation')->middleware('auth');
+
 
 Route::get('channel/bots', 'Api\ChannelController@botList')->name('channels.bots');
 

@@ -35,6 +35,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->addCommentBinding();
         $this->addTagBinding();
 
+        Route::pattern('date', '\d{4}-\d{2}-\d{2}');
+
         parent::boot();
     }
 

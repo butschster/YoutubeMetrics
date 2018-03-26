@@ -4,6 +4,10 @@ Auth::routes();
 
 Route::get('/', 'VideoController@index')->name('home');
 
+Route::get('/channels/created/{date}', 'ChannelController@filteredByDateCreation')->name('channel.created.date')->middleware('auth');
+
+Route::get('/channels/bots', 'ChannelController@botsGroupedByCreationDate')->name('channel.bots');
+
 Route::get('/channels/moderate', 'ChannelModerationController@index')->name('channel.moderate');
 Route::get('/channel/{channel}', 'ChannelController@show')->name('channel.show');
 

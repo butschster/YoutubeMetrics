@@ -11,3 +11,15 @@
     background: $purple;
   }
 }
+
+.channels {
+  .channel {
+    &.channel-reported {
+      background: $yellow;
+    }
+
+    &.channel-bot {
+      background: #f1c5cf;
+    }
+  }
+}

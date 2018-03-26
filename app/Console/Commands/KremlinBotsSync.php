@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Entities\Bot;
+use App\Entities\Channel;
+use App\Jobs\Youtube\UpdateChannelInformation;
 use App\Services\KremlinBots\Client;
 use Illuminate\Console\Command;
 
@@ -29,15 +31,13 @@ class KremlinBotsSync extends Command
     {
         $botList = $client->list();
 
-        $existsIds = Bot::pluck('id', 'id');
+        $existsIds = Channel::pluck('id', 'id');
 
         $botList->filter(function ($data) use ($existsIds) {
             return !$existsIds->contains($data['id']);
         })->each(function ($data) {
-            Bot::forceCreate([
-                'id' => $data['id'],
-                'created_at' => $data['date']
-            ]);
+            Channel::updateOrCreate(['id' => $data['id'],], ['bot' => true]);
+            dispatch(new UpdateChannelInformation($data['id']));
         });
     }
 }

@@ -161,6 +161,15 @@ class Channel extends YoutubeModel
      * @param Builder $builder
      * @return $this
      */
+    public function scopeFilterBots(Builder $builder)
+    {
+        return $builder->where('bot', false);
+    }
+
+    /**
+     * @param Builder $builder
+     * @return $this
+     */
     public function scopeOnlyReported(Builder $builder)
     {
         return $builder->where('bot', false)->where('reports', '>', 0);

@@ -21,10 +21,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('channel:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('channel:stat-bot-comments')->dailyAt('02:00')->withoutOverlapping();
 
-
         // YouTube tasks
         $this->runYoutubeTask(
-            $schedule->command('kremlin-bots:check')->twiceDaily(),
             $schedule->command('youtube:channels-sync')->dailyAt('03:00'),
             $schedule->command('youtube:followed-channels-sync')->daily(),
             $schedule->command('youtube:channels-follow')->everyMinute(),

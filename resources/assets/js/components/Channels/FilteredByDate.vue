@@ -1,25 +1,28 @@
 <template>
     <div>
-        <h3>Модерация каналов</h3>
+        <h3>Каналы зарегистрированные {{ date }}</h3>
 
         <ul class="list-unstyled channels">
             <channel
-                    class="bg-white box-shadow"
+                    class="bg-white box-shadow channel"
                     :channel="channel"
                     v-for="channel in channels"
                     :key="channel.id"
-                    v-on:bot="hide"
-                    v-on:normal="hide"
             ></channel>
         </ul>
     </div>
 </template>
 
 <script>
-    import Channel from './Moderation/Channel';
+    import Channel from './_partials/Channel';
 
     export default {
         components: {Channel},
+        props: {
+            date: {
+                required: true
+            }
+        },
         data() {
             return {
                 channels: [],
@@ -32,7 +35,7 @@
             async load() {
 
                 try {
-                    let response = await axios.get('/api/channel/reported');
+                    let response = await axios.get(`/api/channels/created/${this.date}`);
                     this.channels = _.map(response.data.data, (channel) => {
                         channel.comments = [];
                         return channel;
@@ -40,12 +43,6 @@
                 } catch (e) {}
 
             },
-
-            async hide(channel) {
-                this.channels = this.channels.filter((c) => {
-                    return c.id != channel.id;
-                });
-            }
         }
     }
 </script>

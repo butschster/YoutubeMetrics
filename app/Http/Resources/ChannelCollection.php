@@ -22,6 +22,7 @@ class ChannelCollection extends ResourceCollection
                 'link' => $channel->link,
                 'thumb' => $channel->thumb,
                 'reports' => $channel->reports,
+                'type' => $channel->type,
                 'views' => format_number($channel->views),
                 'subscribers' => format_number($channel->subscribers),
                 'bot_comments' => format_number($channel->bot_comments),
