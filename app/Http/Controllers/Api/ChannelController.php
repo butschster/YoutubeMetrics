@@ -52,13 +52,11 @@ class ChannelController extends Controller
      */
     public function filteredByDateCreation(string $date): ChannelCollection
     {
-        $channels = Cache::remember(md5(__METHOD__.$date), now()->addHour(), function () use($date) {
-            return Channel::filterBots()
-                ->whereRaw('date(created_at) = ?')
-                ->orderByDesc('total_comments')
-                ->addBinding($date)
-                ->get();
-        });
+        $channels = Channel::filterBots()
+            ->whereRaw('date(created_at) = ?')
+            ->orderByDesc('total_comments')
+            ->addBinding($date)
+            ->get();
 
         return new ChannelCollection(
             $channels

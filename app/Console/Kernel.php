@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('kremlin-bots:sync')->hourly()->withoutOverlapping();
+        $schedule->command('metabot:sync')->hourly()->withoutOverlapping();
         $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
         $schedule->command('channel:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('channel:stat-bot-comments')->dailyAt('02:00')->withoutOverlapping();

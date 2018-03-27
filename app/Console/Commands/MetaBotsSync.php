@@ -8,21 +8,21 @@ use App\Jobs\Youtube\UpdateChannelInformation;
 use App\Services\KremlinBots\Client;
 use Illuminate\Console\Command;
 
-class KremlinBotsSync extends Command
+class MetaBotsSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'kremlin-bots:sync';
+    protected $signature = 'metabot:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync kremlin bot list from repository';
+    protected $description = 'Синхронизация акканутов ботов с MetaBot';
 
     /**
      * @param Client $client
@@ -33,7 +33,7 @@ class KremlinBotsSync extends Command
 
         $botList->each(function ($data) {
             Channel::updateOrCreate(['id' => $data['id'],], ['bot' => true]);
-            //dispatch(new UpdateChannelInformation($data['id']));
+            dispatch(new UpdateChannelInformation($data['id']));
         });
     }
 }

@@ -31,7 +31,7 @@ class YoutubeServiceProvider extends ServiceProvider
             $manager = new KeyManager($this->app);
 
             $manager->setKeys(
-                $this->app->make('config')->get('services.youtube.keys', [])
+                $this->app->make('config')->get('youtube.keys', [])
             );
 
             return $manager;
