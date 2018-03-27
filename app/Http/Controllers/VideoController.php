@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Tag;
-use App\Entities\Video;
+use App\Entities\{
+    Tag, Video
+};
 use Illuminate\Support\Facades\Cache;
 
 class VideoController extends Controller

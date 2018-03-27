@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Tag;
-use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {

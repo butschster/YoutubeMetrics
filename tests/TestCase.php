@@ -58,16 +58,4 @@ abstract class TestCase extends BaseTestCase
     {
         return factory(Tag::class, $times)->create($attributes);
     }
-
-    /**
-     * Create a new bot
-     *
-     * @param array $attributes
-     * @param int $times
-     * @return Bot
-     */
-    public function createBot(array $attributes = [], int $times = null)
-    {
-        return factory(Bot::class, $times)->create($attributes);
-    }
 }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Channel;
-use App\Http\Resources\ChannelCollection;
+use App\Http\Resources\Channel\ChannelCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class ChannelReportController extends Controller
 {
@@ -42,7 +41,7 @@ class ChannelReportController extends Controller
 
         $this->authorize('report', $channel);
 
-        $channel->sendReport();
+        $channel->sendReport($request->user());
 
         return ['type' => $channel->type];
     }

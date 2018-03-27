@@ -8,6 +8,7 @@
                     :channel="channel"
                     v-for="channel in channels"
                     :key="channel.id"
+                    v-on:verified="hide"
             ></channel>
         </ul>
     </div>
@@ -43,6 +44,12 @@
                 } catch (e) {}
 
             },
+
+            hide(channel) {
+                this.channels = this.channels.filter((c) => {
+                    return c.id != channel.id;
+                });
+            }
         }
     }
 </script>

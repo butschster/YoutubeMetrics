@@ -10,9 +10,14 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * @var int
+     * Получение аккаунта метабота
+     *
+     * @return User
      */
-    public $rate_limit = 1000;
+    public static function metabot(): self
+    {
+        return User::whereEmail('metabot@botsmeter.com')->firstOrFail();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'moderator'
     ];
 
     /**
@@ -30,5 +35,12 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'moderator' => 'bool'
     ];
 }

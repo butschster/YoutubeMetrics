@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Comments;
 
 use App\Entities\Channel;
 use App\Entities\Comment;
@@ -29,7 +29,9 @@ class CalculateChannelComments extends Command
      */
     public function handle()
     {
-        $channels = Comment::selectRaw('channel_id, count(id) as count')->groupBy('channel_id')->pluck('count', 'channel_id');
+        $channels = Comment::selectRaw('channel_id, count(id) as count')
+            ->groupBy('channel_id')
+            ->pluck('count', 'channel_id');
 
         foreach ($channels as $channelId => $count) {
             Channel::updateOrCreate(['id' => $channelId], [
@@ -37,5 +39,6 @@ class CalculateChannelComments extends Command
                 'total_comments' => $count
             ]);
         }
+
     }
 }

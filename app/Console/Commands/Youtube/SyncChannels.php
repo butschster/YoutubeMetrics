@@ -30,26 +30,30 @@ class SyncChannels extends Command
     /**
      * @var int
      */
-    protected $processed = 0;
+    protected $chunkSize = 40;
 
     /**
      * @var int
      */
-    protected $chunkSize = 40;
+    protected $channelsLinit = 10000;
 
     public function handle()
     {
-        Channel::whereNull('name')->live()->select('id')
-            ->chunk($this->chunkSize, function ($ids) {
-                $ids = $ids->pluck('id')->all();
+        $total = $this->channelsLinit;
+        $chunk = 500;
+        $page = 1;
 
-                dispatch(new UpdateChannelInformation($ids));
+        while ($total > 0) {
+            Channel::whereNull('name')->live()->forPage($page, $chunk)->get(['id'])
+                ->chunk($this->chunkSize)
+                ->each(function ($ids) {
+                    $ids = $ids->pluck('id')->all();
 
-                $this->processed += $this->chunkSize;
+                    dispatch(new UpdateChannelInformation($ids));
+                });
 
-                if ($this->processed > 5000) {
-                    return false;
-                }
-            });
+            $page++;
+            $total -= $chunk;
+        }
     }
 }

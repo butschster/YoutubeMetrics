@@ -18,6 +18,18 @@ trait UserHelpers
 
         return $user;
     }
+    /**
+     * @param User|null $user
+     * @return User
+     */
+    public function signInAsModerator($user = null): User
+    {
+        $user = $user ?: $this->userFactory()->states('moderator')->create();
+
+        $this->be($user);
+
+        return $user;
+    }
 
     /**
      * Create a new user
@@ -28,7 +40,7 @@ trait UserHelpers
      */
     public function createUser(array $attributes = [], int $times = null)
     {
-        return factory(User::class, $times)->create($attributes);
+        return $this->userFactory($times)->create($attributes);
     }
 
     /**
@@ -40,6 +52,15 @@ trait UserHelpers
      */
     public function makeUser(array $attributes = [], int $times = null)
     {
-        return factory(User::class, $times)->make($attributes);
+        return $this->userFactory($times)->make($attributes);
+    }
+
+    /**
+     * @param int|null $times
+     * @return \Illuminate\Database\Eloquent\FactoryBuilder
+     */
+    public function userFactory(int $times = null)
+    {
+        return factory(User::class, $times);
     }
 }

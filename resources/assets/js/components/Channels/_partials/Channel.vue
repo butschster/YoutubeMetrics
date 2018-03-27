@@ -7,8 +7,11 @@
                 </a>
             </div>
             <div class="media-body">
+                <button class="btn btn-sm btn-success float-right ml-3" v-if="canModerate" @click="markAsVerified()">
+                    <i class="far fa-check-circle"></i> Человек
+                </button>
 
-                <button class="btn btn-sm btn-danger float-right" v-if="!isReported" @click="report">
+                <button class="btn btn-danger float-right" v-if="canReport && !isReported" @click="report">
                     <i class="fas fa-ban"></i>
                 </button>
 
@@ -60,16 +63,38 @@
 
             report() {
                 this.$swal({
-                    title: 'Вы уверены, что это спам?',
+                    title: 'Отправить жалобу на канал?',
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Да, это спам!',
+                    confirmButtonText: 'Да!',
                     cancelButtonText: 'Отмена'
                 }).then((result) => {
                     if (result.value) {
                         this.sendReport();
                     }
                 })
+            },
+
+            async markAsVerified() {
+                this.$swal({
+                    title: 'Вы уверены, что это человек?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Да!',
+                    cancelButtonText: 'Отмена'
+                }).then((result) => {
+                    if (result.value) {
+                        this._markAsVerified();
+                    }
+                })
+            },
+
+            async _markAsVerified() {
+                try {
+                    await axios.post(`/api/channel/${this.channel.id}/moderate`, {status: 'verified'});
+                    this.$emit('verified', this.channel);
+                } catch (e) {
+                }
             },
 
             async sendReport() {
@@ -96,6 +121,12 @@
             },
             isReported() {
                 return this.channel.type != 'normal';
+            },
+            canReport() {
+                return this.can('channel.report');
+            },
+            canModerate() {
+                return this.can('channel.moderate');
             }
         }
     }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Channel;
-use App\Entities\Comment;
-use App\Http\Resources\CommentResource;
+use App\Entities\{
+    Channel, Comment
+};
+use App\Http\Resources\Comment\{
+    CommentResource, CommentsCollection
+};
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CommentsCollection;
 use Illuminate\Support\Facades\Cache;
 
 class ChannelCommentsController extends Controller
@@ -32,7 +34,6 @@ class ChannelCommentsController extends Controller
                     return new CommentResource($comment);
                 });
         });
-
 
         return new CommentsCollection($comments);
     }

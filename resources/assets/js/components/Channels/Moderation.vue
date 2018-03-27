@@ -9,7 +9,7 @@
                     v-for="channel in channels"
                     :key="channel.id"
                     v-on:bot="hide"
-                    v-on:normal="hide"
+                    v-on:verified="hide"
             ></channel>
         </ul>
     </div>
@@ -41,7 +41,7 @@
 
             },
 
-            async hide(channel) {
+            hide(channel) {
                 this.channels = this.channels.filter((c) => {
                     return c.id != channel.id;
                 });

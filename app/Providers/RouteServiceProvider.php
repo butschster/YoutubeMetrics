@@ -3,13 +3,12 @@
 namespace App\Providers;
 
 use App\Contracts\Repositories\ChannelRepository;
-use App\Entities\Channel;
-use App\Entities\Comment;
-use App\Entities\Tag;
-use App\Entities\Video;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Route;
+use App\Entities\{
+    Comment, Tag, Video
+};
+use Illuminate\Support\Facades\{
+    Cache, Route
+};
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -78,6 +77,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
+            ->name('api.')
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));

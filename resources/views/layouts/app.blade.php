@@ -16,7 +16,7 @@
                 'permissions' => [
                     'channel' => [
                         'report' => Gate::allows('report', new \App\Entities\Channel()),
-                        'moderate' => Gate::allows('moderate', new \App\Entities\Channel())
+                        'moderate' => Gate::allows('moderate')
                     ]
                 ]
             ])!!};

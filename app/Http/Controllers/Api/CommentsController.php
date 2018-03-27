@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Channel;
-use App\Entities\Comment;
-use App\Entities\Video;
+use App\Entities\{
+    Channel, Comment, Video
+};
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\CommentsCollection;
+use App\Http\Resources\Comment\{
+    CommentResource, CommentsCollection
+};
 use Illuminate\Support\Facades\Cache;
 
 class CommentsController extends Controller

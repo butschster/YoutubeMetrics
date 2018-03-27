@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
-use App\Entities\Channel;
-use App\Entities\Video;
-use App\Policies\ChannelPolicy;
-use App\Policies\VideoPolicy;
+use App\Entities\{
+    Channel, Video
+};
+use App\Policies\{
+    ChannelPolicy, VideoPolicy
+};
+use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -29,6 +33,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('moderate', function (User $user) {
+            return $user->moderator;
+        });
     }
 }

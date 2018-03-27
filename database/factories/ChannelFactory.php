@@ -7,10 +7,11 @@ $factory->define(Channel::class, function (Faker $faker) {
     return [
         'id' => $faker->uuid,
         'bot' => $faker->boolean,
+        'verified' => $faker->boolean,
         'deleted' => $faker->boolean,
         'thumb' => $faker->imageUrl(400, 400),
         'name' => $faker->sentence,
-        'reports' => $faker->randomNumber(),
+        'total_reports' => $faker->randomNumber(),
         'views' => $faker->randomNumber(),
         'comments' => $faker->randomNumber(),
         'subscribers' => $faker->randomNumber(),

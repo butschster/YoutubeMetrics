@@ -37,11 +37,19 @@ class EntityScopesTest extends TestCase
         $this->assertEquals(1, Channel::filterBots()->count());
     }
 
+    function test_gets_filter_verified()
+    {
+        $this->createChannel(['verified' => true], 2);
+        $this->createChannel(['verified' => false]);
+
+        $this->assertEquals(1, Channel::filterVerified()->count());
+    }
+
     function test_gets_only_reported()
     {
-        $this->createChannel(['bot' => true, 'reports' => 3], 2);
-        $this->createChannel(['bot' => false, 'reports' => 3], 3);
-        $this->createChannel(['bot' => false, 'reports' => 0], 4);
+        $this->createChannel(['bot' => true, 'total_reports' => 3], 2);
+        $this->createChannel(['bot' => false, 'total_reports' => 3], 3);
+        $this->createChannel(['bot' => false, 'total_reports' => 0], 4);
 
 
         $this->assertEquals(3, Channel::onlyReported()->count());

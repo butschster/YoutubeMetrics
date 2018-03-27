@@ -37,7 +37,6 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        abort(404, 'Регистрация временно закрыта.');
         $this->middleware('guest');
     }
 

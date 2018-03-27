@@ -21,14 +21,12 @@ class ChannelVerificationController extends Controller
 
         $id = $request->channel_id;
 
-        $cacheKey = md5('channel'.$id);
+        $cacheKey = md5('channel.check.'.$id);
 
-        $channel = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
-            return Channel::live()->find($id);
+        $channelType = Cache::remember($cacheKey, now()->addHour(), function () use ($id) {
+            return Channel::findOrFail($id)->type;
         });
 
-        return [
-            'type' => !is_null($channel) ? $channel->type : 'normal'
-        ];
+        return ['type' => $channelType];
     }
 }

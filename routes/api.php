@@ -1,10 +1,10 @@
 <?php
 
 Route::get('channels/followed', 'Api\ChannelController@followed');
-
 Route::get('channel/reported', 'Api\ChannelReportController@index');
-Route::post('channel/check', 'Api\ChannelVerificationController@check');
+Route::post('channel/check', 'Api\ChannelVerificationController@check')->name('channel.check');
 
+Route::get('bots/created/{date}', 'Api\ChannelController@botsFilteredByDateCreation')->middleware('auth');
 Route::get('channels/created/{date}', 'Api\ChannelController@filteredByDateCreation')->middleware('auth');
 
 
@@ -17,8 +17,7 @@ Route::get('channel/{channel}/comments', 'Api\ChannelCommentsController@index');
 
 Route::post('channel/abuse', 'Api\ChannelReportController@store')->name('channel.abuse');
 
-Route::delete('channel/{channel}/moderate', 'Api\ChannelModerationController@markAsBot');
-Route::post('channel/{channel}/moderate', 'Api\ChannelModerationController@markAsNormal');
+Route::post('channel/{channel}/moderate', 'Api\ChannelModerationController@moderate')->name('channel.moderate');
 
 Route::get('comment/{comment}/metrics', 'Api\CommentMetricsController@index');
 

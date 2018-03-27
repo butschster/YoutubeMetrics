@@ -2,9 +2,12 @@
 
 namespace App\Entities;
 
+use App\Events\Channel\Moderated;
+use App\Events\Channel\Reported;
+use App\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\{
-    HasMany, HasManyThrough
+    BelongsTo, HasMany, HasManyThrough
 };
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
@@ -15,6 +18,8 @@ class Channel extends YoutubeModel
     const TYPE_NORMAL = 'normal';
     const TYPE_BOT = 'bot';
     const TYPE_REPORTED = 'reported';
+    const TYPE_VERIFIED = 'verified';
+    const TYPE_DELETED = 'deleted';
 
     /**
      * @var array
@@ -22,9 +27,10 @@ class Channel extends YoutubeModel
     protected $casts = [
         'bot' => 'bool',
         'deleted' => 'bool',
+        'verified' => 'bool',
         'thumb' => 'string',
         'name' => 'string',
-        'reports' => 'int',
+        'total_reports' => 'int',
         'views' => 'int',
         'comments' => 'int',
         'subscribers' => 'int',
@@ -80,63 +86,101 @@ class Channel extends YoutubeModel
      */
     public function getTypeAttribute(): string
     {
+        if ($this->deleted) {
+            return static::TYPE_DELETED;
+        }
+
+        if ($this->verified) {
+            return static::TYPE_VERIFIED;
+        }
+
         if ($this->bot) {
             return static::TYPE_BOT;
         }
 
-        if ($this->reports > 0) {
+        if ($this->total_reports > 0) {
             return static::TYPE_REPORTED;
         }
 
         return static::TYPE_NORMAL;
     }
 
-    public function sendReport()
+    /**
+     * @param User $user
+     */
+    public function sendReport(User $user): void
     {
-        return $this->updateReports(1);
+        if ($this->hasReportFrom($user)) {
+            return;
+        }
+
+        $this->total_reports += 1;
+        $this->save();
+
+        $this->reports()->create([
+            'user_id' => $user->id
+        ]);
+
+        event(new Reported($this));
     }
 
     /**
-     * @param int $score
+     * @param User $user
+     * @return bool
      */
-    public function updateReports(int $score)
+    public function hasReportFrom(User $user): bool
     {
-        if (is_null($this->reports)) {
-            $this->reports = 0;
-        }
-
-        if ($score > 0) {
-            $this->reports += $score;
-        } else if ($this->reports > ($score * -1)) {
-            $this->reports -= ($score * -1);
-        } else {
-            $this->reports = 0;
-        }
-
-        $this->save();
+        return $this->reports()->where('user_id', $user->id)->exists();
     }
 
     /**
      * Пометка канала как спам
+     * @param User $user
      */
-    public function markAsBot(): void
+    public function markAsBot(User $user): void
     {
-        $this->bot = true;
-        $this->save();
+        $this->update([
+            'bot' => true,
+            'moderated_by' => $user->getKey()
+        ]);
 
         $this->comments()->update(['is_spam' => true]);
+        event(new Moderated($this));
+    }
+
+    /**
+     * Пометка канала как проверенный
+     * @param User $user
+     */
+    public function markAsVerified(User $user): void
+    {
+        $this->update([
+            'verified' => true,
+            'bot' => false,
+            'total_reports' => 0,
+            'moderated_by' => $user->getKey()
+        ]);
+
+        $this->reports()->delete();
+        $this->comments()->update(['is_spam' => false]);
+        event(new Moderated($this));
     }
 
     /**
      * Пометка канала как нормального
+     *
+     * при этом у него остаюстя репорты, которые можно убрать при верификации
+     * @param User $user
      */
-    public function markAsNormal(): void
+    public function markAsNormal(User $user): void
     {
-        $this->reports = 0;
-        $this->bot = false;
-        $this->save();
+        $this->update([
+            'bot' => false,
+            'moderated_by' => $user->getKey()
+        ]);
 
         $this->comments()->update(['is_spam' => false]);
+        event(new Moderated($this));
     }
 
     /**
@@ -170,9 +214,18 @@ class Channel extends YoutubeModel
      * @param Builder $builder
      * @return $this
      */
+    public function scopeFilterVerified(Builder $builder)
+    {
+        return $builder->where('verified', false);
+    }
+
+    /**
+     * @param Builder $builder
+     * @return $this
+     */
     public function scopeOnlyReported(Builder $builder)
     {
-        return $builder->where('bot', false)->where('reports', '>', 0);
+        return $builder->where('bot', false)->where('total_reports', '>', 0);
     }
 
     /**
@@ -205,5 +258,23 @@ class Channel extends YoutubeModel
     public function statistics(): HasMany
     {
         return $this->hasMany(ChannelStat::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(ChannelReport::class);
+    }
+
+    /**
+     * Пользователь, который модерировал канал
+     *
+     * @return BelongsTo
+     */
+    public function moderatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'moderated_by');
     }
 }

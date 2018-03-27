@@ -6,9 +6,10 @@ Route::get('/', 'VideoController@index')->name('home');
 
 Route::get('/channels/created/{date}', 'ChannelController@filteredByDateCreation')->name('channel.created.date')->middleware('auth');
 
-Route::get('/channels/bots', 'ChannelController@botsGroupedByCreationDate')->name('channel.bots');
+Route::get('/bots/created/{date}', 'ChannelBotsController@filteredByDateCreation')->name('channel.bots.date');
+Route::get('/bots/grouped-by-date', 'ChannelController@botsGroupedByCreationDate')->name('channel.bots');
 
-Route::get('/channels/moderate', 'ChannelModerationController@index')->name('channel.moderate');
+Route::get('/channels/moderate', 'ChannelModerationController@index')->name('channel.moderation');
 Route::get('/channel/{channel}', 'ChannelController@show')->name('channel.show');
 
 Route::get('/tag/{tag}', 'TagsController@show')->name('tag.show');

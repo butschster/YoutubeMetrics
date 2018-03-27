@@ -17,7 +17,7 @@ class ChannelPolicy
      */
     public function report(User $user, Channel $channel): bool
     {
-        return ! $channel->bot;
+        return !$channel->bot && !$channel->hasReportFrom($user);
     }
 
     /**
@@ -25,10 +25,10 @@ class ChannelPolicy
      * @param Channel $channel
      * @return bool
      */
-    public function moderate(User $user, Channel $channel): bool
-    {
-        return true;
-    }
+//    public function moderate(User $user, Channel $channel): bool
+//    {
+//        return $user->moderator;
+//    }
 
     /**
      * @param User $user

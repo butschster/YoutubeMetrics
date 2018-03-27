@@ -3,8 +3,9 @@
 namespace App\Jobs\Youtube;
 
 use App\Contracts\Services\Youtube\Client;
-use App\Entities\Tag;
-use App\Entities\Video;
+use App\Entities\{
+    Tag, Video
+};
 use App\Services\Youtube\NotFoundException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;

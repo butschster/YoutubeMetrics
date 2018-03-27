@@ -6,16 +6,16 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <!-- Left Side Of Navbar -->
     <ul class="navbar-nav mr-auto">
-
+        @can('moderate')
+            <li><a class="nav-link" href="{{ route('channel.moderation') }}">{{ __('channel.moderation') }}</a></li>
+        @endcan
     </ul>
 
     <ul class="navbar-nav ml-auto">
         <!-- Authentication Links -->
         @guest
-            <li><a class="nav-link" href="{{ route('login') }}">Вход</a></li>
-            {{--
-            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-            --}}
+            <li><a class="nav-link" href="{{ route('login') }}">{{ __('auth.login') }}</a></li>
+            <li><a class="nav-link" href="{{ route('register') }}">{{ __('auth.register') }}</a></li>
         @else
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -27,7 +27,7 @@
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
+                        {{ __('auth.logout') }}
                     </a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

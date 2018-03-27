@@ -3,60 +3,40 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Channel;
+use App\Events\Channel\Moderated;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ChannelCollection;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ChannelModerationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
-     * Пометка канала ботом
+     * Модерация канала.
      *
+     * Необходимо передать статус канала (bot, normal, verified)
+     *
+     * @param Request $request
      * @param Channel $channel
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function markAsBot(Channel $channel)
+    public function moderate(Request $request, Channel $channel)
     {
-        $this->authorize('moderate', $channel);
+        $this->authorize('moderate');
 
-        $channel->markAsBot();
+        $request->validate([
+            'status' => [
+                'required',
+                Rule::in(['bot', 'normal', 'verified']),
+            ]
+        ]);
 
-        $this->clearCache($channel);
+        $methodName = 'markAs'.ucfirst($request->status);
+
+        $channel->$methodName(
+            $request->user()
+        );
 
         return ['status' => true];
-    }
-
-    /**
-     * Пометка канала нормальным
-     *
-     * @param Channel $channel
-     * @return array
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function markAsNormal(Channel $channel)
-    {
-        $this->authorize('moderate', $channel);
-
-        $channel->markAsNormal();
-
-        $this->clearCache($channel);
-
-        return ['status' => true];
-    }
-
-    /**
-     * todo: возможно лишний метод, т.к. сброк кеша канала происходит при изменении данных
-     *
-     * @param Channel $channel
-     */
-    protected function clearCache(Channel $channel): void
-    {
-        Cache::forget(md5('channel'.$channel->id));
     }
 }

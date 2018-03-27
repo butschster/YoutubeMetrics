@@ -3,7 +3,9 @@
 namespace Tests\Feature\Api;
 
 use App\Entities\Channel;
+use App\Events\Channel\Reported;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,64 +16,99 @@ class SendReportToChannelTest extends TestCase
 
     function test_a_user_can_be_authenticated_to_sending_report()
     {
-        $channel = $this->createChannel(['reports' => 0]);
+        Event::fake();
 
-        $this->assertEquals(0, $channel->reports);
+        $channel = $this->createChannel(['total_reports' => 0]);
 
-        $this->postJson(route('channel.abuse'), [
-            'channel_id' => $channel->id
-        ])->assertStatus(401);
+        $this->assertEquals(0, $channel->total_reports);
 
-        $this->assertEquals(0, $channel->fresh()->reports);
+        $this->sendReport($channel)->assertStatus(401);
+
+        Event::assertNotDispatched(Reported::class);
+
+        $this->assertEquals(0, $channel->fresh()->total_reports);
     }
 
     function test_an_authenticated_user_cannot_send_report_to_exists_bot_channel()
     {
+        Event::fake();
+
         $this->signIn();
 
-        $channel = $this->createChannel(['reports' => 0, 'bot' => true]);
+        $channel = $this->createChannel(['total_reports' => 0, 'bot' => true]);
 
-        $this->assertEquals(0, $channel->reports);
+        $this->assertEquals(0, $channel->total_reports);
 
-        $this->postJson(route('channel.abuse'), ['channel_id' => $channel->id])
-            ->assertStatus(403);
+        $this->sendReport($channel)->assertStatus(403);
 
-        $this->assertEquals(0, $channel->fresh()->reports);
+        Event::assertNotDispatched(Reported::class);
+        $this->assertEquals(0, $channel->fresh()->total_reports);
     }
 
     function test_an_authenticated_user_can_send_report_to_exists_non_bot_channel()
     {
+        Event::fake();
+
         $this->signIn();
 
-        $channel = $this->createChannel(['reports' => 0, 'bot' => false]);
-        $this->shouldChannelCacheClear($channel->id);
+        $channel = $this->createChannel(['total_reports' => 0, 'bot' => false, 'verified' => false, 'deleted' => false]);
+        //$this->shouldChannelCacheClear($channel->id);
 
-        $this->assertEquals(0, $channel->reports);
+        $this->assertEquals(0, $channel->total_reports);
 
-        $this->postJson(route('channel.abuse'), [
-            'channel_id' => $channel->id
-        ])->assertStatus(200)->assertJson([
+        $this->sendReport($channel)->assertStatus(200)->assertJson([
             'type' => Channel::TYPE_REPORTED
         ]);
 
-        $this->assertEquals(1, $channel->fresh()->reports);
+        Event::assertDispatched(Reported::class, function ($e) use ($channel) {
+            return $e->channel->id === $channel->id;
+        });
+
+        $this->assertEquals(1, $channel->fresh()->total_reports);
     }
 
     function test_an_authenticated_user_can_send_report_to_non_exists_channel()
     {
+        Event::fake();
+
         $this->signIn();
 
         $channelId = $this->faker->uuid;
-        $this->shouldChannelCacheClear($channelId);
+        //$this->shouldChannelCacheClear($channelId);
 
         $this->assertNull(Channel::find($channelId));
 
-        $this->postJson(route('channel.abuse'), [
+        $this->postJson(route('api.channel.abuse'), [
             'channel_id' => $channelId
         ])->assertStatus(200)->assertJson([
             'type' => Channel::TYPE_REPORTED
         ]);
 
-        $this->assertEquals(1, Channel::find($channelId)->reports);
+        Event::assertDispatched(Reported::class, function ($e) use ($channelId) {
+            return $e->channel->id === $channelId;
+        });
+
+        $this->assertEquals(1, Channel::find($channelId)->total_reports);
+    }
+
+    function test_a_user_can_sent_only_one_report_to_channel()
+    {
+        $this->signIn();
+
+        $channelId = $this->faker->uuid;
+
+        $this->postJson(route('api.channel.abuse'), ['channel_id' => $channelId])->assertStatus(200);
+        $this->postJson(route('api.channel.abuse'), ['channel_id' => $channelId])->assertStatus(403);
+    }
+
+    /**
+     * @param $channel
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    protected function sendReport($channel): \Illuminate\Foundation\Testing\TestResponse
+    {
+        return $this->postJson(route('api.channel.abuse'), [
+            'channel_id' => $channel->id
+        ]);
     }
 }

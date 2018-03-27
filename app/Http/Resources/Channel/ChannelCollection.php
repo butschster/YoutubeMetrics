@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Channel;
 
 use App\Entities\Channel;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -21,7 +21,7 @@ class ChannelCollection extends ResourceCollection
                 'name' => $channel->name,
                 'link' => $channel->link,
                 'thumb' => $channel->thumb,
-                'reports' => $channel->reports,
+                'reports' => $channel->total_reports,
                 'type' => $channel->type,
                 'views' => format_number($channel->views),
                 'subscribers' => format_number($channel->subscribers),

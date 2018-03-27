@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services\KremlinBots;
+namespace App\Services\MetaBot;
 
+use App\Contracts\Services\MetaBot\Client as ClientContract;
 use Carbon\Carbon;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\Collection;
 
-class Client
+class Client implements ClientContract
 {
     const URL = 'https://raw.githubusercontent.com/YTObserver/YT-ACC-DB/master/mainDB';
 

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Channel;
-use App\Entities\FollowedChannel;
-use App\Http\Resources\ChannelCollection;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Entities\{
+    Channel, FollowedChannel
+};
+use App\Http\Resources\Channel\ChannelCollection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
@@ -53,6 +52,26 @@ class ChannelController extends Controller
     public function filteredByDateCreation(string $date): ChannelCollection
     {
         $channels = Channel::filterBots()
+            ->filterVerified()
+            ->whereRaw('date(created_at) = ?')
+            ->orderByDesc('total_comments')
+            ->addBinding($date)
+            ->get();
+
+        return new ChannelCollection(
+            $channels
+        );
+    }
+
+    /**
+     * Получение списка ботов, зарегистрированных в переданную дату
+     *
+     * @param string $date
+     * @return ChannelCollection
+     */
+    public function botsFilteredByDateCreation(string $date): ChannelCollection
+    {
+        $channels = Channel::onlyBots()
             ->whereRaw('date(created_at) = ?')
             ->orderByDesc('total_comments')
             ->addBinding($date)

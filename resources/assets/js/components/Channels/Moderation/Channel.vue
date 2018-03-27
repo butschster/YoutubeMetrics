@@ -7,7 +7,7 @@
                 </a>
             </div>
             <div class="media-body">
-                <button class="btn btn-sm btn-success float-right" @click="markAsNormal()">
+                <button class="btn btn-sm btn-success float-right" @click="markAsVerified()">
                     <i class="far fa-check-circle"></i> Человек
                 </button>
 
@@ -50,16 +50,16 @@
         methods: {
             async markAsBot() {
                 try {
-                    await axios.delete(`/api/channel/${this.channel.id}/moderate`);
+                    await axios.post(`/api/channel/${this.channel.id}/moderate`, {status: 'bot'});
                     this.$emit('bot', this.channel);
                 } catch (e) {
                 }
             },
 
-            async markAsNormal() {
+            async markAsVerified() {
                 try {
-                    await axios.post(`/api/channel/${this.channel.id}/moderate`);
-                    this.$emit('normal', this.channel);
+                    await axios.post(`/api/channel/${this.channel.id}/moderate`, {status: 'verified'});
+                    this.$emit('verified', this.channel);
                 } catch (e) {
                 }
             },

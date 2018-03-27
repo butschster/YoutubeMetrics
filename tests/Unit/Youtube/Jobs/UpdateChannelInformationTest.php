@@ -20,7 +20,7 @@ class UpdateChannelInformationTest extends TestCase
             'name' => null,
             'thumb' => null,
             'country' => null,
-            'reports' => 0,
+            'total_reports' => 0,
             'views' => 0,
             'comments' => 0,
             'subscribers' => 0,

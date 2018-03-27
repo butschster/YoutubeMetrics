@@ -3,7 +3,7 @@
 namespace Tests\Utility;
 
 use App\Entities\{
-    Channel, FollowedChannel
+    Channel, ChannelReport, FollowedChannel
 };
 use Illuminate\Support\Facades\Cache;
 
@@ -55,6 +55,28 @@ trait ChannelHelpers
     public function makeChannel(array $attributes = [], int $times = null)
     {
         return factory(Channel::class, $times)->make($attributes);
+    }
+
+    /**
+     * Create a new channel report
+     *
+     * @param array $attributes
+     * @param int $times
+     * @return ChannelReport
+     */
+    public function createChannelReport(array $attributes = [], int $times = null)
+    {
+        return factory(ChannelReport::class, $times)->create($attributes);
+    }
+
+    /**
+     * @param Channel $channel
+     * @param int $times
+     * @return mixed
+     */
+    public function createChannelReports(Channel $channel, int $times = 1)
+    {
+        return factory(ChannelReport::class, $times)->create(['channel_id' => $channel->id]);
     }
 
     /**

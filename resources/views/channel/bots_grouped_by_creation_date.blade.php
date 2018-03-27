@@ -6,17 +6,25 @@
             @php
                 $percents = round(($bots->count() * 100) / $max);
                 if($percents < 1) $percents = 1;
+                $dateFormatted = \Carbon\Carbon::createFromFormat('d.m.Y', $date)->toDateString();
             @endphp
 
             <div class="card mb-3 rounded-0">
                 <div class="card-body">
                     <h5 class="card-title">{{ $date }}</h5>
                     <a
-                            href="{{ route('channel.created.date', \Carbon\Carbon::createFromFormat('d.m.Y', $date)->toDateString()) }}"
+                            href="{{ route('channel.created.date', $dateFormatted) }}"
                             class="btn btn-sm btn-outline-primary"
                             target="_blank"
                     >
                         <i class="fas fa-search"></i> Поиск ботов
+                    </a>
+                    <a
+                            href="{{ route('channel.bots.date', $dateFormatted) }}"
+                            class="btn btn-sm btn-outline-primary"
+                            target="_blank"
+                    >
+                        <i class="fas fa-search"></i> Список ботов
                     </a>
                 </div>
 

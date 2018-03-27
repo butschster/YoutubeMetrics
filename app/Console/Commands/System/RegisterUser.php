@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\System;
 
 use App\User;
 use Illuminate\Console\Command;
@@ -39,6 +39,8 @@ class RegisterUser extends Command
                 $confirmation = $this->secret('Подтверждение пароля');
             }
 
+            $moderator = $this->choice('Модератор', ['yes' => 'yes', 'no' => 'no'], 'no');
+
             $validator = validator([
                 'email' => $email,
                 'name' => $name,
@@ -60,14 +62,16 @@ class RegisterUser extends Command
 
         } while ($validator->fails());
 
-        User::create([
+        $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => bcrypt($password),
+            'moderator' => $moderator == 'yes'
         ]);
 
         $this->info('Пользователь создан.');
         $this->info('Email: '.$email);
         $this->info('Пароль: '.$password);
+        $this->info('Модератор: '.($user->moderator ? 'Да' : 'Нет'));
     }
 }

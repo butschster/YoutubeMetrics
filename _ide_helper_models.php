@@ -16,17 +16,33 @@ namespace App\Entities{
  * @property string $title
  * @property \Carbon\Carbon|null $created_at
  * @property string|null $deleted_at
- * @property bool $follow
+ * @property \Carbon\Carbon $follow_to
  * @property-read \App\Entities\Channel $channel
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel onlyFollow()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereFollow($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereFollowTo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\FollowedChannel whereTitle($value)
  */
 	class FollowedChannel extends \Eloquent {}
+}
+
+namespace App\Entities{
+/**
+ * App\Entities\ChannelReport
+ *
+ * @property string $channel_id
+ * @property int $user_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\ChannelReport whereChannelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\ChannelReport whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\ChannelReport whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\ChannelReport whereUserId($value)
+ */
+	class ChannelReport extends \Eloquent {}
 }
 
 namespace App\Entities{
@@ -37,6 +53,7 @@ namespace App\Entities{
  * @property string $name
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read string $link
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Tag whereId($value)
@@ -53,9 +70,9 @@ namespace App\Entities{
  * @property string $id
  * @property string $video_id
  * @property string $channel_id
- * @property string|null $text
+ * @property string $text
  * @property int $total_likes
- * @property int $is_spam
+ * @property bool $is_spam
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Entities\Channel $channel
@@ -84,25 +101,32 @@ namespace App\Entities{
  *
  * @property string $id
  * @property int $total_comments
- * @property int $bot
- * @property int $deleted
+ * @property bool $bot
+ * @property bool $deleted
  * @property string|null $registered_at
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property int $reports
- * @property string|null $thumb
+ * @property int $total_reports
+ * @property string $thumb
  * @property string|null $country
  * @property string $name
  * @property int $views
  * @property \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
  * @property int $subscribers
  * @property int $bot_comments
+ * @property bool $verified
+ * @property int|null $verified_by
  * @property-read string $link
  * @property-read string $top_comments_link
+ * @property-read string $type
  * @property-read string $youtube_link
+ * @property-read \App\User $moderatedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\ChannelReport[] $reports
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\ChannelStat[] $statistics
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $videoComments
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Video[] $videos
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel filterBots()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel filterVerified()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel live()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel onlyBots()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel onlyReported()
@@ -115,32 +139,16 @@ namespace App\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereRegisteredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereReports($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereSubscribers($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereTotalComments($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereTotalReports($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereVerified($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereVerifiedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Channel whereViews($value)
  */
 	class Channel extends \Eloquent {}
-}
-
-namespace App\Entities{
-/**
- * App\Entities\Bot
- *
- * @property string $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property int $deleted
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Comment[] $comments
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot live()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereDeleted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Bot whereUpdatedAt($value)
- */
-	class Bot extends \Eloquent {}
 }
 
 namespace App\Entities{
@@ -190,10 +198,12 @@ namespace App{
  * @property string|null $remember_token
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property bool $moderator
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereModerator($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)

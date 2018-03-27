@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Channels;
 
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\FollowedChannel;

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Comment;
-use App\Entities\CommentLike;
+use App\Entities\{
+    Comment, CommentLike
+};
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Comment\ChartResource;
 use Illuminate\Support\Facades\Cache;

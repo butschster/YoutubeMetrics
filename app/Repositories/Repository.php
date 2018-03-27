@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\Repository as RepositoryContract;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{
+    Collection, Model
+};
 
 abstract class Repository implements RepositoryContract
 {

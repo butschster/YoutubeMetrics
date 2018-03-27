@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Entities\Channel;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Channel\ChartResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class ChannelMetricsController extends Controller

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'moderation' => 'Модерация',
     'type' => [
         'bot' => 'Бот',
         'normal' => 'Обычный пользователь',

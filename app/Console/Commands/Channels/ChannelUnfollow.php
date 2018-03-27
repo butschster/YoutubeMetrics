@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Channels;
 
 use App\Entities\FollowedChannel;
 use Illuminate\Console\Command;

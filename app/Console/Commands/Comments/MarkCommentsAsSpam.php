@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Comments;
 
 use App\Entities\Author;
 use App\Entities\Channel;
