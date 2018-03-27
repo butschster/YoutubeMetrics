@@ -7,18 +7,20 @@ use App\Contracts\Services\Youtube\KeyManager;
 use App\Services\Youtube\DailyLimitExceededException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Psr\Http\Message\RequestInterface;
 use Tests\TestCase;
 use Mockery as m;
 
 class ClientTest extends TestCase
 {
+    use RefreshDatabase;
 
     function test_ban_key_if_daily_limit_exceeded()
     {
-        $manager = $this->app->make(KeyManager::class);
-        $manager->setKeys(['key1']);
+        $this->createYoutubeKey(['key' => 'key1']);
 
+        $manager = $this->app->make(KeyManager::class);
         $client = $this->app->make(Client::class);
 
         $this->assertFalse($manager->isBanned('key1'));

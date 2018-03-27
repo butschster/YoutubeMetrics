@@ -6,6 +6,7 @@ use App\Entities\Bot;
 use App\Entities\Comment;
 use App\Entities\Tag;
 use App\Entities\Video;
+use App\Entities\YoutubeKey;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Unit\Youtube\FakeClient;
 use Tests\Utility\{
@@ -57,5 +58,17 @@ abstract class TestCase extends BaseTestCase
     public function createTag(array $attributes = [], int $times = null)
     {
         return factory(Tag::class, $times)->create($attributes);
+    }
+
+    /**
+     * Create a new youtube key
+     *
+     * @param array $attributes
+     * @param int $times
+     * @return Tag
+     */
+    public function createYoutubeKey(array $attributes = [], int $times = null)
+    {
+        return factory(YoutubeKey::class, $times)->create($attributes);
     }
 }

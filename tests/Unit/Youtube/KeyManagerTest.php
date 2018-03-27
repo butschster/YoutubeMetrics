@@ -4,11 +4,14 @@ namespace Tests\Unit\Youtube;
 
 use App\Contracts\Services\Youtube\KeyManager;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class KeyManagerTest extends TestCase
 {
+    use RefreshDatabase;
+
     function test_calculates_minutes_to_pt_lt()
     {
         $manager = $this->app->make(KeyManager::class);
@@ -29,11 +32,10 @@ class KeyManagerTest extends TestCase
 
     function test_check_key_is_banned()
     {
+        $this->createYoutubeKey(['key' => 'key1']);
+        $this->createYoutubeKey(['key' => 'key2']);
+
         $manager = $this->app->make(KeyManager::class);
-        $manager->setKeys([
-            'key1',
-            'key2'
-        ]);
 
         $manager->ban('key1');
 
@@ -51,5 +53,15 @@ class KeyManagerTest extends TestCase
             ->with(md5('youtube.bankey1'), 1, 10 * 60);
 
         $manager->ban('key1', Carbon::createFromTime(24, 0, 0));
+    }
+
+    function test_caches_keys()
+    {
+        Cache::shouldReceive('rememberForever')->once()->andReturn(['key1']);
+        Cache::shouldReceive('has')->once()->andReturn(false);
+
+        $manager = $this->app->make(KeyManager::class);
+
+        $this->assertEquals(['key1'], $manager->keys());
     }
 }

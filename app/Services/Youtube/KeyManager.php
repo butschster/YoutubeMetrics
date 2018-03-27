@@ -20,14 +20,6 @@ class KeyManager implements KeyManagerContract
     protected $keys = [];
 
     /**
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Поверка на наличие ключей
      *
      * @return bool

@@ -23,10 +23,7 @@ class SyncFollowedChannels extends Command
      */
     protected $description = 'Синхронизация профилей каналов';
 
-    /**
-     * @param Client $client
-     */
-    public function handle(Client $client)
+    public function handle()
     {
         FollowedChannel::onlyFollow()->get()->each(function (FollowedChannel $channel) {
             dispatch(new UpdateChannelInformation($channel->id));

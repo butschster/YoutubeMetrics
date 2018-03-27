@@ -6,6 +6,7 @@ use App\Contracts\Services\Youtube\{
     Client as CleintContract,
     KeyManager as KeyManagerContract
 };
+use App\Entities\YoutubeKey;
 use App\Services\Youtube\{
     Client, KeyManager
 };
@@ -34,7 +35,7 @@ class YoutubeServiceProvider extends ServiceProvider
             $manager = new KeyManager($this->app);
 
             $manager->setKeys(
-                $this->app->make('config')->get('youtube.keys', [])
+                YoutubeKey::getKeys()
             );
 
             return $manager;
