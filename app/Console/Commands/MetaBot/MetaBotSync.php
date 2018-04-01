@@ -33,7 +33,7 @@ class MetaBotSync extends Command
 
         $metabotUser = User::metabot();
 
-        $botList->each(function ($data) use($metabotUser) {
+        $botList->each(function ($data) use ($metabotUser) {
             $this->updateChannel($data['id'], $metabotUser->id);
         });
     }
@@ -44,13 +44,25 @@ class MetaBotSync extends Command
      */
     protected function updateChannel(string $id, string $userId)
     {
-        Channel::updateOrCreate([
-            'id' => $id
-        ], [
-            'bot' => true,
-            'moderated_by' => $userId
-        ]);
+        $channel = Channel::find($id);
+
+        if (!$channel) {
+            Channel::create([
+                'id' => $id,
+                'bot' => true,
+                'moderated_by' => $userId
+            ]);
+
+        } else if ($channel->verified) {
+            return;
+        } else {
+            $channel->update([
+                'bot' => true,
+                'moderated_by' => $userId
+            ]);
+        }
 
         dispatch(new UpdateChannelInformation($id));
+
     }
 }

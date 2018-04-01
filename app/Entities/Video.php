@@ -5,6 +5,7 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Relations\{
     BelongsTo, BelongsToMany, HasMany
 };
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Video extends YoutubeModel
@@ -17,6 +18,19 @@ class Video extends YoutubeModel
     public function getDiffDateAttribute(): string
     {
         return $this->created_at->diffForHumans();
+    }
+
+    /**
+     * Получение кол-ва спам комментариев
+     *
+     * @return int
+     */
+    public function getSpamCommentsAttribute(): int
+    {
+        $cacheKey = md5("spamComment".$this->id);
+        return Cache::remember($cacheKey, now()->addHour(), function ()  {
+            return $this->comments()->where('is_spam', true)->count();
+        });
     }
 
     /**

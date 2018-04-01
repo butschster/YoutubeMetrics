@@ -24,7 +24,8 @@ class MetaBotSyncTest extends TestCase
         $metabotUser = User::metabot();
         $channel = $this->createChannel([
             'bot' => false,
-            'moderated_by' => null
+            'moderated_by' => null,
+            'verified' => false
         ]);
 
         $newChannelId = $this->faker->uuid;

@@ -11,23 +11,6 @@ use Illuminate\Support\Facades\Cache;
 
 class ChannelController extends Controller
 {
-    /**
-     * Получение списка каналов, за которыми производится слежение
-     *
-     * @return ChannelCollection
-     */
-    public function followed(): ChannelCollection
-    {
-        return new ChannelCollection(
-            Cache::remember('following-channels', now()->addHour(), function () {
-                return FollowedChannel::with('channel')->whereHas('channel')->get()
-                    ->map(function (FollowedChannel $channel) {
-                        return $channel->channel;
-                    })
-                    ->sortByDesc('subscribers');
-            })
-        );
-    }
 
     /**
      * Получение полного списка каналов ботов.

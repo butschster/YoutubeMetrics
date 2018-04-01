@@ -1,7 +1,5 @@
 <?php
 
-Auth::routes();
-
 Route::get('/', 'VideoController@index')->name('home');
 
 Route::get('/channels/created/{date}', 'ChannelController@filteredByDateCreation')->name('channel.created.date')->middleware('auth');
