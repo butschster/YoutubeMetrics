@@ -39,13 +39,13 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (
-            $this->container->environment('production')
-            && $this->container->bound('sentry')
-            && $this->shouldReport($e)
-        ) {
-            $this->container->make('sentry')->captureException($e);
-        }
+//        if (
+//            $this->container->environment('production')
+//            && $this->container->bound('sentry')
+//            && $this->shouldReport($e)
+//        ) {
+//            $this->container->make('sentry')->captureException($e);
+//        }
 
         parent::report($e);
     }
