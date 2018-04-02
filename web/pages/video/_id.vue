@@ -29,15 +29,14 @@
     import Chart from '~/components/Video/Chart';
     import Player from '~/components/Video/Player';
     import Statistics from '~/components/Video/Statistics';
-    import VideoRepository from '~/repositories/VideoRepository';
 
     export default {
         components: { Chart, Statistics, Player },
         validate({params}) {
             return /^[\w_-]+$/.test(params.id)
         },
-        async asyncData({params, error}) {
-            const video = await VideoRepository.show(params.id, ['spam_comments']);
+        async asyncData({app, params, error}) {
+            const video = await app.$videoRepository.show(params.id, ['spam_comments']);
 
             return {video};
         },

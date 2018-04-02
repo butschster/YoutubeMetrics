@@ -22,7 +22,7 @@
                             <i class="fab fa-lg fa-fw fa-searchengin"></i> Поиск комментариев
                         </a>
 
-                        <button class="btn btn-danger" @click="report()">
+                        <button class="btn btn-danger" @click="report()" v-if="$can('channel.report')">
                             <i class="fas fa-bug"></i>
                             Пожаловаться
                         </button>
@@ -41,26 +41,24 @@
 </template>
 
 <script>
-
     import Videos from '~/components/Channel/Videos';
     import Chart from '~/components/Channel/Chart';
     import Statistics from '~/components/Channel/Statistics';
-    import Repository from '~/repositories/ChannelRepository';
 
     export default {
         components: {Chart, Statistics, Videos},
         validate({params}) {
             return /^[\w_-]+$/.test(params.id)
         },
-        async asyncData({params, error}) {
-            const channel = await Repository.show(params.id);
+        async asyncData({app, params, error}) {
+            const channel = await app.$channelRepository.show(params.id);
 
             return {channel};
         },
         methods: {
             async report() {
                 try {
-                    await Repository.report(this.channel.id)
+                    await this.$channelRepository.report(this.channel.id)
                 } catch (e) {
                     console.log(e)
                 }

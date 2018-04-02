@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import VideoRepository from '~/repositories/VideoRepository';
     import Video from './_partials/Card';
     import Pagination from '~/components/Pagination';
 
@@ -29,7 +28,7 @@
         methods: {
             async loadVideos(page = 1) {
                 try {
-                    [this.videos, this.pagination] = await VideoRepository.list({page});
+                    [this.videos, this.pagination] = await this.$videoRepository.list({page});
                 } catch (e) {
 
                 }

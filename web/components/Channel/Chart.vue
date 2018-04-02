@@ -5,8 +5,6 @@
 </template>
 
 <script>
-
-    import Repository from '~/repositories/ChannelRepository';
     import VueHighcharts from 'vue2-highcharts'
 
     export default {
@@ -54,7 +52,7 @@
                 lineCharts.delegateMethod('showLoading', 'Loading...');
 
                 try {
-                    await Repository.metrics(this.id).forEach((series) => {
+                    await this.$channelRepository.metrics(this.id).forEach((series) => {
                         lineCharts.addSeries(series);
                     });
                 } catch (e) {}

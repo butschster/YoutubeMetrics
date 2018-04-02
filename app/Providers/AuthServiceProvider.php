@@ -36,5 +36,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('moderate', function (User $user) {
             return $user->moderator;
         });
+
+        Gate::define('report', function (User $user) {
+            return true;
+        });
     }
 }

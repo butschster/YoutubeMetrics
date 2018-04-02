@@ -8,7 +8,13 @@ const User = {
                 ...mapGetters({
                     authenticated: 'auth/authenticated',
                     user: 'auth/user',
+                    permissions: 'auth/permissions',
                 })
+            },
+            methods: {
+                $can(action) {
+                    return _.get(this.permissions, action) === true;
+                }
             }
         })
     }

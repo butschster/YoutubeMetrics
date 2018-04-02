@@ -24,10 +24,14 @@ module.exports = {
 
     plugins: [
         '~/plugins/Http/axios',
+        '~/plugins/repositories/user',
+        '~/plugins/repositories/channel',
+        '~/plugins/repositories/video',
         '~/plugins/Http/router',
         '~/plugins/i18n',
         '~/plugins/mixins/user',
-        '~/plugins/mixins/validation'
+        '~/plugins/mixins/validation',
+        '~/plugins/auth'
     ],
 
     modules: [
@@ -41,6 +45,11 @@ module.exports = {
     },
 
     auth: {
+        redirect: {
+            login: '/login',
+            logout: '/',
+            home: false
+        },
         endpoints: {
             login: {
                 url: 'login', method: 'post', propertyName: 'meta.token'

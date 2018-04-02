@@ -24,8 +24,6 @@
 </template>
 
 <script>
-    import Repository from '~/repositories/ChannelRepository';
-
     export default {
         data() {
             return {
@@ -38,7 +36,7 @@
         methods: {
             async load() {
                 try {
-                    this.channels = await Repository.followed();
+                    this.channels = await this.$channelRepository.followed();
                 } catch (e) {
 
                 }

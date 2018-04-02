@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import Repository from '~/repositories/ChannelRepository';
     import Video from '~/components/Video/_partials/Card';
     import Pagination from '~/components/Pagination';
 
@@ -34,7 +33,7 @@
         methods: {
             async loadVideos(page = 1) {
                 try {
-                    [this.videos, this.pagination] = await Repository.videos(this.id, {page});
+                    [this.videos, this.pagination] = await this.$channelRepository.videos(this.id, {page});
                 } catch (e) {
 
                 }
