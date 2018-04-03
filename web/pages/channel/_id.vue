@@ -2,7 +2,8 @@
     <section class="container mt-5">
         <header id="channel-header" class="card rounded-0 text-white" :class="`channel-type-${channel.type}`">
 
-            <div class="cover" :style="{'backgroundImage': `url(${channel.links.thumb})`}" v-if="channel.links.thumb"></div>
+            <div class="cover" :style="{'backgroundImage': `url(${channel.links.thumb})`}"
+                 v-if="channel.links.thumb"></div>
             <div class="cover bg-dark" v-else></div>
 
             <div class="card-img-overlay d-flex justify-content-center">
@@ -22,7 +23,7 @@
                             <i class="fab fa-lg fa-fw fa-searchengin"></i> Поиск комментариев
                         </a>
 
-                        <button class="btn btn-danger" @click="report()" v-if="$can('channel.report')">
+                        <button class="btn btn-danger" @click="report()" v-if="canReport">
                             <i class="fas fa-bug"></i>
                             Пожаловаться
                         </button>
@@ -32,11 +33,17 @@
         </header>
 
         <div class="bg-primary py-3 text-center text-white">
-            <Statistics :data="channel.stat" />
+            <Statistics :data="channel.stat"/>
         </div>
 
         <Chart :id="channel.id"/>
-        <Videos :id="channel.id" class="mt-5" />
+        <Videos :id="channel.id" class="mt-5"/>
+
+        <Comments :id="channel.id" class="mt-3" />
+
+        <div class="mt-3">
+            <nuxt-child />
+        </div>
     </section>
 </template>
 
@@ -44,9 +51,10 @@
     import Videos from '~/components/Channel/Videos';
     import Chart from '~/components/Channel/Chart';
     import Statistics from '~/components/Channel/Statistics';
+    import Comments from '~/components/Channel/Comments';
 
     export default {
-        components: {Chart, Statistics, Videos},
+        components: {Chart, Statistics, Videos, Comments},
         validate({params}) {
             return /^[\w_-]+$/.test(params.id)
         },
@@ -57,16 +65,38 @@
         },
         methods: {
             async report() {
+
                 try {
-                    await this.$channelRepository.report(this.channel.id)
+                    const result = await this.$swal({
+                        title: 'Вы уверены, что он бот?',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Да, это бот!',
+                        cancelButtonText: 'Отмена'
+                    });
+
+                    if (result.value) {
+                        await this.$channelRepository.report(this.channel.id)
+                        this.channel.policies.report = false;
+                    }
                 } catch (e) {
-                    console.log(e)
+                    this.showReportError({message: e.message})
                 }
             }
         },
         head() {
             return {
                 title: this.channel.name
+            }
+        },
+        computed: {
+            canReport() {
+                return this.channel.policies.report;
+            }
+        },
+        notifications: {
+            showReportError: {
+                type: 'error'
             }
         }
     }

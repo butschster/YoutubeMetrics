@@ -1,14 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <div class="container">
-                <nuxt-link class="navbar-brand" to="/">
-                    <img src="/images/logo.png" />
-                </nuxt-link>
-
-                <Navbar />
-            </div>
-        </nav>
+        <Navbar />
 
         <main>
             <nuxt/>

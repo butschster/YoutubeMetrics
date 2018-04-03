@@ -20,18 +20,17 @@ class ChannelResource extends ShortInformationResource
     {
         return array_merge_recursive(parent::toArray($request), [
             'stat' => [
-                'total_comments' => $this->total_comments,
-                'total_reports' => $this->total_reports,
-                'views' => $this->views,
-                'comments' => $this->comments,
-                'subscribers' => $this->subscribers,
-                'bot_comments' => $this->bot_comments
+                'total_comments' => format_number($this->total_comments),
+                'total_reports' => format_number($this->total_reports),
+                'views' => format_number($this->views),
+                'comments' => format_number($this->comments),
+                'subscribers' => format_number($this->subscribers),
+                'bot_comments' => format_number($this->bot_comments)
             ],
             'links' => [
                 'youtube' => $this->youtube_link,
                 't30' => $this->top_comments_link
             ],
-            'type' => $this->type,
             'verified' => $this->verified,
             'bot' => $this->bot,
             'created_at' => format_date($this->created_at),

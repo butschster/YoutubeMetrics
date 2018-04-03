@@ -40,12 +40,12 @@ class VideoResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'stat' => [
-                'views' => $this->views,
-                'likes' => $this->likes,
-                'dislikes' => $this->dislikes,
-                'comments' => $this->comments,
+                'views' => format_number($this->views),
+                'likes' => format_number($this->likes),
+                'dislikes' => format_number($this->dislikes),
+                'comments' => format_number($this->comments),
                 'spam_comments' => $this->when(
-                    $this->wants($request, 'spam_comments'), $this->spam_comments
+                    $this->wants($request, 'spam_comments'), format_number($this->spam_comments)
                 )
             ],
             'created_at' => format_date($this->created_at),
@@ -53,7 +53,8 @@ class VideoResource extends JsonResource
             'channel' => new ShortInformationResource($this->whenLoaded('channel')),
             'links' => [
                 'self' => route('api.video.show', $this->id),
-                'thumb' => $this->thumb
+                'thumb' => $this->thumb,
+                'youtube' => $this->youtube_link
             ]
         ];
     }

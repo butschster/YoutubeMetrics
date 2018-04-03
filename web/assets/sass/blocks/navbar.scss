@@ -1,0 +1,17 @@
+.navbar-light {
+  .navbar-nav {
+    .nav-link.nuxt-link-active,
+    .nav-link.nuxt-link-exact-active {
+      color: $navbar-light-active-color;
+    }
+  }
+}
+
+.navbar-dark {
+  .navbar-nav {
+    .nav-link.nuxt-link-active,
+    .nav-link.nuxt-link-exact-active {
+      color: $navbar-dark-active-color;
+    }
+  }
+}

@@ -237,14 +237,6 @@ class Channel extends YoutubeModel
     }
 
     /**
-     * @return HasManyThrough
-     */
-    public function videoComments(): HasManyThrough
-    {
-        return $this->hasManyThrough(Comment::class, Video::class);
-    }
-
-    /**
      * @return HasMany
      */
     public function videos(): HasMany

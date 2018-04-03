@@ -10,7 +10,6 @@ Route::get('/bots/grouped-by-date', 'ChannelController@botsGroupedByCreationDate
 Route::get('/channels/moderate', 'ChannelModerationController@index')->name('channel.moderation');
 Route::get('/channel/{channel}', 'ChannelController@show')->name('channel.show');
 
-Route::get('/tag/{tag}', 'TagsController@show')->name('tag.show');
 Route::get('/video/{video}', 'VideoController@show')->name('video.show');
 
 Route::get('/comments/spam', 'CommentsController@spamToday')->name('comments.spam');

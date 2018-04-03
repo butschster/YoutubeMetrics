@@ -38,5 +38,5 @@ function format_date(\Carbon\Carbon $date = null): ?string
         return null;
     }
 
-    return $date->format('d.m.Y H:i:s');
+    return $date->toDateTimeString();
 }

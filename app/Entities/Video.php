@@ -21,6 +21,17 @@ class Video extends YoutubeModel
     }
 
     /**
+     * Ссылка на канал на Youtube
+     *
+     * @return string
+     */
+    public function getYoutubeLinkAttribute(): string
+    {
+        return "https://www.youtube.com/watch?v={$this->id}";
+    }
+
+
+    /**
      * Получение кол-ва спам комментариев
      *
      * @return int

@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Cache;
 
 class CommentsController extends Controller
 {
+    /**
+     * @param Comment $comment
+     * @return CommentResource
+     */
+    public function show(Comment $comment): CommentResource
+    {
+        return new CommentResource($comment);
+    }
+
     public function cacheClear(Video $video)
     {
         Cache::forget(md5("comments:".$video->id));

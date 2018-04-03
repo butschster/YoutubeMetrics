@@ -1,47 +1,43 @@
 <template>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Вход</div>
+    <div class="container login-page-container d-flex justify-content-center">
+        <div class="col-md-6 col-lg-5 align-self-center">
+            <div class="login-box">
+                <header class="bg-dark text-center mb-5 py-4">
+                    <Logo class="logo" />
+                </header>
 
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right">Email</label>
+                <form v-on:submit.prevent="submit" class="px-5 pt-0">
+                    <div class="form-group mb-4">
+                        <input v-model="form.email" :class="{'is-invalid': errors.email}" type="email" class="form-control" placeholder="Email" autofocus>
 
-                            <div class="col-md-6">
-                                <input v-model="form.email" :class="{'is-invalid': errors.email}" type="email" class="form-control" required autofocus>
-
-                                <div class="invalid-feedback" v-if="errors.email">
-                                    {{ errors.email[0] }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">пароль</label>
-
-                            <div class="col-md-6">
-                                <input v-model="form.password" type="password" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="submit">
-                                    Вход
-                                </button>
-                            </div>
+                        <div class="invalid-feedback" v-if="errors.email">
+                            {{ errors.email[0] }}
                         </div>
                     </div>
-                </div>
+                    <div class="form-group mb-4">
+                        <input v-model="form.password" type="password" class="form-control" placeholder="Пароль">
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <button class="btn btn-block btn-default">Вход</button>
+                    </div>
+                </form>
+
+                <footer class="text-center pb-5">
+                    <p class="mb-0">У вас нет аккаунта? <nuxt-link :to="{name: 'register'}">Регистрация</nuxt-link>
+                    </p>
+                </footer>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import Logo from '~/layouts/_partials/Logo'
+
     export default {
+        components: {Logo},
+        layout: 'login',
         middleware: 'guest',
         data() {
             return {
@@ -60,6 +56,11 @@
                 this.$router.push({
                     path: this.$route.query.redirect || '/'
                 })
+            }
+        },
+        head() {
+            return {
+                title: 'Авторизация - BotsMeter',
             }
         }
     }

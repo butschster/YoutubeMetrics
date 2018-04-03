@@ -20,10 +20,7 @@ class PermissionsResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'channel' => [
-                'report' => Gate::allows('report'),
-                'moderate' => Gate::allows('moderate')
-            ]
+            'moderate' => Gate::allows('moderate')
         ];
     }
 }

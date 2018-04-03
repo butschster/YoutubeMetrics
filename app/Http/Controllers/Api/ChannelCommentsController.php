@@ -30,7 +30,6 @@ class ChannelCommentsController extends Controller
                 ->get()
                 ->map(function (Comment $comment) use($channel) {
                     $comment->setRelation('channel', $channel);
-
                     return new CommentResource($comment);
                 });
         });
@@ -49,11 +48,11 @@ class ChannelCommentsController extends Controller
         $cacheKey = md5('channel_bots_comments'.$channel->id);
 
         $comments = Cache::remember($cacheKey, now()->addHour(), function () use ($channel) {
-            return $channel
-                ->videoComments()
-                ->with('channel')
+            return Comment::join('videos', 'videos.id', '=', 'comments.video_id')
+                ->where('videos.channel_id', $channel->id)
                 ->onlySpam()
-                ->get()
+                ->with('channel')
+                ->get(['comments.*'])
                 ->map(function($comment) {
                     return new CommentResource($comment);
                 });

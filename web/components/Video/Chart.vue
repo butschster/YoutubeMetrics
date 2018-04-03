@@ -52,10 +52,10 @@
                 lineCharts.delegateMethod('showLoading', 'Loading...');
 
                 try {
-                    let response = await this.$axios.get(`video/${this.id}/metrics`);
-                    response.data.forEach((series) => {
+                    await this.$videoRepository.metrics(this.id).forEach((series) => {
                         lineCharts.addSeries(series);
                     });
+                    response.data
                 } catch (e) {}
 
                 lineCharts.hideLoading();

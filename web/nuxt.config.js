@@ -12,7 +12,12 @@ module.exports = {
             {hid: 'description', name: 'description', content: 'BotsMeter Frontend'}
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
+            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+            {
+                rel: 'stylesheet',
+                href: 'https://use.fontawesome.com/releases/v5.0.8/css/all.css',
+                crossorigin: 'anonymous'
+            }
         ]
     },
 
@@ -27,11 +32,16 @@ module.exports = {
         '~/plugins/repositories/user',
         '~/plugins/repositories/channel',
         '~/plugins/repositories/video',
+        '~/plugins/repositories/comment',
+        '~/plugins/repositories/tag',
         '~/plugins/Http/router',
         '~/plugins/i18n',
+        '~/plugins/sweetalert',
         '~/plugins/mixins/user',
         '~/plugins/mixins/validation',
-        '~/plugins/auth'
+        '~/plugins/auth',
+        '~/plugins/notifications',
+        '~/plugins/moment'
     ],
 
     modules: [
@@ -73,7 +83,7 @@ module.exports = {
     */
     build: {
         vendor: [
-            'axios', 'popper.js', 'bootstrap', 'lodash'
+            'axios', 'popper.js', 'bootstrap', 'lodash', 'vue-notifications', 'vue-i18n', 'vue-sweetalert2',
         ],
 
         /*

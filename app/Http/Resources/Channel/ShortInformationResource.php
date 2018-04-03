@@ -4,6 +4,7 @@ namespace App\Http\Resources\Channel;
 
 use App\Entities\Channel;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @mixin Channel
@@ -21,9 +22,13 @@ class ShortInformationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'type' => $this->type,
             'links' => [
                 'self' => route('api.channel.show', $this->id),
                 'thumb' => $this->thumb,
+            ],
+            'policies' => [
+                'report' => Gate::allows('report', $this->resource)
             ]
         ];
     }

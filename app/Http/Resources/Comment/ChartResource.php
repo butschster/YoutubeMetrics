@@ -23,7 +23,7 @@ class ChartResource extends JsonResource
             ],
         ];
 
-        foreach ($result as $row) {
+        foreach ($this->resource as $row) {
             $time = $row->created_at->timestamp * 1000;
             $data['likes']['data'][] = [$time, $row->count];
         }

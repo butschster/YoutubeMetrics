@@ -1,6 +1,6 @@
 <template>
     <div :class="size">
-        <div class="card mb-4 box-shadow">
+        <div class="card mb-4 border-0 box-shadow">
             <nuxt-link class="card-subtitle mb-2" :to="videoLink">
                 <img class="card-img-top" :src="video.links.thumb">
             </nuxt-link>
@@ -15,7 +15,7 @@
                         <img :src="video.channel.links.thumb" class="rounded-circle mr-2" width="25px">
                         {{ video.channel.name }}
                     </nuxt-link>
-                    <span class="text-muted">{{ video.created_at }}</span>
+                    <span class="text-muted">{{ video.created_at | moment("from", true) }}</span>
                 </div>
             </div>
         </div>

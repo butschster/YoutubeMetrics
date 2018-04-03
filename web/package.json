@@ -19,10 +19,15 @@
     "axios": "^0.18",
     "bootstrap": "^4.0.0",
     "lodash": "^4.17.4",
+    "moment-timezone": "^0.5.14",
     "nuxt": "^1.0.0",
     "nuxt-oauth": "0.0.7",
     "popper.js": "^1.12",
+    "toastr": "^2.1.4",
     "vue-i18n": "^7.6.0",
+    "vue-moment": "^3.2.0",
+    "vue-notifications": "^0.9.0",
+    "vue-sweetalert2": "^1.2.4",
     "vue2-highcharts": "^1.1.8"
   },
   "devDependencies": {
