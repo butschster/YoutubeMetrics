@@ -13,7 +13,7 @@
         components: { Videos, FollowedChannels },
         head() {
             return {
-                title: 'Hello world'
+                title: 'BotsMeter'
             }
         }
     }

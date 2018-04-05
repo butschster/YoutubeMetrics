@@ -4,7 +4,7 @@ export default async function ({app, store}) {
         store.dispatch('auth/setPermissions', permissions);
     }
 
-    app.$auth.watchState('loggedIn', async (state) => {
+    app.$auth.$storage.watchState('loggedIn', async (state) => {
         if (state) {
             await loadPermissions();
         } else {
@@ -15,7 +15,7 @@ export default async function ({app, store}) {
         }
     });
 
-    if (app.$auth.state.loggedIn) {
+    if (app.$auth.$storage.getState('loggedIn')) {
         await loadPermissions();
     }
 }

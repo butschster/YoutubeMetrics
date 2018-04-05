@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <h1 class="bg-primary p-3 text-center text-white my-5 ">
-            <small class="font-size-12">Поиск по тегу</small> {{ tag.name }}
+            <small class="font-size-12">{{ $t('tag.title.search') }}</small> {{ tag.name }}
         </h1>
 
         <Videos :tag="tag.name"/>
@@ -22,7 +22,7 @@
         },
         head() {
             return {
-                title: `Поиск по тегу - ${this.tag.name}`
+                title: `${this.$t('tag.title.search')} - ${this.tag.name}`
             }
         }
     }

@@ -1,8 +1,7 @@
 <template>
     <div class="container mt-5">
         <header>
-
-            <h3>Модерация каналов</h3>
+            <h3>{{ title }}</h3>
         </header>
 
         <ul class="list-unstyled mt-5">
@@ -23,6 +22,7 @@
 
     export default {
         components: {Channel},
+        middleware: 'auth',
         async asyncData({app}) {
             let channels = await app.$channelRepository.reported();
 
@@ -33,6 +33,11 @@
 
             return {channels}
         },
+        data() {
+            return {
+                title: this.$t('channel.title.moderation')
+            }
+        },
         methods: {
             hide(channel) {
                 this.channels = this.channels.filter((c) => {
@@ -42,7 +47,7 @@
         },
         head() {
             return {
-                title: 'Модерация каналов - BotsMeter',
+                title: `${this.title} - BotsMeter`
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Комментарии</h3>
+        <h3>{{ $t('video.title.comments') }}</h3>
 
         <comments :comments="comments" v-on:reported="markAsReported" class="mt-4"></comments>
     </div>

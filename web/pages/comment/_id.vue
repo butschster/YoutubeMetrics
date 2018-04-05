@@ -5,7 +5,7 @@
                <p class="font-size-12">{{ comment.text }}</p>
                <footer class="blockquote-footer">
                    <small class="text-muted">
-                       Написал {{ comment.channel.name }}
+                       {{ $t('comment.label.author', {author: comment.channel.name}) }}
                    </small>
                </footer>
            </blockquote>
@@ -19,7 +19,8 @@
                            </nuxt-link>
 
                            <a class="btn btn-outline-light" :href="comment.links.youtube" target="_blank">
-                               <i class="fab fa-youtube fa-lg"></i> Посмотреть на youtube
+                               <i class="fab fa-youtube fa-lg"></i>
+                               {{ $t('comment.button.youtube') }}
                            </a>
                        </div>
                    </div>
@@ -44,7 +45,7 @@
         },
         head() {
             return {
-                title: 'Комментарий'
+                title: this.$t('comment.title.comment', {author: this.comment.channel.name})
             }
         }
     }

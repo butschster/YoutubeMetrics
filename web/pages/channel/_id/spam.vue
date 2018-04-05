@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Спам</h3>
+        <h3>{{ $t('channe.title.comments_spam') }}</h3>
 
         <comments :comments="comments" v-on:reported="markAsReported" class="mt-4"></comments>
     </div>

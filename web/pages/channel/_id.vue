@@ -17,15 +17,15 @@
 
                     <div class="btn-group my-4" role="group">
                         <a class="btn btn-outline-light" :href="channel.links.youtube" target="_blank">
-                            <i class="fab fa-youtube fa-fw fa-lg"></i> Канал
+                            <i class="fab fa-youtube fa-fw fa-lg"></i> {{ $t('channel.button.youtube') }}
                         </a>
                         <a class="btn btn-outline-light" :href="channel.links.t30" target="_blank">
-                            <i class="fab fa-lg fa-fw fa-searchengin"></i> Поиск комментариев
+                            <i class="fab fa-lg fa-fw fa-searchengin"></i> {{ $t('channel.button.search_comments') }}
                         </a>
 
                         <button class="btn btn-danger" @click="report()" v-if="canReport">
                             <i class="fas fa-bug"></i>
-                            Пожаловаться
+                            {{ $t('channel.button.report') }}
                         </button>
                     </div>
                 </div>
@@ -39,10 +39,10 @@
         <Chart :id="channel.id"/>
         <Videos :id="channel.id" class="mt-5"/>
 
-        <Comments :id="channel.id" class="mt-3" />
+        <Comments :id="channel.id" class="mt-3"/>
 
         <div class="mt-3">
-            <nuxt-child />
+            <nuxt-child/>
         </div>
     </section>
 </template>
@@ -68,16 +68,19 @@
 
                 try {
                     const result = await this.$swal({
-                        title: 'Вы уверены, что он бот?',
+                        title: this.$t('channel.send_report.question'),
                         type: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Да, это бот!',
-                        cancelButtonText: 'Отмена'
+                        confirmButtonText: this.$t('channel.send_report.yes'),
+                        cancelButtonText: this.$t('channel.send_report.cancel')
                     });
 
                     if (result.value) {
                         await this.$channelRepository.report(this.channel.id)
                         this.channel.policies.report = false;
+                        this.showSuccessReportMessage({
+                            message: this.$t('channel.send_report.success')
+                        })
                     }
                 } catch (e) {
                     this.showReportError({message: e.message})
@@ -97,6 +100,9 @@
         notifications: {
             showReportError: {
                 type: 'error'
+            },
+            showSuccessReportMessage: {
+                type: 'success'
             }
         }
     }

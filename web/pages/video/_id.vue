@@ -7,7 +7,7 @@
                 </nuxt-link>
 
                 <a class="btn bg-danger btn-sm text-white box-shadow-v3" :href="video.links.youtube" target="_blank">
-                    <i class="fab fa-youtube"></i> Посмотреть на youtube
+                    <i class="fab fa-youtube"></i> {{ $t('video.button.youtube') }}
                 </a>
             </div>
 
@@ -50,7 +50,7 @@
         head() {
             return {
                 title: this.video.title,
-                description: this.video.description
+                //description: this.video.description
             }
         }
     }

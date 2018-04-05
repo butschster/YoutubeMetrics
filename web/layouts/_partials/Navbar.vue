@@ -13,17 +13,17 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li v-if="$can('moderate')">
-                            <nuxt-link class="nav-link" :to="{ name: 'channel-moderation' }">Модерация</nuxt-link>
+                            <nuxt-link class="nav-link" :to="{ name: 'channel-moderation' }">{{ $t('channel.links.moderation') }}</nuxt-link>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
                         <template v-if="!authenticated">
                             <li>
-                                <nuxt-link class="nav-link" :to="{ name: 'login' }">Вход</nuxt-link>
+                                <nuxt-link class="nav-link" :to="{ name: 'login' }">{{ $t('auth.links.login') }}</nuxt-link>
                             </li>
                             <li>
-                                <nuxt-link class="nav-link" :to="{ name: 'register'}">Регистрация</nuxt-link>
+                                <nuxt-link class="nav-link" :to="{ name: 'register'}">{{ $t('auth.links.register') }}</nuxt-link>
                             </li>
                         </template>
                         <template v-else>
@@ -36,7 +36,7 @@
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#" @click.prevent="logout">
-                                        Выход
+                                        {{ $t('auth.links.logout') }}
                                     </a>
                                 </div>
                             </li>

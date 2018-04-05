@@ -39,7 +39,6 @@ module.exports = {
         '~/plugins/sweetalert',
         '~/plugins/mixins/user',
         '~/plugins/mixins/validation',
-        '~/plugins/auth',
         '~/plugins/notifications',
         '~/plugins/moment'
     ],
@@ -55,20 +54,27 @@ module.exports = {
     },
 
     auth: {
+        plugins: [
+            '~/plugins/auth'
+        ],
         redirect: {
             login: '/login',
             logout: '/',
             home: false
         },
-        endpoints: {
-            login: {
-                url: 'login', method: 'post', propertyName: 'meta.token'
-            },
-            user: {
-                url: 'me', method: 'get', propertyName: 'data'
-            },
-            logout: {
-                url: 'logout', method: "post"
+        strategies: {
+            local: {
+                endpoints: {
+                    login: {
+                        url: 'login', method: 'post', propertyName: 'meta.token'
+                    },
+                    user: {
+                        url: 'me', method: 'get', propertyName: 'data'
+                    },
+                    logout: {
+                        url: 'logout', method: "post"
+                    }
+                }
             }
         }
     },

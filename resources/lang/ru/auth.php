@@ -1,16 +1,21 @@
 <?php
 
 return [
-
-    'login' => 'Вход',
-    'register' => 'Регистрация',
-    'logout' => 'Выход',
+    'links' => [
+        'login' => 'Вход',
+        'register' => 'Регистрация',
+        'logout' => 'Выход',
+    ],
+    'title' => [
+        'login' => 'Авторизация',
+        'register' => 'Регистрация',
+    ],
 
     'field' => [
         'name' => 'Ваше имя',
         'email' => 'E-mail',
         'password' => 'Пароль',
-        'password_confirm' => 'Подтверждение пароля',
+        'password_confirmation' => 'Подтверждение пароля',
         'remember' => 'Запомнить меня',
     ],
 
@@ -18,6 +23,11 @@ return [
         'register' => 'Продолжить',
         'login' => 'Войти',
         'reset_password' => 'Вспомнить пароль',
+    ],
+    'text' => [
+        'no_account' => 'У вас нет аккаунта?',
+        'have_account' => 'У вас есть аккаунт?',
+        'welcome' => 'Добро пожаловать {name}'
     ],
 
     /*
