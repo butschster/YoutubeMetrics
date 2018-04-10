@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Channel;
 
 use App\Entities\Channel;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class ChannelVerificationController extends Controller
+class CheckChannel extends Controller
 {
     /**
      * Проверка канала по ID на принадлежность к ботам
@@ -15,7 +15,7 @@ class ChannelVerificationController extends Controller
      * @param Request $request
      * @return array
      */
-    public function check(Request $request): array
+    public function __invoke(Request $request): array
     {
         $request->validate(['channel_id' => 'required']);
 

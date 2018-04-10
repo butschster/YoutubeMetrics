@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Channel;
 
 use App\Entities\Channel;
-use App\Events\Channel\Moderated;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class ChannelModerationController extends Controller
+class ModerateChannel extends Controller
 {
     /**
      * Модерация канала.
@@ -20,7 +19,7 @@ class ChannelModerationController extends Controller
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function moderate(Request $request, Channel $channel)
+    public function __invoke(Request $request, Channel $channel)
     {
         $this->authorize('moderate');
 

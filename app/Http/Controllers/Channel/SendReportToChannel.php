@@ -1,29 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Channel;
 
 use App\Entities\Channel;
-use App\Http\Resources\Channel\ChannelCollection;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class ChannelReportController extends Controller
+class SendReportToChannel extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-    }
-
-    /**
-     * Получение списка каналов, которые имеют жалобы, но еще не боты
-     *
-     * @return ChannelCollection
-     */
-    public function index(): ChannelCollection
-    {
-        return new ChannelCollection(
-            Channel::onlyReported()->live()->get()
-        );
     }
 
     /**
@@ -33,7 +20,7 @@ class ChannelReportController extends Controller
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request)
+    public function __invoke(Request $request)
     {
         $request->validate(['channel_id' => 'required']);
 

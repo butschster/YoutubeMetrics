@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\User;
 
 use App\Http\Resources\User\PermissionsResource;
 use App\Http\Resources\UserResource;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use KodiCMS\Assets\Contracts\MetaInterface;
 
-class ProfileController extends Controller
+class GetProfile extends Controller
 {
     public function __construct()
     {
@@ -21,19 +21,8 @@ class ProfileController extends Controller
      * @param Request $request
      * @return UserResource
      */
-    public function me(Request $request)
+    public function __invoke(Request $request): UserResource
     {
         return new UserResource($request->user());
-    }
-
-    /**
-     * Права авторизованного пользователя
-     *
-     * @param Request $request
-     * @return PermissionsResource
-     */
-    public function permissions(Request $request)
-    {
-        return new PermissionsResource($request->user());
     }
 }

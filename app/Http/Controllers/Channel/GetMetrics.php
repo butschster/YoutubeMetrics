@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Channel;
 
 use App\Entities\Channel;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Channel\ChartResource;
 use Illuminate\Support\Facades\Cache;
 
-class ChannelMetricsController extends Controller
+class GetMetrics extends Controller
 {
     /**
      * Получение данных для построения графика
@@ -15,7 +15,7 @@ class ChannelMetricsController extends Controller
      * @param Channel $channel
      * @return ChartResource
      */
-    public function index(Channel $channel): ChartResource
+    public function __invoke(Channel $channel): ChartResource
     {
         $cacheKey = md5("channel_stat".$channel->id);
 
