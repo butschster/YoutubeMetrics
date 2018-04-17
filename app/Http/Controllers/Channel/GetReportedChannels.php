@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Channel;
 
-use App\Entities\Channel;
+use App\Contracts\Repositories\ChannelRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Channel\ChannelCollection;
 
@@ -16,12 +16,13 @@ class GetReportedChannels extends Controller
     /**
      * Получение списка каналов, которые имеют жалобы, но еще не боты
      *
+     * @param ChannelRepository $repository
      * @return ChannelCollection
      */
-    public function __invoke(): ChannelCollection
+    public function __invoke(ChannelRepository $repository): ChannelCollection
     {
         return new ChannelCollection(
-            Channel::onlyReported()->live()->get()
+            $repository->getReportedChannels()
         );
     }
 }

@@ -14,16 +14,16 @@ class Reported
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Channel
+     * @var string
      */
-    public $channel;
+    public $channelId;
 
     /**
-     * @param Channel $channel
+     * @param string $channelId
      */
-    public function __construct(Channel $channel)
+    public function __construct(string $channelId)
     {
-        $this->channel = $channel;
+        $this->channelId = $channelId;
     }
 
     /**

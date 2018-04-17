@@ -24,16 +24,4 @@ class ListBotChannelsTest extends TestCase
             )
         );
     }
-
-    function test_a_response_should_be_cached()
-    {
-        $bots = $this->createChannel(['bot' => true, 'deleted' => false], 1);
-
-        Cache::shouldReceive('remember')->once()->andReturnUsing(function ($key) use($bots) {
-            $this->assertEquals(md5('channel.bot.list'), $key);
-            return $bots;
-        });
-
-        $this->getJson(route('api.channels.bots'))->assertStatus(200);
-    }
 }

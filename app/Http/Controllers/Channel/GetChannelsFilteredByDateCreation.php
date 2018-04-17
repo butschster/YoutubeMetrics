@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Channel;
 
-use App\Entities\Channel;
+use App\Contracts\Repositories\ChannelRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Channel\ChannelCollection;
+use Carbon\Carbon;
 
 class GetChannelsFilteredByDateCreation extends Controller
 {
@@ -14,22 +15,16 @@ class GetChannelsFilteredByDateCreation extends Controller
     }
 
     /**
-     * Получение списка каналов, не ботов, зарегистрированных в переданную дату
+     * Получение списка каналов, не верифицированных и не ботов, зарегистрированных в переданную дату
      *
+     * @param ChannelRepository $repository
      * @param string $date
      * @return ChannelCollection
      */
-    public function __invoke(string $date): ChannelCollection
+    public function __invoke(ChannelRepository $repository, string $date): ChannelCollection
     {
-        $channels = Channel::filterBots()
-            ->filterVerified()
-            ->whereRaw('date(created_at) = ?')
-            ->orderByDesc('total_comments')
-            ->addBinding($date)
-            ->get();
-
         return new ChannelCollection(
-            $channels
+            $repository->getNonBotChannelsRegisteredAt(Carbon::parse($date))
         );
     }
 }

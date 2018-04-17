@@ -2,34 +2,32 @@
 
 namespace App\Http\Controllers\Channel;
 
-use App\Entities\Channel;
+use App\Contracts\Repositories\ChannelRepository;
+use App\Domain\Channel\ChannelReporter;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class SendReportToChannel extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Добавление жалобы на канал
      *
      * @param Request $request
+     * @param ChannelRepository $repository
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \App\Repositories\ChannelReportedException
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, ChannelRepository $repository)
     {
         $request->validate(['channel_id' => 'required']);
 
-        $channel = Channel::firstOrNew(['id' => $request->channel_id]);
-
+        $channel = $repository->show($request->channel_id);
         $this->authorize('report', $channel);
 
-        $channel->sendReport($request->user());
+        $reported = new ChannelReporter($repository, $request->user()->getKey());
+        $reported->sendReportToChannel($request->channel_id);
 
-        return ['type' => $channel->type];
+        return ['type' => $repository->getChannelType($request->channel_id)];
     }
 }

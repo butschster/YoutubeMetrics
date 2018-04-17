@@ -51,13 +51,6 @@ class EntityTest extends TestCase
         $this->assertEquals('test', $channel->name);
     }
 
-    function test_gets_link()
-    {
-        $channel = $this->createChannel();
-
-        $this->assertEquals('http://localhost/channel/'.$channel->id, $channel->link);
-    }
-
     function test_gets_youtube_link()
     {
         $channel = $this->createChannel();

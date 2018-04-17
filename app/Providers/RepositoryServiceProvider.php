@@ -3,10 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\Repositories\{
-    ChannelRepository as ChannelRepositoryContract
+    ChannelRepository as ChannelRepositoryContract,
+    CommentRepository as CommentRepositoryContract
 };
 use App\Repositories\{
-    ChannelRepository
+    ChannelRepository, CommentRepository
 };
 use Illuminate\Support\ServiceProvider;
 
@@ -30,5 +31,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ChannelRepositoryContract::class, ChannelRepository::class);
+        $this->app->bind(CommentRepositoryContract::class, CommentRepository::class);
     }
 }

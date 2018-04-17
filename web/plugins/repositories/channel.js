@@ -100,5 +100,15 @@ export default function ({app}) {
             }
         },
 
+        async reporters(channel) {
+            try {
+                const response = await app.$axios.get(route('api.channel.reporters', {channel}));
+
+                return response.data.data;
+            } catch (e) {
+                throw new Error('Не удалось загрузить список жалоб на канал.');
+            }
+        },
+
     }
 }

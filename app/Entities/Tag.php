@@ -29,14 +29,4 @@ class Tag extends Model
     {
         return $this->belongsToMany(Video::class);
     }
-
-    /**
-     * Получение ссылки на канал
-     *
-     * @return string
-     */
-    public function getLinkAttribute(): string
-    {
-        return route('tag.show', $this);
-    }
 }

@@ -11,6 +11,7 @@ Route::namespace('User')->group(function () {
 });
 
 Route::namespace('Channel')->group(function () {
+    Route::get('channel/{channel}/reporters', 'CetReporters')->name('channel.reporters');
     Route::get('channel/{channel}/metrics', 'GetMetrics')->name('channel.metrics');
     Route::get('channel/{channel}/comments/spam', 'GetSpamComments')->name('channel.comments.spam');
     Route::get('channel/{channel}/comments', 'GetComments')->name('channel.comments');
@@ -18,7 +19,7 @@ Route::namespace('Channel')->group(function () {
     Route::get('channel/reported', 'GetReportedChannels')->name('channels.reported');
     Route::get('channel/bots', 'GetBotChannels')->name('channels.bots');
 
-    Route::get('channels/followed', 'GetFollowedChannels')->name('channels.followed');
+    Route::get('channels/followed', 'GetFollowingChannels')->name('channels.followed');
     Route::get('channel/{channel}/videos', 'GetChannelVideos')->name('channel.videos');
     Route::get('channel/{channel}', 'Show')->name('channel.show');
 

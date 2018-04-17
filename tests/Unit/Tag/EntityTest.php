@@ -19,13 +19,4 @@ class EntityTest extends TestCase
         $this->assertNotEmpty($tag->id);
         $this->assertEquals('tag1', $tag->name);
     }
-
-    function test_gets_link()
-    {
-        $tag = $this->createTag([
-            'name' => 'tag1',
-        ]);
-
-        $this->assertEquals(route('tag.show', $tag->name), $tag->link);
-    }
 }

@@ -6,17 +6,18 @@ use App\Contracts\Repositories\ChannelRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Channel\ChannelCollection;
 
-class GetBotChannels extends Controller
+class GetFollowingChannels extends Controller
 {
     /**
-     * Получение полного списка каналов ботов.
+     * Получение списка каналов, за которыми производится слежение
      *
+     * @param ChannelRepository $repository
      * @return ChannelCollection
      */
     public function __invoke(ChannelRepository $repository): ChannelCollection
     {
         return new ChannelCollection(
-            $repository->getBotChannels()
+            $repository->getFollowingChannels()
         );
     }
 }

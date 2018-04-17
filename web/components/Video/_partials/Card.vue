@@ -15,7 +15,7 @@
                         <img :src="video.channel.links.thumb" class="rounded-circle mr-2" width="25px">
                         {{ video.channel.name }}
                     </nuxt-link>
-                    <span class="text-muted">{{ video.created_at | moment("from", true) }}</span>
+                    <span class="text-muted">{{ video.created_at | moment("from", "now") }}</span>
                 </div>
             </div>
         </div>

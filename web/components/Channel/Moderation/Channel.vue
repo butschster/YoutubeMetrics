@@ -17,7 +17,7 @@
                 </button>
 
                 <h6>
-                    <nuxt-link :to="{name: 'channel-id', params: {id: channel.id}}" target="_blank">{{ channel.name }}</nuxt-link>
+                    <nuxt-link :to="{name: 'channel-id', params: {id: channel.id}}">{{ channel.name }}</nuxt-link>
                 </h6>
 
                 <small>Дата создания: {{ channel.created_at }}</small>
@@ -25,6 +25,9 @@
                 <div class="border-top media-meta pt-2 mt-2">
                     <button class="btn btn-sm btn-link" @click="showComments()">
                         <i class="far fa-comment-alt"></i> Комментарии
+                    </button>
+                    <button class="btn btn-sm btn-link" @click="showReporters()">
+                        <i class="fas fa-user-md"></i> Жалобы
                     </button>
                 </div>
             </div>
@@ -62,6 +65,7 @@
             }
         },
         methods: {
+
             async showComments() {
                 if (this.hasComments) {
                     this.hideComments();

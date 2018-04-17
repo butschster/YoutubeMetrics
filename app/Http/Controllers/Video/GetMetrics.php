@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Video;
 use App\Entities\Video;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Video\ChartResource;
-use Doctrine\Common\Cache\Cache;
+use Illuminate\Support\Facades\Cache;
 
 class GetMetrics extends Controller
 {

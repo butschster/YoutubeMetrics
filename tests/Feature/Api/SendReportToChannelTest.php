@@ -78,7 +78,7 @@ class SendReportToChannelTest extends TestCase
 
         $this->assertNull(Channel::find($channelId));
 
-        $this->postJson(route('api.channel.abuse'), [
+        $this->postJson(route('api.channel.report'), [
             'channel_id' => $channelId
         ])->assertStatus(200)->assertJson([
             'type' => Channel::TYPE_REPORTED
@@ -97,8 +97,8 @@ class SendReportToChannelTest extends TestCase
 
         $channelId = $this->faker->uuid;
 
-        $this->postJson(route('api.channel.abuse'), ['channel_id' => $channelId])->assertStatus(200);
-        $this->postJson(route('api.channel.abuse'), ['channel_id' => $channelId])->assertStatus(403);
+        $this->postJson(route('api.channel.report'), ['channel_id' => $channelId])->assertStatus(200);
+        $this->postJson(route('api.channel.report'), ['channel_id' => $channelId])->assertStatus(403);
     }
 
     /**
@@ -107,7 +107,7 @@ class SendReportToChannelTest extends TestCase
      */
     protected function sendReport($channel): \Illuminate\Foundation\Testing\TestResponse
     {
-        return $this->postJson(route('api.channel.abuse'), [
+        return $this->postJson(route('api.channel.report'), [
             'channel_id' => $channel->id
         ]);
     }
