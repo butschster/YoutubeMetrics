@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends Model
 {
@@ -22,20 +23,10 @@ class Tag extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function videos()
+    public function videos(): BelongsToMany
     {
         return $this->belongsToMany(Video::class);
-    }
-
-    /**
-     * Получение ссылки на канал
-     *
-     * @return string
-     */
-    public function getLinkAttribute(): string
-    {
-        return route('tag.show', $this);
     }
 }

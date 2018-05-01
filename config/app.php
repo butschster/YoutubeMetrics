@@ -160,6 +160,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\YoutubeServiceProvider::class,
+        App\Providers\MetaBotServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         KodiCMS\Assets\AssetsServiceProvider::class,
 

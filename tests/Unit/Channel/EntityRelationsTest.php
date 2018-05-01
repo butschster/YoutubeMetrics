@@ -27,24 +27,6 @@ class EntityRelationsTest extends TestCase
         $this->assertFalse($channel->comments()->get()->contains($comment));
     }
 
-    function test_video_comments()
-    {
-        $channel = $this->createChannel();
-
-        $video = $this->createVideo(['channel_id' => $channel->id]);
-        $video2 = $this->createVideo(['channel_id' => $channel->id]);
-
-        $this->createComment(['video_id' => $video->id], 3);
-
-        $this->assertEquals(3, $channel->videoComments()->count());
-
-        $channel->videoComments()->create(
-            factory(Comment::class)->make(['video_id' => $video2->id])->toArray()
-        );
-
-        $this->assertEquals(4, $channel->videoComments()->count());
-    }
-
     function test_videos()
     {
         $channel = $this->createChannel();

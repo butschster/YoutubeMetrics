@@ -22,12 +22,14 @@ class ShowActiveKeys extends Command
     protected $description = 'Список ключей, кторые используюся для получения данных';
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @param KeyManager $manager
      */
     public function handle(KeyManager $manager)
     {
+        if (!$manager->hasKeys()) {
+            $this->error('Нет активных ключей');
+        }
+
         $this->table(['Key'], collect($manager->keys())->map(function ($row) {
             return ['key' => $row];
         }));

@@ -2,31 +2,15 @@
 
 namespace App\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\{
+    BelongsTo, BelongsToMany, HasMany
+};
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
-class Video extends Model
+class Video extends YoutubeModel
 {
     use HybridRelations;
-
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * @var array
-     */
-    protected $guarded = [];
 
     /**
      * @return string
@@ -37,33 +21,57 @@ class Video extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Ссылка на канал на Youtube
+     *
+     * @return string
      */
-    public function channel()
+    public function getYoutubeLinkAttribute(): string
+    {
+        return "https://www.youtube.com/watch?v={$this->id}";
+    }
+
+
+    /**
+     * Получение кол-ва спам комментариев
+     *
+     * @return int
+     */
+    public function getSpamCommentsAttribute(): int
+    {
+        $cacheKey = md5("spamComment".$this->id);
+        return Cache::remember($cacheKey, now()->addHour(), function ()  {
+            return $this->comments()->where('is_spam', true)->count();
+        });
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function statistics()
+    public function statistics(): HasMany
     {
         return $this->hasMany(VideoStat::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

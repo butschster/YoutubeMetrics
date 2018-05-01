@@ -1,0 +1,37 @@
+// Variables
+@import "variables";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import "mixins";
+@import "globals";
+@import "blocks";
+@import "components";
+@import "pages";
+
+.navbar-brand {
+  img {
+    height: 30px;
+  }
+}
+
+#video-header,
+#channel-header,
+#comment-header {
+  .cover {
+    min-height: $header-height;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: .4;
+  }
+
+  .card-img-overlay {
+    padding: 40px;
+  }
+}
+
+.video-chart,
+.comment-chart,
+.channel-chart {
+  height: $chart-height;
+}

@@ -16,18 +16,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('kremlin-bots:sync')->hourly()->withoutOverlapping();
+        $schedule->command('metabot:sync')->hourly()->withoutOverlapping();
         $schedule->command('comments:mark-spam')->dailyAt('04:00')->withoutOverlapping();
         $schedule->command('channel:calculate-comments')->dailyAt('06:00')->withoutOverlapping();
         $schedule->command('channel:stat-bot-comments')->dailyAt('02:00')->withoutOverlapping();
 
-
         // YouTube tasks
         $this->runYoutubeTask(
-            $schedule->command('kremlin-bots:check')->twiceDaily(),
             $schedule->command('youtube:channels-sync')->dailyAt('03:00'),
             $schedule->command('youtube:followed-channels-sync')->daily(),
-            $schedule->command('youtube:channels-follow')->everyFiveMinutes(),
+            $schedule->command('youtube:channels-follow')->everyMinute(),
             $schedule->command('youtube:video-information-sync')->everyMinute(),
             $schedule->command('youtube:hourly-comments-sync')->hourly(),
             $schedule->command('youtube:daily-comments-sync')->dailyAt('22:00')

@@ -8,7 +8,6 @@ use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
  */
 function generate_password(int $length = 8): string
 {
-
     $generator = new ComputerPasswordGenerator();
 
     $generator
@@ -20,7 +19,11 @@ function generate_password(int $length = 8): string
     return $generator->generatePassword();
 }
 
-function format_number(int $number)
+/**
+ * @param int $number
+ * @return string
+ */
+function format_number(int $number): string
 {
     return number_format($number, 0, '.', ' ');
 }
@@ -29,7 +32,11 @@ function format_number(int $number)
  * @param \Carbon\Carbon $date
  * @return string
  */
-function format_date(\Carbon\Carbon $date)
+function format_date(\Carbon\Carbon $date = null): ?string
 {
-    return $date->format('d.m.Y H:i:s');
+    if (!$date) {
+        return null;
+    }
+
+    return $date->toDateTimeString();
 }

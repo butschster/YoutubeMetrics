@@ -5,8 +5,9 @@ namespace App\Jobs\Youtube;
 use App\Contracts\Services\Youtube\Client;
 use App\Entities\Video;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\{
+    SerializesModels, InteractsWithQueue
+};
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 

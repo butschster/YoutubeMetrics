@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
-use App\Contracts\Services\Youtube\Client as CleintContract;
-use App\Contracts\Services\Youtube\KeyManager as KeyManagerContract;
-use App\Services\Youtube\Client;
-use App\Services\Youtube\KeyManager;
+use App\Contracts\Services\Youtube\{
+    Client as CleintContract,
+    KeyManager as KeyManagerContract
+};
+use App\Entities\YoutubeKey;
+use App\Services\Youtube\{
+    Client, KeyManager
+};
 use Illuminate\Support\ServiceProvider;
 
 class YoutubeServiceProvider extends ServiceProvider
@@ -31,7 +35,7 @@ class YoutubeServiceProvider extends ServiceProvider
             $manager = new KeyManager($this->app);
 
             $manager->setKeys(
-                $this->app->make('config')->get('services.youtube.keys', [])
+                YoutubeKey::getKeys()
             );
 
             return $manager;

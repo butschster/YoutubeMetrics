@@ -1,0 +1,28 @@
+.login-page {
+  .form-control {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    border-color: $gray-300;
+    border-radius: 0;
+  }
+
+  .btn {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    border-radius: 0;
+    color: #fff;
+    background-color: #72c02c;
+  }
+
+  .login-box {
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .login-page-container {
+    min-height: 100vh;
+  }
+
+  .logo img {
+    width: 160px;
+  }
+}

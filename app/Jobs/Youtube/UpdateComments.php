@@ -2,8 +2,9 @@
 
 namespace App\Jobs\Youtube;
 
-use App\Entities\Channel;
-use App\Entities\Video;
+use App\Entities\{
+    Channel, Video
+};
 use App\Services\Youtube\Resources\Comment;
 use App\Services\Youtube\ResponseCollection;
 use Illuminate\Bus\Queueable;

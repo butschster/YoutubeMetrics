@@ -1,5 +1,8 @@
 <template>
-    <button class="btn btn-danger" @click="report()">Пожаловаться</button>
+    <button class="btn btn-danger" @click="report()">
+        <i class="fas fa-bug"></i>
+        Пожаловаться
+    </button>
 </template>
 
 <script>

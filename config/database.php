@@ -127,6 +127,13 @@ return [
             'database' => 0,
         ],
 
+        'queue-server' => [
+            'host' => env('REDIS_QUEUE_HOST', '127.0.0.1'),
+            'password' => env('REDIS_QUEUE_PASSWORD', null),
+            'port' => env('REDIS_QUEUE_PORT', 6379),
+            'database' => 0,
+        ],
+
     ],
 
 ];

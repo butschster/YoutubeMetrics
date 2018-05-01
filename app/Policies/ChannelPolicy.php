@@ -3,12 +3,25 @@
 namespace App\Policies;
 
 use App\Entities\Channel;
+use App\Repositories\ChannelRepository;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ChannelPolicy
 {
     use HandlesAuthorization;
+    /**
+     * @var ChannelRepository
+     */
+    private $repository;
+
+    /**
+     * @param ChannelRepository $repository
+     */
+    public function __construct(ChannelRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      * @param User $user
@@ -17,26 +30,6 @@ class ChannelPolicy
      */
     public function report(User $user, Channel $channel): bool
     {
-        return true;
-    }
-
-    /**
-     * @param User $user
-     * @param Channel $channel
-     * @return bool
-     */
-    public function moderate(User $user, Channel $channel): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param User $user
-     * @param Channel $channel
-     * @return bool
-     */
-    public function manage(User $user, Channel $channel): bool
-    {
-        return true;
+        return !$channel->bot && !$this->repository->hasReportFrom($channel->id, $user->id);
     }
 }

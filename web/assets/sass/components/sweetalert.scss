@@ -1,0 +1,26 @@
+.swal2-popup {
+  border-radius: 0 !important;
+
+  .swal2-title {
+    color: $dark !important;
+    font-weight: 300 !important;
+    font-size: 22px !important;
+  }
+
+  .swal2-styled {
+    padding: 7px 20px !important;
+    font-size: 15px !important;
+  }
+
+  .swal2-confirm {
+    background-color: $success !important;
+  }
+
+  .swal2-cancel {
+    background-color: $gray-400 !important;
+  }
+}
+
+.swal2-container.swal2-shown {
+  background-color: rgba(0, 0, 0, .7) !important;
+}

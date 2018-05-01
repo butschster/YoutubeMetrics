@@ -1,0 +1,24 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+// Body
+$body-bg: #f5f8fa;
+
+//$red:     #f00;
+//$orange:  #e57d20;
+//$green:   #72c02c;
+
+// Typography
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+$dark: #111;
+
+$g-sm: 576px !default; // Small devices (landscape phones, >=576 & <=767)
+$g-md: 768px !default; // Medium devices (tablets, >=768 & <=991)
+$g-lg: 992px !default; // Large devices (desktops, >=992 & <=1199)
+$g-xl: 1200px !default; // Extra large devices (large desktops, >=1200)
+
+$header-height: 300px;
+$chart-height: 350px;

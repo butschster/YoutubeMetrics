@@ -1,0 +1,36 @@
+.video-player {
+  width: 100%;
+}
+
+@media (max-width: $g-sm - 1px) {
+
+
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: $g-sm) {
+  .video-player {
+    height: 287px
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: $g-md) {
+  .video-player {
+    height: 389px
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: $g-lg) {
+  .video-player {
+    height: 524px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: $g-xl) {
+  .video-player {
+    height: 630px;
+  }
+}

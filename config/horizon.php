@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'use' => 'default',
+    'use' => 'queue-server',
 
     /*
     |--------------------------------------------------------------------------
@@ -76,14 +76,14 @@ return [
                 'connection' => env('QUEUE_DRIVER'),
                 'queue' => ['default'],
                 'balance' => 'auto',
-                'processes' => 12,
+                'processes' => 24,
                 'tries' => 3,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
-                'connection' => env('QUEUE_DRIVER'),
+                'connection' => 'queue-server',
                 'queue' => ['default'],
                 'balance' => 'auto',
                 'processes' => 3,

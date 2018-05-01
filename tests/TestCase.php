@@ -3,35 +3,25 @@
 namespace Tests;
 
 use App\Entities\Bot;
-use App\Entities\Channel;
 use App\Entities\Comment;
 use App\Entities\Tag;
 use App\Entities\Video;
+use App\Entities\YoutubeKey;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Unit\Youtube\FakeClient;
+use Tests\Utility\{
+    ChannelHelpers, UserHelpers
+};
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
-
+    use CreatesApplication, UserHelpers, ChannelHelpers;
     /**
      * @return FakeClient
      */
     public function createYoutubeFakeClient()
     {
         return new FakeClient();
-    }
-
-    /**
-     * Create a new channel
-     *
-     * @param array $attributes
-     * @param int $times
-     * @return Channel
-     */
-    public function createChannel(array $attributes = [], int $times = null)
-    {
-        return factory(Channel::class, $times)->create($attributes);
     }
 
     /**
@@ -71,14 +61,14 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Create a new bot
+     * Create a new youtube key
      *
      * @param array $attributes
      * @param int $times
-     * @return Bot
+     * @return Tag
      */
-    public function createBot(array $attributes = [], int $times = null)
+    public function createYoutubeKey(array $attributes = [], int $times = null)
     {
-        return factory(Bot::class, $times)->create($attributes);
+        return factory(YoutubeKey::class, $times)->create($attributes);
     }
 }

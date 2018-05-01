@@ -1,0 +1,42 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "BotsMeter Frontend",
+  "author": "botsmeter@gmail.com",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --spa",
+    "build": "nuxt build --spa",
+    "start": "nuxt start --spa",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.0.0",
+    "@nuxtjs/axios": "^5.1.1",
+    "@nuxtjs/dotenv": "^1.1.1",
+    "axios": "^0.18",
+    "bootstrap": "^4.0.0",
+    "lodash": "^4.17.4",
+    "moment-timezone": "^0.5.14",
+    "nuxt": "^1.0.0",
+    "nuxt-oauth": "0.0.7",
+    "popper.js": "^1.12",
+    "toastr": "^2.1.4",
+    "vue-i18n": "^7.6.0",
+    "vue-moment": "^3.2.0",
+    "vue-notifications": "^0.9.0",
+    "vue-sweetalert2": "^1.2.4",
+    "vue2-highcharts": "^1.1.8"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7"
+  }
+}

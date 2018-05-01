@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Entities\Channel;
-use App\Entities\Comment;
-use Illuminate\Support\Facades\Event;
+use App\Entities\{
+    Channel, Comment
+};
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -17,6 +17,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         \App\Events\Youtube\DailyLimitExceeded::class => [
             \App\Listeners\Youtube\BanLimitedKey::class
+        ],
+        \App\Events\Channel\Reported::class => [
+
+        ],
+        \App\Events\Channel\Moderated::class => [
+
         ],
     ];
 

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Entities\Channel;
-use App\Entities\Comment;
-use App\Entities\Tag;
-use App\Entities\Video;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Route;
+use App\Contracts\Repositories\ChannelRepository;
+use App\Entities\{
+    Comment, Tag, Video
+};
+use Illuminate\Support\Facades\{
+    Cache, Route
+};
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -33,6 +33,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->addChannelBinding();
         $this->addCommentBinding();
         $this->addTagBinding();
+
+        Route::pattern('date', '\d{4}-\d{2}-\d{2}');
 
         parent::boot();
     }
@@ -75,6 +77,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
+            ->name('api.')
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
@@ -83,17 +86,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function addChannelBinding(): void
     {
         Route::bind('channel', function ($id) {
-            $cacheKey = md5('channel'.$id);
-
-            $channel = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($id) {
-                return Channel::find($id);
-            });
-
-            if (!$channel) {
-                abort(404, 'Канал не найден');
-            }
-
-            return $channel;
+            return $this->app->make(ChannelRepository::class)->show($id);
         });
     }
 

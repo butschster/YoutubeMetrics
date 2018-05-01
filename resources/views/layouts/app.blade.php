@@ -8,19 +8,6 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
           integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
-
-    <script>
-        window.app = {!!
-            json_encode([
-                'user' => auth()->user(),
-                'permissions' => [
-                    'channel' => [
-                        'report' => Gate::allows('report', new \App\Entities\Channel()),
-                        'moderate' => Gate::allows('moderate', new \App\Entities\Channel())
-                    ]
-                ]
-            ])!!};
-    </script>
 </head>
 <body>
 <div id="app">

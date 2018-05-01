@@ -4,6 +4,7 @@ namespace Tests\Unit\Youtube\Console;
 
 use App\Console\Commands\Youtube\SyncVideoInformation;
 use App\Jobs\Youtube\UpdateVideoInformation;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -25,10 +26,7 @@ class SyncVideoInformationTest extends TestCase
 
         $this->createVideo(['created_at' => now()->subDays(5)], 2);
 
-        $command = new SyncVideoInformation();
-        $command->setLaravel($this->app);
-
-        $command->run(new StringInput(''), new NullOutput());
+        Artisan::call('youtube:video-information-sync');
 
         Bus::assertDispatched(UpdateVideoInformation::class, 5);
     }
