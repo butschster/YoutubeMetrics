@@ -31,25 +31,31 @@
 ### Модерация
 
 `$ php artisan user:grant-moderator {email}`
+
 `$ php artisan user:revoke-moderator {email}`
 
 ### Youtube API
 
 Регистрация нового API ключа
+
 `$ php artisan youtube:register-api-key {key}`
 
 Удаление API ключа
+
 `$ php artisan youtube:remove-api-key {key}`
 
 Список ключей, которые используюся для получения данных (Активные)
+
 `$ php artisan youtube:keys-active`
 
 ### Системные
 
 Создание файлов локализации для JS в json формате
+
 `$ php artisan locales:javascript`
 
 Генерация api routes для JS. Испольщуется для выполнения API запросов в nuxt
+
 `$ php artisan route:javascript`
 
 
