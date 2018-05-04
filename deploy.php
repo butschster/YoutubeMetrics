@@ -5,10 +5,10 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Project name
-set('application', 'BotsMeter');
+set('application', 'YoutubeMetrics');
 
 // Project repository
-set('repository', 'git@bitbucket.org:butsch/youtube.git');
+set('repository', 'git@github.com:butschster/YoutubeMetrics.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true);
@@ -19,8 +19,8 @@ add('shared_dirs', []);
 
 set('allow_anonymous_stats', false);
 
-host('botsmeter', 'botsmeter-db')
-    ->port(60022)
+host('youtube-metrics', 'youtube-metrics-workers')
+    ->port(22)
     ->configFile('~/.ssh/config')
     ->set('deploy_path', '/var/www');
 
@@ -59,4 +59,3 @@ after('deploy:symlink', 'supervisor:queue:restart');
 after('deploy:symlink', 'opcache:clear');
 
 after('deploy:symlink', 'php:reload');
-
